@@ -1,0 +1,850 @@
+.book__single__content {
+  margin-top: 10px;
+  /* padding-left: 5%; */
+}
+.book__description h2 {
+  font: normal normal normal 30px/29px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.45px;
+  color: #001e43;
+}
+.book__description__star__row {
+  display: flex;
+  flex-direction: row;
+  /* border: saddlebrown solid; */
+  /* align-items: center; */
+}
+#book__single__img__col{
+    display: flex;
+    /* border: blue solid; */
+    /* justify-content: center; */
+}
+#book__single__img__col img{
+   max-width: 300px;
+   /* border: solid red; */
+   border-radius: 3px;
+}
+.book__single__img__div{
+ 
+  margin: auto; 
+  max-width: 100%;
+}
+
+.book__description__col {
+  display: flex;
+  justify-content: center;
+  border-left: 1px solid #f3ecec ;
+  padding-left: 30px;
+  
+}
+
+.book__description__star__left {
+  display: flex;
+
+}
+.book__description__star__left p {
+  display: flex;
+  text-align: left;
+  font: normal normal normal 13px/22px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.14px;
+  color: #9ca0a4;
+  margin-left: 7px;
+}
+#book__star {
+  color: #ffbd00;
+  font-size: 20px;
+}
+.book__description__star__right {
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+ 
+}
+.book__description__star__right p {
+  font: normal normal normal 13px/20px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.14px;
+  color: #9ca0a4;
+}
+.book__description__star__right h6 {
+  text-align: left;
+  font: normal normal normal 14px/18px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.14px;
+  color: #001e43;
+  margin-left: 3px;
+}
+.book__description__price h5 {
+  text-align: left;
+  font: normal normal normal 25px/39px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.3px;
+  color: #001e43;
+}
+.book__description__price p {
+  text-align: left;
+  font: normal normal normal 14px/18px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.14px;
+  color: #9ca0a4;
+}
+.book__description__text p {
+  text-align: left;
+  font: normal normal normal 15px/24px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.16px;
+  color: #333333;
+}
+.book__description__button__row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.book__description_increment p {
+  font: normal normal normal 25px/20px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.3px;
+  color: #505050;
+  opacity: 0.59;
+  margin-top: 15px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.book__description_increment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  justify-content: center;
+  background: #fbfbfb;
+  border-radius: 5px;
+  padding-left: 20px;
+  padding-right: 10px;
+  
+}
+#increment__icon {
+  color: #505050;
+  opacity: 0.59;
+
+ 
+}
+#decrement__icon {
+  color: #505050;
+  opacity: 0.59;
+  margin-top: -18px;
+}
+#book__add__button {
+  font: normal normal normal 18px/20px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  background: #001e43;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 5px;
+  padding: 5px;
+  height: 40px;
+  width: 200px;
+  margin-left: 20px;
+}
+
+.book__share__row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+.book__book__mark {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+.book__book__mark p {
+  font: normal normal normal 14px/23px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.2px;
+  color: #333333;
+  opacity: 0.75;
+  margin-left: 10px;
+}
+.book__bookmark__icon {
+  color: #333333;
+  opacity: 0.75;
+  font-size: 25px;
+}
+
+.book__share {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  cursor: pointer;
+}
+.book__share p {
+  font: normal normal normal 14px/23px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.2px;
+  color: #333333;
+  opacity: 0.75;
+  margin-left: 10px;
+}
+#book__share__icon {
+  color: #333333;
+  opacity: 0.75;
+  font-size: 25px;
+}
+.bookMark {
+  color: #46ce04;
+  opacity: 0.75;
+  font-size: 25px;
+}
+
+
+
+.book__detailes {
+  margin-top: 30px;
+}
+.book__detailes__head {
+  
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #f3ecec ;
+}
+.book__detailes__head__h6 {
+  font: normal normal normal 18px/21px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.24px;
+  color: #a7a7af;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.book__detailes__active {
+  font: normal normal normal 18px/21px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.24px;
+  color: #242426;
+  cursor: pointer;
+ 
+
+  padding-right: 30px;
+}
+
+.book__detailes__head__content {
+  display: flex;
+  flex-direction: row;
+}
+.book__detailes__content {
+  margin-top: 40px;
+}
+.book__detailes__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.book__detailes__row h6 {
+  font: normal normal normal 16px/24px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.18px;
+  color: #9ca0a4;
+}
+.book__detailes__row p {
+  text-align: left;
+  font: normal normal normal 16px/24px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.18px;
+  color: #001e43;
+}
+.book__detailes__row__right {
+
+  width: 50%;
+  overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+}
+
+/*<<<<<<<<<<<<<<< BOOK REVIEW >>>>>>>>>>>>>>>>> */
+.book__review {
+  
+  margin-top: 30px;
+}
+
+.book__review__first__row__left h4 {
+  text-align: left;
+  font: normal normal normal 18px/31px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.24px;
+  color: #746f6f;
+}
+.book__review__first__row__left h1 {
+  text-align: left;
+  font: normal normal bold 55px/30px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.85px;
+  color: #001e43;
+}
+.book__review__first__row__left p {
+  text-align: left;
+  font: normal normal normal 18px/14px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.18px;
+  color: #888888;
+  opacity: 1;
+  
+}
+.book__review__rating {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+}
+.book__review__rating__right {
+  margin-left: 20px;
+}
+.book__review__rating__star {
+  display: flex;
+  flex-direction: row;
+ 
+  margin-top: -4px;
+}
+
+.book__progress {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  max-height: 35px;
+}
+.book__progress p {
+  text-align: left;
+  font: normal normal normal 14px/24px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.18px;
+  color: #888888;
+  margin-left: 15px;
+}
+.progress__bar {
+  width: 300px;
+ 
+
+  height: 5px;
+  margin-left: 15px;
+}
+
+#review__button {
+  background: #001e43 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 5px;
+  font: normal normal normal 16px/20px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  border: none;
+  height: 40px;
+  width: 80%;
+  margin-top: 40px;
+}
+
+.book__review__content {
+  margin-top: 0px;
+}
+.review__content__head {
+  display: flex;
+  flex-direction: row;
+  margin-top: 30px;
+  
+}
+.review__content__head h6 {
+  text-align: left;
+  font: normal normal normal 20px/21px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.24px;
+  color: #001e43;
+}
+
+.review__stars__div {
+
+ 
+  margin-top: -11px;
+  margin-left: 20px;
+}
+
+.review__text p {
+  text-align: left;
+  font: normal normal normal 16px/27px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.16px;
+  color: #746f6f;
+  
+}
+.review__text p {
+    text-align: left;
+    font: normal normal normal 16px/27px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.16px;
+    color: #746F6F;
+}
+
+.review__date h6{
+    text-align: left;
+    font: normal normal normal 16px/10px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.16px;
+    color: #c4baba;
+}
+
+.review__more{
+    display: flex;
+    justify-content: center;
+}
+.review__more h5{
+    font: normal normal normal 18px/31px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.2px;
+    color: #a8a0a0;
+    text-shadow: inset 0px 3px 6px #00000029;
+}
+
+
+.also__brought{
+    margin-top: 50px;
+ 
+}
+.also__brought__head h6{
+    text-align: left;
+font: normal normal normal 22px/39px DM Sans;
+font-family: "DM Sans", sans-serif; 
+letter-spacing: 0.3px;
+border-bottom: 1px solid #f3ecec ;
+padding-bottom: 10px;
+}
+
+
+
+
+@media screen and (max-width: 800px) {
+    #book__single__img__col img{
+        max-height: 250px;
+        max-width: 150px;
+       
+     }
+     #book__single__img__col{
+       justify-content: center;
+     }
+     #book__single__carousel{ 
+   
+      max-width: 150px;
+    }
+     .book__single__content {
+      margin-top:5px;
+      padding-left: 0px;
+      padding: 10px;
+    }
+    .book__description h2 {
+      text-align: center;
+      font: normal normal normal 18px/19px DM Sans;
+      font-family: "DM Sans", sans-serif;
+      letter-spacing: 0.45px;
+      color: #001e43;
+      margin-top: 10px;
+    }
+    .book__description__star__row {
+      display: grid;
+      flex-direction: row;
+      margin: auto;
+      justify-content: center;
+      /* border: solid red; */
+      margin-top: -5px;
+    }
+ 
+ 
+  .book__description__col {
+    display: flex;
+    justify-content: center;
+    border-left: none;
+    padding-left: 20px;
+  }
+  
+  .book__description__star__left {
+    display: flex;
+   
+  }
+  #book__star {
+    color: #ffbd00;
+    font-size: 20px;
+  }
+  .book__description__star__right {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 0px;
+    
+  }
+  .book__description__star__right p {
+    font: normal normal normal 13px/8px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.14px;
+   
+    
+  }
+  .book__description__star__right h6 {
+    text-align: left;
+    font: normal normal normal 13px/8px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.14px;
+    color: #001e43;
+    margin-left: 3px;
+  }
+ 
+  .book__description__price p {
+    text-align: center;
+    font: normal normal normal 14px/18px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.14px;
+    color: #9ca0a4;
+  }
+  .book__description__price h5 {
+    text-align: center;
+    font: normal normal normal 20px/19px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.3px;
+    color: #001e43;
+  }
+  .book__description__text p {
+    text-align: justify;
+    /* padding: 5px; */
+    font: normal normal normal 14px/24px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.16px;
+    color: #333333;
+  }
+  .book__description__button__row {
+    display: grid;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .book__description_increment p {
+    font: normal normal normal 25px/20px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.3px;
+    color: #505050;
+    opacity: 0.59;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  .book__description_increment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+   
+    max-width: 100%;
+    justify-content: center;
+    background: #fbfbfb;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    
+  }
+  #increment__icon {
+    color: #505050;
+    opacity: 0.59;
+  
+  }
+  #decrement__icon {
+    color: #505050;
+    opacity: 0.59;
+    margin-top: -18px;
+  }
+  #book__add__button {
+    font: normal normal normal 14px/20px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+    background: #001e43;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 5px;
+    padding: 5px;
+    height: 35px;
+    width: 200px;
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+  
+  .book__share__row {
+    display: grid;
+    flex-direction: row;
+    margin-top: 20px;
+    justify-content: left;
+  }
+  .book__book__mark {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+  }
+  .book__book__mark p {
+    font: normal normal normal 13px/23px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.2px;
+    color: #333333;
+    opacity: 0.75;
+    margin-left: 10px;
+  }
+  .book__bookmark__icon {
+    color: #333333;
+    opacity: 0.75;
+    font-size: 20px;
+  }
+  
+  .book__share {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0px;
+    cursor: pointer;
+  }
+  .book__share p {
+    font: normal normal normal 13px/23px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.2px;
+    color: #333333;
+    opacity: 0.75;
+    margin-left: 10px;
+  }
+  #book__share__icon {
+    color: #333333;
+    opacity: 0.75;
+    font-size: 20px;
+  }
+  .bookMark {
+    color: #46ce04;
+    opacity: 0.75;
+    font-size: 25px;
+  }
+
+
+
+/* <<<<<<<<< DETAILS >>>>>>>>>> */
+  .book__detailes {
+    margin-top: 10px;
+  }
+  .book__detailes__head {
+ 
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #f3ecec ;
+  }
+  .book__detailes__head__h6 {
+    font: normal normal normal 15px/21px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.24px;
+    color: #a7a7af;
+    padding-right: 30px;
+  }
+  
+  .book__detailes__active {
+    font: normal normal normal 15px/21px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.24px;
+    color: #242426;
+    
+  
+    padding-right: 30px;
+  }
+  
+  .book__detailes__head__content {
+    display: flex;
+    flex-direction: row;
+  }
+  .book__detailes__content {
+    margin-top: 10px;
+  }
+  .book__detailes__row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* border: green solid; */
+    height: 40px;
+  }
+  .book__detailes__row h6 {
+    font: normal normal normal 14px/24px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.18px;
+    color: #9ca0a4;
+  }
+  .book__detailes__row p {
+    text-align: left;
+    font: normal normal normal 14px/24px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.18px;
+    color: #001e43;
+  }
+  .book__detailes__row__right {
+    
+    width: 50%;
+  }
+  
+  
+
+
+
+
+  /*<<<<<<<<<<<<<<< BOOK REVIEW >>>>>>>>>>>>>>>>> */
+.book__review {
+ 
+  margin-top: 10px;
+}
+
+.book__review__first__row__left h4 {
+  text-align: left;
+  font: normal normal normal 18px/30px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.24px;
+  color: #746f6f;
+}
+.book__review__first__row__left h1 {
+  text-align: left;
+  font: normal normal bold 35px/30px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.85px;
+  color: #001e43;
+}
+.book__review__first__row__left p {
+  text-align: left;
+  font: normal normal normal 16px/14px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.18px;
+  color: #888888;
+  opacity: 1;
+
+}
+.book__review__rating {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+.book__review__rating__right {
+  margin-left: 20px;
+}
+.book__review__rating__star {
+  display: flex;
+  flex-direction: row;
+
+  margin-top: -10px;
+}
+.book__progress__div{
+  margin-top: 20px;
+}
+
+.book__progress {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+
+  max-height: 35px;
+  
+}
+.book__progress p {
+  text-align: left;
+  font: normal normal normal 13px/14px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.18px;
+  color: #888888;
+  margin-left: 15px;
+}
+.progress__bar {
+
+ max-width: 50%;
+  height: 5px;
+  margin-left: 15px;
+}
+
+#review__button {
+  background: #001e43 0% 0% no-repeat padding-box;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 5px;
+  font: normal normal normal 16px/20px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.3px;
+  color: #ffffff;
+  border: none;
+  height: 35px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.book__review__content {
+  margin-top: 0px;
+}
+.review__content__head {
+  display: grid;
+  flex-direction: row;
+  margin-top: 20px;
+  
+}
+.review__content__head h6 {
+  text-align: left;
+  font: normal normal normal 18px/21px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.24px;
+  color: #001e43;
+}
+
+.review__stars__div {
+
+  margin-top: -10px;
+  margin-left: 0px;
+}
+
+.review__text p {
+  text-align: left;
+  font: normal normal normal 14px/25px DM Sans;
+  font-family: "DM Sans", sans-serif;
+  letter-spacing: 0.16px;
+  color: #746f6f;
+  margin-top: 5px;
+}
+
+
+.review__date h6{
+    text-align: left;
+    font: normal normal normal 14px/11px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.16px;
+    color: #c4baba;
+}
+
+.review__more{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.review__more h5{
+    font: normal normal normal 15px/31px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0.2px;
+    color: #a8a0a0;
+    text-shadow: inset 0px 3px 6px #00000029;
+}
+
+
+.also__brought{
+    margin-top: 10px;
+ 
+}
+.also__brought__head h6{
+    text-align: left;
+font: normal normal normal 15px/19px DM Sans;
+font-family: "DM Sans", sans-serif; 
+letter-spacing: 0.3px;
+border-bottom: 1px solid #f3ecec ;
+padding-bottom: 10px;
+}
+
+}
+
+#add__button{
+  
+  font: normal normal normal 25px/19px DM Sans;
+  font-family: "DM Sans", sans-serif; 
+  letter-spacing: 0.3px;
+
+
+}

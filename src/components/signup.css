@@ -1,0 +1,148 @@
+
+
+.container2{
+   
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    box-shadow: 3px 3px 10px rgb(233, 232, 232);
+  
+    
+}
+
+.left{
+   
+    border-radius: 20px 0 0 20px;
+}
+.signup-img{
+    width: 100%;
+    height: 100%;
+   
+    padding: 0;
+    margin: 0;
+ 
+}
+.right{
+  
+    text-align: center;
+    align-items: center;
+  
+    display: flex;
+    flex-direction: column;
+}
+.logo-img2{
+    padding-top: 20px;
+    width: 85%;
+    margin-bottom: 6px;
+}
+.form-container{
+    width: 70%; 
+    margin: auto;
+    text-align: end;
+   
+}
+.input{
+    width: 100%;
+    height: 35px;
+    margin-bottom: 6px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 6px rgb(231, 231, 231);
+    border: none;
+    outline: none;
+    padding-left: 5px;
+    
+}   
+
+input::-webkit-input-placeholder {
+    font-size: 12px;
+    line-height: 3;
+    color: #707070;
+}
+.signup-btn{
+     border: none;
+    outline: none;
+    color: white;
+    font-size: 12px;
+
+    background-color: #001E43;
+    padding: 5px 18px;
+    margin-top: 5px;
+    border-radius: 5px;
+    text-align: end;
+    margin-bottom: 20px; 
+}
+.signup-btn:hover{
+    transform: scale(0.9);
+    transition: 0.2s;
+}
+
+.link-container{
+    width: 70%;
+    margin: auto;
+    margin-top: 0%;
+    margin-bottom: 4%;
+    border-top: 1px solid rgb(199, 196, 196);
+}
+.have-account{
+    font-size: 14px;
+    color: #868485;
+    padding-top: 8px;
+}
+.have-account span a{
+    color: #242021;
+}
+.have-account span a:hover{
+    color: rgb(12, 151, 194);
+    transition: 0.2s;
+}
+.or-with{
+    font-size: 12px;
+    font-weight: 600;
+    color: #001E43;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.social-container{
+    display: flex;
+    justify-content: center;
+}
+.social-icon{
+    margin: 0 10px;
+    border-radius: 20px;
+}
+.social-icon:hover{
+    transform: scale(1.2);
+    transition: 0.2s;
+}
+
+@media (max-width:720px){
+ 
+    .left{
+        display: none;
+    }
+    
+    
+    .form-container{
+        width: 90%;
+    }
+    
+}
+
+@media (max-width:720px){
+ 
+    .container2{
+   
+        background-color: rgb(255, 255, 255);
+        border-radius: 20px;
+        position: relative;
+        display: flex;
+        box-shadow: none;
+      padding-bottom: 10px;
+        
+    }
+    .have-account{
+        font-size: 12px;
+        color: #868485;
+        padding-top: 8px;
+    }
+}

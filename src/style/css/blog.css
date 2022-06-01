@@ -1,0 +1,279 @@
+
+.text-container  span{
+    font-weight: 700;
+}
+
+
+
+
+.text-container h2{
+    text-align: center;
+    font: normal normal normal 30px/19px DM Sans;
+    letter-spacing: 0.4px;
+    color: #001E43;
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+.text-container p{
+    text-align: left;
+font: normal normal normal 16px/30px DM Sans;
+font-family: 'DM Sans', sans-serif;
+letter-spacing: 0.18px;
+color: #424344;
+}
+.text-container h6{
+    text-align: left;
+font: normal normal bold 16px/30px DM Sans;
+font-family: 'DM Sans', sans-serif;
+letter-spacing: 0.18px;
+color: #424344;
+}   
+.buynow{
+ 
+    margin: auto;
+    background-color:  #FFFFFF;
+
+    margin-bottom: 7%;
+  
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px rgb(218, 217, 217);
+    display: flex;
+
+    padding: 30px;
+}
+.buy-book{
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+.book-front{
+ 
+    max-width: 150px;
+    border-radius: 3px;
+ 
+    margin: auto;
+}
+.buy-btn{
+   
+    width: 150px;
+    margin: auto;
+    height: 2.5vw;
+    height: 34px;
+    color: white;
+    font-size: 0.8vw;
+    font-size: 12px;
+    background-color: #001E43;
+    border: none;
+    outline: none;
+    border-radius: 5PX;
+    margin-top: 7%;
+}
+.buy-btn:active{
+    transform: scale(0.9);
+    transition: 0.2s;
+}
+
+.book-title{
+    font-size: 24px;
+    margin-bottom: 0;
+   
+}
+.rating{
+    display: flex;
+    align-items: center;
+  
+}
+.rating div{
+    padding-right: 20px;
+}
+
+
+.fa-star{
+    color: rgb(255, 217, 0);
+    font-size: 12px;
+    padding-right: 5px;
+    
+    margin-bottom: 10px;
+}
+.star-icon input{
+    display: none;
+}
+.star-icon input + label{
+    text-shadow: 1px 1px 0 #ffe400;
+    cursor: pointer;
+}
+.star-icon input:checked + label ~ label{
+    color: #838383;
+}
+.star-icon label:active{
+    transform: scale(0.9);
+    transition: 0.2s ease;
+}
+
+
+
+.description-text p{
+    font-size: 12px;
+}
+.read-more{
+    color: #46CE04;
+    background: none;
+    border: none;
+    outline: none;
+}
+
+
+
+.book-title{
+    font: normal normal normal 25px/43px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+letter-spacing: 0.33px;
+color: #001E43;
+
+}
+.rating p{
+    font: normal normal normal 14px/28px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+letter-spacing: 0.14px;
+color: #001E43;
+margin-bottom: -1px;
+margin-left: 10px;
+}
+
+.rating h6{
+    text-align: left;
+    font: normal normal normal 15px/18px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.14px;
+    color: #9CA0A4;
+    margin-left: 5px;
+    margin-bottom: -1px;
+}
+
+      
+
+@media   (min-width: 1150px){
+    .blog-container{
+        width: 90%;
+        margin: auto;
+        margin-top: 30px;
+      
+       
+    }
+    .blog-img{
+        width: 100%;
+        max-height: 450px;
+    }
+    .top-layer{
+        width: 80%;
+       
+        background-color: #F8F8F8;
+        margin: auto;
+        border-radius: 20px;
+     
+        position: relative;
+        
+       
+        padding: 50px;
+        margin-top: -160px;
+      
+    }
+}
+@media   (max-width: 1150px){
+    .buynow{
+     
+        margin: auto;
+        background-color: white;
+        margin-bottom: 7%;
+       
+        border-radius: 5px;
+        box-shadow: 1px 1px 5px rgb(218, 217, 217);
+        display: block;
+        
+    }
+    .buy-book{
+        width: 100%;
+        padding-top: 5%;
+        padding-bottom: 5%;
+       
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+    }
+    .blog-container{
+        width: 90%;
+        margin: auto;
+        margin-top: 30px;
+       
+       
+    }
+    .blog-img{
+        width: 100%;
+        max-height: 450px;
+    }
+    .top-layer{
+        width: 90%;
+        
+        background-color: #F8F8F8;
+        margin: auto;
+        border-radius: 20px;
+     
+        position: relative;
+        
+       
+        padding: 10px;
+        margin-top: -60px;
+        
+    }
+    .text-container h2{
+        text-align: center;
+        font: normal normal normal 26px/29px DM Sans;
+        letter-spacing: 0.4px;
+        color: #001E43;
+        font-family: 'DM Sans', sans-serif;
+        margin-bottom: 30px;
+        margin-top: 30px;
+    }
+}
+
+
+@media   (max-width: 800px){
+    .rating{
+        display: grid;
+        align-items: center;
+       
+    }
+    .blog-container{
+        width: 95%;
+        margin: auto;
+        margin-top: 30px;
+       
+       
+    }
+    .text-container h2{
+        text-align: center;
+        font: normal normal normal 22px/29px DM Sans;
+        letter-spacing: 0.4px;
+        color: #001E43;
+        font-family: 'DM Sans', sans-serif;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+    .buynow{
+       
+        margin: auto;
+        background-color:  #FFFFFF;
+    
+        margin-bottom: 7%;
+        
+        border-radius: 5px;
+        box-shadow: 1px 1px 5px rgb(218, 217, 217);
+        display: flex;
+        
+        padding: 10px;
+    }
+}

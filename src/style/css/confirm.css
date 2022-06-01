@@ -1,0 +1,248 @@
+
+.total-container{
+
+    margin: auto;
+    text-align: center;
+}
+.review-container{
+    width: 100%;
+  
+    text-align: start;
+   
+}
+.review-list{
+    display: flex;
+    align-items: flex-start;
+ 
+    margin-top: 20px;
+ 
+}
+.list-icon{
+    margin-right: 1%;
+    width: 34px;
+    height: 34px;
+    
+}
+
+
+
+.shipping-container{
+    width: 100%;
+   
+    padding-bottom: 2%;
+    border-bottom: 1px solid #f3ecec ;
+   
+}
+
+.data-container2{
+  
+    max-width: 350px;
+    margin-left: 4%;
+    border: 1px solid #cecbcb;
+    border-radius: 10px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    overflow:hidden; 
+white-space:nowrap; 
+text-overflow: ellipsis;
+
+
+}
+.data-box2{
+    text-align: start;
+  
+}
+
+
+.amount-container{
+    width: 100%;
+ 
+    border-bottom: 1px solid #f3ecec ;
+    text-align: start;
+    padding: 0 0 2% 0;
+   
+    
+}
+.all-amount{
+    
+    display: flex;
+    margin-left: 4%;
+}
+
+.amount-title1{
+    margin-right: 10%;
+}
+.amount-title2{
+    font-size: 15px;
+}
+.amount-price2{
+    font-size: 14px;
+}
+.amount-total1{
+    font-size: 14px;
+}
+.amount-total2{
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.payment-container{
+    width: 100%;
+    border-bottom: 1px solid #f3ecec ;
+    text-align: start;
+
+    padding: 0 0 3% 0;
+    margin-bottom: 50px;
+   
+}
+   
+.radio-container{
+    margin-left: 4%; 
+ 
+}
+.radio-container input{
+    margin-right: 1%;
+}
+.radio-container label{
+    font-size: 14px;
+    
+}
+
+.confirmbtn-container{
+    margin-bottom: 5%;
+}
+.confirm-btn{
+    width: 180px;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+    background-color: #001E43;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+.confirm-btn:active{
+    transform: scale(0.9);
+    transition: 0.2s;
+}
+
+
+@media (max-width: 600px){
+    .total-container{
+   
+        margin: auto;
+        text-align: center;
+    }
+    .list-icon{
+        width: 23px;
+        height: 23px;
+    }
+    .review-title{
+        font-size: 18px;
+    }
+
+    .data-container2{
+  
+        text-align: start;
+    }
+    .confirm-btn{
+        width: 140px;
+        height: 30px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+    .payment-container{
+        margin-bottom: 25px;
+    }
+
+    .book-icon{
+        width: 12%;
+    }
+
+    .about-item{
+        margin-right: 6%;
+    }
+    .item-title{
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+    .author-created{
+        font-size: 10px;
+    }
+    
+    .price1{
+        margin-right: 6%;
+        font-size: 12px;
+    }
+    .nos-quantity{
+        margin-right: 6%;
+        font-size: 12px;
+    }
+    .price-total{
+        font-size: 12px;
+    }
+    
+}
+.name-container{
+
+display: flex;
+justify-content: space-between;
+width: 100%;
+}
+@media screen and (max-width: 800px) {
+    .review-list{
+      
+        margin-top: 10px;
+    }
+    .confirm-btn{
+     
+        width: 100%;
+        height: 35px;
+        color: white;
+        font-size: 16px;
+        background-color: #001E43;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+    }
+    .total-container{
+    
+        margin: auto;
+        margin-top: 20px;
+    }
+    .shipping-container{
+      
+        padding-bottom: 20px;
+     
+    }
+    .data-container2{
+        
+       
+        margin-left: 0;
+     
+     
+        margin-bottom: 0px;
+    
+    
+    
+    }
+    .all-amount{
+       
+        display: flex;
+        margin-left: 0;
+        padding-left: 10px;
+      
+    }
+    
+    .payment-container{
+      
+      
+     
+    
+        padding: 0 ;
+        margin-bottom: 20px;
+       
+    }
+    
+}

@@ -1,0 +1,177 @@
+.all__order__content{
+ 
+    margin-bottom: 100px;
+}
+.all__order__header h3{
+    text-align: center;
+    font: normal normal normal 26px/11px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.3px;
+    color: #212223;
+}
+
+
+.active__order{
+    margin-top: 30px;
+}
+.active__order h5{
+    text-align: left;
+font: normal normal normal 20px/31px DM Sans;
+font-family: 'DM Sans', sans-serif;
+letter-spacing: 0.25px;
+color: #001E43;
+margin-bottom: -40px;
+}
+
+.order__box{
+border: 1px solid #f0f0f0;
+border-radius: 10px;
+
+max-width: 250px;
+
+
+margin-top: 60px;
+}
+.order__box__content{
+    padding: 30px;
+}
+.order__box__first__row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.order__box__first__row__left{
+   
+}
+.order__box__first__row__left p{
+    text-align: left;
+    font: normal normal normal 13px/5px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.14px;
+    color: #afa7a7;
+    
+}
+.order__box__first__row__left h6{
+    text-align: left;
+    font: normal normal normal 14px/5px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.16px;
+    color: #212223;
+    margin-top: -5px;
+}
+
+.order__box__first__row__right p{
+    text-align: left;
+    font: normal normal normal 13px/5px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.14px;
+    color: #afa7a7;
+}
+.order__box__first__row__right h6{
+    text-align: left;
+    font: normal normal normal 14px/5px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.16px;
+    color: #46CE04;
+    margin-top: -5px;
+}
+
+.order__box__second__row{
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    justify-content: space-between;
+}
+.order__box__second__row__left p{
+    text-align: left;
+    font: normal normal normal 13px/5px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.14px;
+    color: #afa7a7;
+}
+.order__box__second__row__left h6{
+    text-align: left;
+    font: normal normal normal 14px/5px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.16px;
+    color: #001E43;
+
+}   
+#order__arrow{
+    font-size: 30px;
+   
+
+opacity: 0.79;
+cursor: pointer;
+margin-right: 5px ;
+}
+
+
+
+.past__order{
+    margin-top: 50px;
+}
+.past__order h5{
+    text-align: left;
+font: normal normal normal 20px/31px DM Sans;
+font-family: 'DM Sans', sans-serif;
+letter-spacing: 0.25px;
+color: #001E43;
+margin-bottom: -40px;
+}
+
+
+@media screen and (max-width: 800px) {
+    .all__order__content{
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .all__order__header h3{
+    
+        font: normal normal normal 20px/21px DM Sans;
+        font-family: 'DM Sans', sans-serif;
+        letter-spacing: 0.3px;
+        color: #212223;
+    }
+    .active__order{
+        margin-top: 10px;
+    }
+    .active__order h5{
+        text-align:left;
+    font: normal normal normal 16px/21px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.25px;
+    color: #001E43;
+    margin-bottom: 0px;
+    /* padding-left: 10px; */
+    margin-bottom: -10px;
+    border-bottom: 1px solid #f3ecec ;
+    padding-bottom: 5px;
+    }
+    
+.order__box{
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+   
+    min-width: 100%;
+    
+    margin: auto;
+    margin-top: 20px;
+    }
+    .past__order{
+        margin-top: 30px;
+    }
+    .past__order h5{
+        text-align: left;
+    font: normal normal normal 16px/21px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.25px;
+    color: #001E43;
+    margin-bottom: 0px;
+    /* padding-left: 10px; */
+    margin-bottom: -10px;
+    border-bottom: 1px solid #f3ecec ;
+    padding-bottom: 5px;
+    }
+    
+}

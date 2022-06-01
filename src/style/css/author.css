@@ -1,0 +1,217 @@
+.author{
+   
+    margin: auto;
+   
+}
+
+.author__content{
+    margin-top: 50px;
+    margin-bottom: 70px;
+}
+.author__img__col{
+
+margin-top: 30px;
+}
+.author__img__col img{
+   
+    padding-right: 20px;
+}
+.author__data__col{
+    border-left: 1px solid gray;
+    margin-top: 30px;
+}
+.author__content h2{
+    text-align: left;
+font: normal normal medium 45px/59px DM Sans;
+font-family: 'DM Sans', sans-serif;
+letter-spacing: 0.45px;
+color: #001E43;
+}
+.author__data{
+
+max-width: 85%;
+margin: auto;
+
+}
+.author__data__row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center ;
+    margin-top: 10px;
+   
+}
+.author__data__row h5{
+    text-align: left;
+    font: normal normal normal 16px/24px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.18px;
+    color: #9CA0A4;
+    
+}
+.author__data__row h6{
+    text-align: left;
+    font: normal normal normal 15px/24px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.18px;
+    color: #001E43; 
+}
+.author__data__row__right{
+    border: solid green;
+    width: 30%;
+}
+.author__text{
+   margin-top: 30px;
+   border-right: 1px solid gray;
+ margin-right: -11px;
+
+ 
+}
+
+.author__text p{
+    font: normal normal normal 15px/28px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+
+color: #333333;
+
+padding: 10px;
+}
+
+
+.book__item{
+    margin: auto;
+       max-width: 160px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-bottom: 1px solid #f3ecec ;
+        margin-top: 30px;
+   
+    }
+    .book__item:hover{
+        opacity: 0.9;
+    }
+    .book__item img{
+        margin: auto;
+        height: 140px;
+        width: 90px;
+        border-radius: 3px;
+        box-shadow: 0px 3px 6px #00000026;
+    }
+    .book__item__name{
+       
+        overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+  
+      max-width: 120px;
+        margin: auto;
+    }
+    .book__item__name h6{
+        font: normal normal normal 15px/15px DM Sans; 
+         font-family: 'DM Sans', sans-serif; 
+        text-align: center;
+       
+        letter-spacing: 0px;
+        color: #1C1C1C;
+        margin-top: 10px;
+    }
+    .book__item__name p{
+        text-align: center;
+        font: normal normal normal 13px/10px DM Sans;
+        font-family: 'DM Sans', sans-serif;
+        letter-spacing: 0px;
+        color: #5E5E5E;
+        
+    }
+    .book__item__price__div{
+        display: flex;
+        flex-direction: row;
+        padding-left: 10px;
+        margin: auto;
+      
+        margin-top: -5px;
+        justify-content: space-between;
+       
+        width: 120px;
+       
+    }
+    .book__item__price__left{
+        display: flex;
+        flex-direction: row;
+       
+        
+        align-items: center;
+    }
+    .book__item__cut__price{
+     
+        text-decoration: line-through;
+        font: normal normal normal 12px/16px DM Sans;
+        font-family: 'DM Sans', sans-serif;
+        letter-spacing: 0px;
+        color: #5E5E5E;
+    }
+    .book__item__price{
+        font: normal normal bold 14px/10px DM Sans;
+        font-family: 'DM Sans', sans-serif;
+        letter-spacing: 0px;
+        color: #1C1B1B;
+        margin-left: 7px;
+    }
+    #book__item___cart__icon{
+        font-size: 17px;
+        margin-right: 10px;
+    }
+    #book__item___cart__icon:hover{
+        color: #46CE04;
+    }
+    
+    .author__books{
+        margin: auto;
+        margin-top: 0px;
+        
+    }
+
+    .author__books h3{
+        font: normal normal normal 20px/29px DM Sans;
+        font-family: 'DM Sans', sans-serif;
+        letter-spacing: 0.3px;
+        color: #343434;
+        margin-bottom: -20px;
+    }
+    @media screen and (max-width: 800px) {
+        .author__data__col{
+           border: none;    
+        }
+        .author__text{
+       border: none;
+         }
+         .author__data{
+         
+            max-width: 100%;
+            margin: auto;
+            padding: 10px;
+            
+            }
+            .author__content{
+                margin-top: 10px;
+                margin-bottom: 40px;
+            }
+            .author__img__col{
+                /* border-right: 1px solid gray; */
+               
+                margin-top: 10px;
+                }
+                .author__text{
+                    margin-top: 0px;
+                   
+                  margin-right: -11px;
+                 
+                
+                 }
+                 .author__data__col{
+               
+                    margin-top: 5px;
+                }
+               
+      }

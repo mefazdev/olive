@@ -1,0 +1,44 @@
+
+.bookmark__header h2{ 
+    text-align: center;
+font: normal normal bold 30px/66px DM Sans;
+font-family: "DM Sans", sans-serif;
+letter-spacing: 0px;
+color: #001E43;
+z-index: 1;
+opacity: 1;
+}
+.bookmark__header img{
+   
+   max-height: 300px;
+   margin-top: -10px;
+  
+}
+.bookmark__img{
+  
+      max-width: 900px;
+      margin: auto;
+      
+      
+}
+.bookmark__content{
+    margin-top: 50px;
+    padding-bottom: 50px;
+}
+
+@media screen and (max-width: 800px) {
+    .bookmark__header h2{ 
+        text-align: center;
+    font: normal normal normal 25px/46px DM Sans;
+    font-family: "DM Sans", sans-serif;
+    letter-spacing: 0px;
+    color: #001E43;
+    z-index: 1;
+    opacity: 1;
+    }
+    .bookmark__content{
+        margin-top: 10px;
+        padding-bottom: 10px;
+       
+    }
+}

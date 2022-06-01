@@ -1,0 +1,48 @@
+
+.error__content {
+margin: auto;
+margin-top: 50px;
+}
+
+.error__content h1{
+    text-align: center;
+    font: normal normal bold 35px/30px DM Sans;
+    font-family: 'DM Sans', sans-serif; 
+    color: #343434;
+}
+
+
+.error__content h4{
+    text-align: center;
+    font: normal normal normal 25px/50px DM Sans;
+        font-family: 'DM Sans', sans-serif; 
+        color: #343434;
+}
+.error__img{
+    display: flex;
+    justify-content: center;
+}
+.error__img img{
+    max-width: 400px;
+}
+
+
+
+
+
+@media screen and (max-width: 800px) {
+    .error__content h1{
+        text-align: center;
+        font: normal normal bold 30px/30px DM Sans;
+        font-family: 'DM Sans', sans-serif; 
+        color: #343434;
+    }
+    
+    
+    .error__content h4{
+        text-align: center;
+        font: normal normal normal 20px/30px DM Sans;
+            font-family: 'DM Sans', sans-serif; 
+            color: #343434;
+    }
+}

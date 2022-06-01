@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.about__content {
+    margin-top: 30px;
+}
+.about__content h1{
+    text-align: center;
+    font: normal normal bold 35px/35px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.3px;
+    color: #343434;
+}
+.about__content p{
+    text-align: left;
+    font: normal normal normal 18px/35px DM Sans;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.3px;
+    color: #343434;
+    margin-top: 30px;
+}
+#about__col{
+
+    margin: auto;
+}

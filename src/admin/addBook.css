@@ -1,0 +1,85 @@
+.upload__content{
+    /* border: solid red; */
+    margin-top: 30px;
+    position: relative;
+}
+.upload__content__head{
+    max-width: 80%;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.upload__content__head button{
+ margin-left: 10px;
+ padding: 3px;   
+}
+.ad__book__box{
+  max-width: 600px;
+    padding: 20px;
+}
+.add__book__modal__row__item{
+    /* display: flex; */
+    margin-top: 20px;
+}
+.add__book__modal__row__item input{
+    /* margin-left: 10px; */
+    font-family: 'DM Sans', sans-serif;
+    /* font-size: 20px; */
+    width: 100%;
+    padding: 3px;
+}
+.add__book__modal__row__item ::placeholder {
+    /* color: blue; */
+    font-size:17px;
+  
+  }
+  .add__book__modal__row__item select{
+    /* margin-left: 10px; */
+    font-family: 'DM Sans', sans-serif;
+    /* font-size: 20px; */
+    width: 100%;
+    padding: 5px;
+}
+.ad__book__desc textarea{
+    width: 100%;
+    margin-top: 20px;
+}
+.add__book__modal__radio{
+    margin-top: 20px;
+}
+.add__book__modal__radio input{
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+}
+
+.ad__book__box{
+    position: relative;
+    overflow: scroll;
+    background-color: #fff;
+}
+ .ad__book__box button{
+     background-color: green;
+     color: #fff ;
+     border: none;
+     padding: 5px;
+     width: 150px;
+     position: absolute;
+     right: 0;
+   bottom: 0;
+   margin-bottom: 20px;
+   margin-right: 20px;
+
+ }
+ .ad__book__box__modal{
+     position: absolute;
+     /* border: solid red; */
+     padding-bottom: 100px;
+     top: 0;
+    padding-top: 30px;
+     /* margin: auto; */
+     background-color: rgba(0, 0, 0, 0.598);
+   width: 100%;
+   display: flex;
+   justify-content: center;
+ }
