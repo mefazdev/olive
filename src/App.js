@@ -16,8 +16,8 @@ import Cart from './pages/Cart';
 import AllOrder from './pages/AllOrder';
 import OrderDownload from './pages/OrderDownload';
 import About from './pages/About';
-import AddAddress from './pages/AddAdress';
-import Address from './pages/Adress';
+import AddAddress from './pages/Address';
+import Address from './pages/AddAddress';
 import Blog from './pages/Blog';
 import BookTalks from './pages/BookTalks';
 import Confirm from './pages/Confirm';
@@ -85,7 +85,7 @@ function App() {
     <Route path='/dashboard'>
       <Dashboard/>
       </Route>
-    <Route path='/editAdress'>
+    <Route path='/editAddress'>
       <EditAddress/>
       </Route>
     <Route path='/confirm'>
@@ -97,10 +97,10 @@ function App() {
     <Route path='/blog'>
       <Blog/>
       </Route>
-    <Route path='/address'>
+    <Route path='/addAddress'>
       <Address/>
       </Route>
-    <Route path='/addAdress'>
+    <Route path='/address'>
       <AddAddress/>
       </Route>
     <Route path='/about'>

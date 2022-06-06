@@ -2,25 +2,16 @@ import "../style/css/categories.css";
 import "./../style/css/justArrived.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
-
 import book from "../images/book-read.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Featur from "../components/Featur";
 import { useEffect, useState } from "react";
-import best1 from "../images/author/best1.png";
-import best2 from "../images/author/best2.png";
-import best3 from "../images/author/best3.png";
-import best4 from "../images/author/best4.png";
+
 import PopularList from "../components/PopularList";
 import UsePagination from "../components/Pagination";
 
-import Alert from "react-bootstrap/Alert";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
-import InfoIcon from "@material-ui/icons/Info";
 
 import FilterSearch from "../components/FilterSearch";
 import { db, storage } from "../firebase";
@@ -38,23 +29,49 @@ import {
   where,
 } from "@firebase/firestore";
 import Product from "../components/Product";
+import {
+  ContactsOutlined,
+  FilterDrama,
+  RepeatOutlined,
+} from "@material-ui/icons";
 
 function BestSeller() {
   const [show, setShow] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [products, setProducts] = useState([]);
+  var [filteredData] = useState([]);
+  const [finalDocs, setFinalDocs] = useState([]);
+
   const fetchData = async () => {
     const q = await query(
       collection(db, "products"),
-      where("bestSeller", "==", true)
+      orderBy("timestamp", "desc")
+      // where("bestSeller", "==", true)
     );
     const data = await getDocs(q);
     setProducts(data.docs.map((doc) => doc));
   };
 
+  const filterData = () => {
+    products.map((data) => {
+      // filteredData.push(data)
+      if (data.data().bestSeller == true) {
+        // console.log('data>>>>',data.data().name)
+
+        filteredData = [...filteredData, data];
+
+        // setFilteredData(data)
+        setFinalDocs(filteredData);
+      }
+    });
+  };
   useEffect(() => {
     fetchData();
+    // test()
   }, []);
+  useEffect(() => {
+    filterData();
+  }, [products]);
 
   return (
     <div className="categories container">
@@ -69,6 +86,8 @@ function BestSeller() {
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <p>Best seller</p>
+          <button >TEstttt</button>
+          {/* <button onClick={()=>console.log(docn)} >CLICKMEj</button> */}
         </Link>
       </div>
 
@@ -84,28 +103,27 @@ function BestSeller() {
 
               <div className="categories__head__row ">
                 <h5>Best Seller</h5>
-                <p>{products.length} Books</p>
+                <p>{finalDocs.length} Books</p>
               </div>
 
               <Row>
-                {products.map((data) => {
+                {finalDocs.map((data, index) => {
                   return (
-                   
-                      <Col xs="6" sm="4" md="2">
- <Link
-                      to={`/book/${data.id}`}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                         <Product
+                    <Col id={index} xs="6" sm="4" md="2">
+                      <Link
+                        to={`/book/${data.id}`}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Product
+                          id={index}
                           name={data.data().name}
                           author={data.data().author}
                           image={data.data().thumbnail}
                           price={data.data().price}
                           cutPrice={data.data().cutPrice}
                         />
-                        </Link>
-                      </Col>
-                
+                      </Link>
+                    </Col>
                   );
                 })}
                 <div className="pagination__div">

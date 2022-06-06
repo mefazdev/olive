@@ -123,6 +123,11 @@ box-shadow: 0px 3px 6px #00000026;
     font-size: 17px;
     margin-right: 10px;
 }
+#arrived___cart__icon__active{
+    font-size: 17px;
+    margin-right: 10px;
+    color: #46CE04;
+}
 #arrived___cart__icon:hover{
     color: #46CE04;
 }

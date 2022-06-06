@@ -8,6 +8,7 @@ width: 100%;
   /* max-width: 80%; */
   /* max-height: 300px; */
   /* border: saddlebrown solid; */
+  /* padding-top: 110px; */
 }
 @media screen and (min-width: 800px) {
   .home__banner {

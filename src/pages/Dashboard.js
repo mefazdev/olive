@@ -70,7 +70,7 @@ function MyOrder() {
                 </Col>
                 <Col md>
                   <Link
-                    to="/addAdress"
+                    to="/address"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <div

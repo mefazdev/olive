@@ -50,7 +50,7 @@ function PopularList() {
       setList(data.docs.map((doc) => doc));
 };
 useEffect  (()=>{
-  fetchData()
+  // fetchData()
 },[])
 
   

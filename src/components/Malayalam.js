@@ -119,7 +119,7 @@ function Malayalam() {
   
 
   useEffect(()=>{
-    fetchData()
+    // fetchData()
   },[])
   return (
     <div className="malayalam">

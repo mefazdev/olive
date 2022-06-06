@@ -1,7 +1,15 @@
+.header{
+   position: sticky;
+   /* width: 100%; */
+   top: 0;
+   z-index: 100;
+}
 .header__section__one{
    background-color: #001E43; 
    height: 70px;
-   width: 100%;
+   /* width: 100%; */
+  
+   /* position: fixed; */
 }
 .header__logo{
    max-width: 150px;
@@ -110,7 +118,7 @@ margin-left: 20px;
      flex-direction: row;
      justify-content: space-between;
      /* border: solid green; */
-     width: 200px;
+     min-width: 250px;
   }
 
   .header_first__row__right h6{
@@ -174,6 +182,8 @@ margin-top: 10px;
  /* <<<<< >>>>>>>> */
  .header__second__row{
    background-color: #293853;
+   /* position: fixed; */
+   width: 100%;
  }
  .navbars{
   
@@ -508,4 +518,11 @@ margin-left: 4px;
      /* border: saddlebrown solid; */
      border-radius: 20px;
      background-color: transparent;
+  }
+
+  .header__account__div{
+     /* border: saddlebrown solid; */
+     display: flex;
+     flex-direction: column;
+     align-items: center;
   }

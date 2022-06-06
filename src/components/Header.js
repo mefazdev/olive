@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../style/css/header.css";
 import logo from "../images/logo.png";
 import SearchIcon from "@material-ui/icons/Search";
@@ -10,23 +10,94 @@ import "./signup.css";
 import "./login.css";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import MenuSharpIcon from "@material-ui/icons/MenuSharp";
-// import Fade from 'react-bootstrap/Fade'
+import { onAuthStateChanged } from "firebase/auth";
+import Login from "../components/Login";
+import Signup from "./Signup";
+import { useStateValue } from "../stateProvider";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+// import { auth } from "../firebase";
+import { db, storage } from "../firebase";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where,
+  getDoc,
+} from "@firebase/firestore";
 function Header() {
-  const [user, setUser] = useState(false);
+  const [{ signupModal, basket, loginModal }, dispatch] = useStateValue();
+  // const [{basket,signupModal}] = useStateValue();
+  const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [showLoginModal, setShowLoginupModal] = useState(false);
+ const [cart, setCart] = useState([])
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
 
+  
+  const fetchData = async () => {
+     if (user){
+      const q = await query(collection(db,"cart"),where('userId', '==', user?.uid ));
+      onSnapshot(q, (snapshot) => {
+        setCart(snapshot.docs.map((doc) => doc));
+  
+      
+      });
+     }
+       
+     
+  
+    
+  };
+  useEffect (()=>{
+    fetchData()
+  },[user])
   const checkActive = (match, location) => {
     //some additional logic to verify you are in the home URI
     if (!location) return false;
     const { pathname } = location;
-    console.log(pathname);
+    // console.log(pathname);
     return pathname === "/";
+  };
+
+  const logOut = async () => {
+    await signOut(auth);
+  };
+
+  const openLogin = () => {
+    
+    dispatch({
+      type: "OPEN__LOGIN__MODAL",
+      signinModal: true,
+    });
+  };
+  const closeLogin = () => {
+    dispatch({
+      type: "CLOSE__LOGIN__MODAL",
+      loginModal: false,
+    });
+  };
+
+  const closeSignUp = () => {
+    dispatch({
+      type: "CLOSE__SIGNUP__MODAL",
+      signupModal: false,
+    });
   };
   return (
     <div className="header">
       <div className="header__section__one ">
+        {/* <button onClick={()=>console.log("HHE>>>0",signupModal)}>HELLOOO</button> */}
         <div className="  header_first__row container">
           <div className="  header_first__row__div">
             <MenuSharpIcon
@@ -50,7 +121,7 @@ function Header() {
                   />
                   <Link to="/search">
                     <span className="header__serach__span">
-                      <SearchIcon  />
+                      <SearchIcon />
                     </span>
                   </Link>
                 </div>
@@ -60,7 +131,7 @@ function Header() {
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <div className="shoppinCart__icon__div">
-                  <div id="shoppinCart__span">2</div>
+                  <div id="shoppinCart__span">{cart.length}</div>
                   <ShoppingCartOutlinedIcon id="shoppinCart__icon" />
                 </div>
               </Link>
@@ -68,17 +139,28 @@ function Header() {
 
             <div className="header_first__row__right ">
               <div className="header__login">
-                <PermIdentityIcon
-                  onClick={() => setShowLoginupModal(true)}
-                  
-                  id="login__icon"
-                />
+                <Link to='/dashboard' style={{textDecoration:'none',color:'inherit'}}>
+                
+                <div className="header__account__div">
+                  <PermIdentityIcon
+                    // onClick={}
+                    id="login__icon"
+                  />
+                  <h5>
+                    {user   && user.email ? user.email.slice(0, 5) : ""}
+                    {/* My Account */}
+                  </h5>
+                </div>
+                </Link>
                 <div
                   className="header__login__div"
-                  onClick={() => setShowLoginupModal(true)}
+                  onClick={user ? logOut : openLogin}
                 >
-                  <h6>{user ? "Sign Out" : "Sign In"} </h6>
-                  <h5>My Account</h5>
+                  <h6>{user ? "Log Out" : "Sign In"} </h6>
+                  {/* <h5>
+                    {user?.email }
+                   
+                  </h5> */}
                 </div>
               </div>
 
@@ -96,9 +178,11 @@ function Header() {
                 >
                   <div className="header__login__div">
                     <h6>My Cart</h6>
-                    <h5>3 Items</h5>
+                    <h5>{cart.length} Items</h5>
                   </div>
                 </Link>
+
+                {/* <p onClick={logOut}>Lpgout</p> */}
               </div>
             </div>
           </div>
@@ -147,8 +231,7 @@ function Header() {
         </div>
       </div>
 
-
-{/* <<<<<<<<<<<<<<<<<<< NAVBAR COLLAPSE >>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+      {/* <<<<<<<<<<<<<<<<<<< NAVBAR COLLAPSE >>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
       <Collapse in={open}>
         <div className="navbar__collpase">
           <div className="collpse__first__row">
@@ -169,7 +252,7 @@ function Header() {
             >
               <PermIdentityIcon
                 id="collpase__login__icon"
-                onClick={() => setShowLoginupModal(true)}
+                onClick={openLogin}
               />
               <p>{user ? "Sign Out" : "Sign In"} </p>
             </div>
@@ -220,7 +303,6 @@ function Header() {
           <NavLink
             activeClassName="nav__active__collapse"
             to="/authors"
-           
             id="navLink"
             onClick={() => setOpen(!open)}
           >
@@ -240,189 +322,27 @@ function Header() {
 
       {/*<<<<<<<<<<<<<<<<<<<<<<<< SIGN UP MODAL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
       <Modal
-        show={showSignupModal}
+        show={signupModal}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header
-          closeButton
-          onClick={() => setShowSignupModal(false)}
-        ></Modal.Header>
+        <Modal.Header closeButton onClick={closeSignUp}></Modal.Header>
         <Modal.Body id="signup-model">
-          <div className="body">
-            <div className="container2">
-              <div className="left">
-                <img
-                  className="signup-img"
-                  src={process.env.PUBLIC_URL + "/images/signup.png"}
-                  alt="edit-icon"
-                />
-              </div>
-              <div className="right">
-                <img
-                  className="logo-img2"
-                  src={process.env.PUBLIC_URL + "/images/signup03.png"}
-                  alt="edit-icon"
-                />
-                <div className="form-container">
-                  <input
-                    className="input"
-                    type="text"
-                    placeholder="  Name"
-                    name="name"
-                  />
-                  <br></br>
-                  <input
-                    className="input"
-                    type="email"
-                    placeholder="  Email ID"
-                    name="email"
-                  />
-                  <br></br>
-                  <input
-                    className="input"
-                    type="password"
-                    placeholder="  Password"
-                    name="password"
-                  />
-                  <button className="signup-btn" type="button">
-                    SIGN UP
-                  </button>
-                </div>
-
-                <div className="link-container">
-                  <p className="have-account" type="button">
-                    Already have an account ?{" "}
-                    <span onClick={() => setShowSignupModal(false)}>
-                      {" "}
-                      <a onClick={() => setShowLoginupModal(true)}>LOGIN NOW</a>
-                    </span>
-                  </p>
-                  <p className="or-with">Or Login With</p>
-                  <div className="social-container">
-                    <div className="icon-google">
-                      <a href="#">
-                        <img
-                          className="social-icon"
-                          src={process.env.PUBLIC_URL + "/images/google.png"}
-                          alt="edit-icon"
-                        />
-                      </a>
-                    </div>
-                    <div className="icon-fb">
-                      <a href="#">
-                        <img
-                          className="social-icon"
-                          src={process.env.PUBLIC_URL + "/images/fb.png"}
-                          alt="edit-icon"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Signup />
         </Modal.Body>
       </Modal>
 
       {/* <<<<<<<<<<<<<< LOGIN MODAL >>>>>>>>>>>>>>>>>>>>>>> */}
       <Modal
-        show={showLoginModal}
+        show={loginModal}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
-        <Modal.Header
-          closeButton
-          onClick={() => setShowLoginupModal(false)}
-        ></Modal.Header>
+        <Modal.Header closeButton onClick={closeLogin}></Modal.Header>
         <Modal.Body id="signup-model">
-          <div className="body">
-            <div className="container2">
-              <div className="left">
-                <img
-                  className="signup-img"
-                  src={process.env.PUBLIC_URL + "/images/signup.png"}
-                  alt="edit-icon"
-                />
-              </div>
-              <div className="right">
-                <img
-                  className="logo-img2"
-                  src={process.env.PUBLIC_URL + "/images/signup04.png"}
-                  alt="edit-icon"
-                />
-                <div className="text-containere">
-                  <p className="login__text">
-                    To review and adjust your security settings and get
-                    recommendations to help you keep your
-                  </p>
-                </div>
-
-                <div className="form-container2">
-                  <input
-                    className="log-input"
-                    type="email"
-                    placeholder="  Email ID"
-                    name="email"
-                  />
-                  <br></br>
-                  <input
-                    className="log-input"
-                    type="password"
-                    placeholder="  Password"
-                    name="password"
-                  />
-                  <div className="btn-container">
-                    <p>
-                      <a href="#">Forgot Password?</a>
-                    </p>
-
-                    <Link to="/address">
-                      <button className="signin-btn" type="button">
-                        LOGIN
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="link-container2">
-                  <p className="have-account">
-                    Don't have an account ?{" "}
-                    <span onClick={() => setShowLoginupModal(false)}>
-                      {" "}
-                      <a type="button" onClick={() => setShowSignupModal(true)}>
-                        SIGNUP NOW
-                      </a>
-                    </span>
-                  </p>
-                  <p className="or-with">Or Login With</p>
-                  <div className="social-container">
-                    <div className="icon-google">
-                      <a href="#">
-                        <img
-                          className="social-icon"
-                          src={process.env.PUBLIC_URL + "/images/google.png"}
-                          alt="edit-icon"
-                        />
-                      </a>
-                    </div>
-                    <div className="icon-fb">
-                      <a href="#">
-                        <img
-                          className="social-icon"
-                          src={process.env.PUBLIC_URL + "/images/fb.png"}
-                          alt="edit-icon"
-                        />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Login />
         </Modal.Body>
       </Modal>
     </div>

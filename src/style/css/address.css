@@ -20,9 +20,21 @@
     border-color: rgb(231, 230, 230);
     
     margin: 0 auto;
-    margin-bottom: -40px;
+    /* margin-bottom: -40px; */
    
 
+}
+.address__back{
+    /* height: 100px; */
+    /* border: solid red; */
+    margin-top: 10px;
+    padding: 5px;
+   
+}
+.address__back p{
+    max-width: 330px;
+    padding: 8px;
+    background-color: rgba(128, 128, 128, 0.164);
 }
 .underline1{
     border: none;

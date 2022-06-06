@@ -4,8 +4,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Featur from "../components/Featur";
+import Header from "../components/Header";
 function About() {
   return (
+    <>
+    {/* <Header/> */}
+   
     <div className="about container">
       <div className="path ">
         <p>Home </p>
@@ -69,6 +73,7 @@ function About() {
       </div>
       <Featur />
     </div>
+    </>
   );
 }
 

@@ -57,7 +57,7 @@ function BookList({ match }) {
   };
 
   const fetchData = async () => {
-    const q = await query(
+    const q = await query(  
       collection(db, "products"),
       where("category", "==", category)
     );

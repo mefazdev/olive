@@ -1,52 +1,132 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import placeImage from '../images/img-placeholder.png'
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import placeImage from "../images/img-placeholder.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
-// import ImageLoader from 'react-imageloader';
-import { Image } from 'react-img-placeholder';
-function Product({image,offer,name,author,price,cutPrice,placeholder}) {
-  return (
+
+import { Image } from "react-img-placeholder";
+import {useStateValue} from '../stateProvider'
+import {
+ 
+  onAuthStateChanged
+} from "firebase/auth";
+import { db, storage } from "../firebase";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where, getDoc
+} from "@firebase/firestore";
+import { auth } from "../firebase";
+function Product({id, image, offer, name, author, price, cutPrice, placeholder }) {
+  const [ {basket} , dispatch] = useStateValue();
+  const [user, setUser] = useState({})
+  const [quantity, setQuantity] = useState(false)
+  
+const addToCart = async ()=>{
+  setQuantity(true)
+  if(!quantity){
+      
+        // const docRef = doc(db, "products");
+        // const docSnap = await  getDoc(docRef);
+        // const data = docSnap.data()
+      
+      // const docRef = doc(db, "products", id);
+      // const docSnap =  getDoc(docRef);
+      // const data = docSnap.data()
     
-    <div className="arrived__item">
-                   
-                  <div className="arrived__item__off">
-                    <span>
-                      <p>
-                        {offer}% <br />
-                        off
-                      </p>
-                    </span>
-                    {/* <img src={image} onLoad={benz} /> */}
-                    <Image
-      src={image}
-      alt="Picture of the author"
-      width={100}
-      height={150}
-      placeholderSrc={placeImage} 
+    await addDoc(collection(db, "cart"), {
+      quantity:1,
+      userId: user.uid,
+      bookId:id,
+      thumbnail:image,
+      name:name,
+      author:author,
+      price:price,
+      timestamp: serverTimestamp(),
+      // data:data
+   }) 
+  }
+ 
+
+}
+  
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+  const addToBasket = async ()=>{
+   
+if (!quantity){
+  await  dispatch({
+    type:'ADD_TO_BASKET',
+    item: {
+      id:id,
+      quantity:1
+
+    }
+
+  })
+}  
      
-    />
-                  </div>
+    setQuantity(true)
+}
+const openLogin = () => {
+   
+  dispatch({
+    type: "OPEN__LOGIN__MODAL",
+    signinModal: true,
+  });
+};
+  return (
+    <div className="arrived__item">
+       <Link  to={`/book/${id}`}
+         style={{ textDecoration: "none", color: "inherit" }}
+       >
+      <div className="arrived__item__off">
+        <span>
+          <p>
+            {offer}% <br />
+            off
+          </p>
+        </span>
 
-                  <div className="arrived__item__name">
-                    <h6>{name}</h6>
-                    <p>{author}</p>
-                  </div>
-               
-                <div className="arrived__item__price">
-                  <div className="arrived__item__price__left">
-                    <p className="arrived__cut__price">₹{cutPrice}</p>
-                    <p className="arrived__price">₹{price}</p>
-                  </div>
+        <Image
+          src={image}
+          alt="Picture of the author"
+          width={100}
+          height={150}
+          placeholderSrc={placeImage}
+        />
+      </div>
 
-                  <AddShoppingCartIcon
-                    type="button"
-                    // onClick={() => setShow(true)}
-                    id="arrived___cart__icon"
-                  />
-                </div>
-              </div>
-               
-  )
+      <div className="arrived__item__name">
+        <h6>{name}</h6>
+       
+      </div>
+      </Link>
+      <div className="arrived__item__price">
+        <div className="arrived__item__price__left">
+          <p className="arrived__cut__price">₹{cutPrice}</p>
+          <p className="arrived__price">₹{price}</p>
+        </div>
+            
+        <AddShoppingCartIcon
+          type="button"
+          
+          onClick={user ? addToCart  : openLogin}
+          id= {!quantity ? 'arrived___cart__icon' :'arrived___cart__icon__active'}
+          
+          // "arrived___cart__icon"
+        />
+      </div>
+    </div>
+  );
 }
 
-export default Product
+export default Product;

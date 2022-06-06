@@ -20,14 +20,21 @@ import {
 function BoolOfMonth() {
 const [book,setBook] = useState([])
 const [author, setAuthor] = useState([])
-    const fetchData = async () => {
+    const fetchBook = async () => {
         const q = await query(
           collection(db, "bookMonth"), orderBy("timestamp", "desc"));
              const data =   await getDocs(q)
                setBook(data.docs.map((doc) => doc));
       };
+      const fetchAuthor = async () => {
+        const q = await query(
+          collection(db, "authorMonth"), orderBy("timestamp", "desc"));
+             const data =   await getDocs(q)
+               setAuthor(data.docs.map((doc) => doc));
+      };
       useEffect(()=>{
-        fetchData()
+        // fetchBook()
+        // fetchAuthor()
       },[])
       
   return (
@@ -76,26 +83,26 @@ const [author, setAuthor] = useState([])
           <div className="home__month">
             <div className="home__month__content">
               <Row>
-                <Col md="4" id="month__book__col">
-                  <img className="col-8 col-md-11" src={''} />
+                {author.map((data,index)=>{
+                  if(index < 1){
+                    return(
+                      <>
+                      <Col md="4" id="month__book__col">
+                  <img className="col-8 col-md-11" src={data.data().image} />
                 </Col>
                 <Col md="8">
                   <h6>Author of the month</h6>
-                  <h4>M. T. Vasudevan Nair</h4>
+                  <h4>{data.data().name}</h4>
                   <p>
-                    Madath Thekkepaattu Vasudevan Nair (born 1933),
-                    popularly known as MT, is an Indian author, screenplay
-                    writer and film director.[1] He is a prolific and
-                    versatile writer in modern Malayalam literature, and is
-                    one of the masters of post-Independence Indian
-                    literature.[2][3] He was born in Kudallur, a small
-                    village in the present day Anakkara panchayath in
-                    Pattambi Taluk, Palakkad district (Palghat), which was
-                    under the Malabar District in the Madras Presidency of
-                    the British Raj.
+                    {data.data().description}
                     <span style={{ color: "#46CE04" }}>Read More</span>
                   </p>
                 </Col>
+                </>
+                    )
+                  }
+                })}
+                
               </Row>
             </div>
           </div>
