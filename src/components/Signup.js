@@ -5,12 +5,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { useStateValue } from "../stateProvider";
 import { auth } from "../firebase";
+import { useHistory } from "react-router-dom";
 function Signup() {
   const [{ signupModal }, dispatch] = useStateValue();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({});
-
+const history = useHistory()
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
@@ -34,9 +35,11 @@ function Signup() {
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log("user >>>>>", user);
+      // console.log("user >>>>>", user);
+      history.push('/dashboard')
+      addUser()
     } catch (error) {
-      console.log("error >>>>>", error);
+      // console.log("error >>>>>", error);
     }
     closeSignUp();
   };
@@ -46,7 +49,7 @@ function Signup() {
       type: "SET_USER",
       user: user? user.id : '',
     });
-    console.log(user);
+    // console.log(user);
   };
   useEffect(() => {
     addUser();

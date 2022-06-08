@@ -36,6 +36,7 @@ import AddBook from './admin/AddBook';
 import BookList from './pages/BookList';
 import BookOfMonth from './admin/BookOfMonth';
 import AuthorOfMonth from './admin/AuthorOfMonth';
+import Oreders from './admin/Oreders';
  
 function App() {
   return (
@@ -48,6 +49,9 @@ function App() {
     <Switch>
     <Route path='/admin/bookofmonth'>
       <BookOfMonth/>
+      </Route>
+      <Route path='/admin/orders'>
+      <Oreders/>
       </Route>
       <Route path='/admin/authorofmonth'>
       <AuthorOfMonth/>

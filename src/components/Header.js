@@ -156,7 +156,7 @@ function Header() {
                   className="header__login__div"
                   onClick={user ? logOut : openLogin}
                 >
-                  <h6>{user ? "Log Out" : "Sign In"} </h6>
+                  <h6>{!user ? "Sign In" : "Sign Out"} </h6>
                   {/* <h5>
                     {user?.email }
                    

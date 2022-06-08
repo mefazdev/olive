@@ -1,12 +1,12 @@
 import { Alert } from "bootstrap";
 import { signInWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { auth } from "../firebase";
 import { useStateValue } from "../stateProvider";
 
 function Login() {
- 
+  const history = useHistory()
   const [{ signupModal }, dispatch] = useStateValue();
  const [email,setEmail] = useState('')
  const [password,setPassword] = useState('')
@@ -37,9 +37,12 @@ function Login() {
       const user = await signInWithEmailAndPassword(auth, email, password);
       // console.log("user >>>>>", user);
       closeLogin();
-    addUser()
+      if(user){
+        addUser()
+      }
+      history.push('/dashboard')
     } catch (error) {
-      // console.log("error >>>>>", error);
+      alert( error);
       Alert(error)
     }
     
@@ -97,13 +100,13 @@ function Login() {
                 <a href="#">Forgot Password?</a>
               </p>
 
-              <Link to="/address">
+              {/* <Link to="/address"> */}
                 <button
                 onClick={login}
                 className="signin-btn" type="button">
                   LOGIN
                 </button> 
-              </Link>
+              {/* </Link> */}
             </div>
           </div>
 
