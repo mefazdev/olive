@@ -27,6 +27,7 @@ import {
 } from "@firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
+import Header from "../components/Header";
 function Cart() {
   const [{ basket }, dispatch] = useStateValue();
   // const [{ user }] = useStateValue();
@@ -55,19 +56,21 @@ function Cart() {
       });
     }
   };
-
   const subTotal = async () => {
     let sum = 0;
-
+  let q = 0
     cart.forEach((element) => {
-      let price = parseInt(element.data().price);
+      let price = parseInt(element.data().price * element.data().quantity);
+      let quantity = parseInt(element.data().quantity);
+      q +=quantity
       sum += price;
     });
-    setTotal(sum);
+    setTotal(sum );
   };
 
   useEffect(() => {
     fetchData();
+    
   }, [user]);
 
   useEffect(() => {
@@ -85,6 +88,9 @@ function Cart() {
   //   addTotalAmount();
   // }, [tax]);
   return (
+    <>
+    <Header/>
+    
     <div className="cart container">
       <div className="path ">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -135,11 +141,11 @@ function Cart() {
                         </h6>
                       </td>
                       <td id="table__td">
-                        <h6>{data.quantity}</h6>
+                        <h6>{data.data().quantity}</h6>
                       </td>
                       <td id="table__td">
                         <h6>
-                          ₹<span>{data.data().price}</span>
+                          ₹<span>{data.data().price * data.data().quantity}</span>
                         </h6>
                       </td>
                       <td id="table__td">
@@ -235,8 +241,8 @@ function Cart() {
         )}
       </div>
       <Featur />
-    </div>
-  );
+    </div></>
+  ); 
 }
 
 export default Cart;

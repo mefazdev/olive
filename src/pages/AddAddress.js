@@ -21,6 +21,7 @@ import {
   where, getDoc
 } from "@firebase/firestore";
 import { auth } from "../firebase";
+import Header from "../components/Header";
  
 function Address() {
   const [user, setUser] = useState({})
@@ -63,6 +64,7 @@ function Address() {
   }
   return (
     <div>
+      <Header/>
       <div className="body">
         <div className="container5 container">
           <div className="title-container5">

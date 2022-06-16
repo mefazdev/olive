@@ -11,24 +11,22 @@ import BestSellers from "../components/BestSellers";
 import Malayalam from "../components/Malayalam";
 import book from "../images/book.png";
 import review from "../images/review.png";
-import ayurveda from "../images/ayurveda.png";
-import mt from "../images/mt.png";
-import talk1 from "../images/talk1.png";
-import talk2 from "../images/talk2.png";
-import talk3 from "../images/talk3.png";
-import discover1 from "../images/discover1.png";
-import discover2 from "../images/discover2.png";
-import discover3 from "../images/discover3.png";
-import discover4 from "../images/discover4.png";
+ 
+
+ 
 
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import Featur from "../components/Featur";
 import { Link } from "react-router-dom";
 import Classic from '../components/Classic'
 import BookOfMonth from "../components/BookOfMonth";
-  
+import BookTalks from "../components/BookTalks";
+import Header from "../components/Header";
+  import Footer from "../components/Footer";
 function Home() {
   return (
+    <>
+    <Header/>
     <div className="container">
       {/* <<<<<<<<<< MAIN BANNER >>>>>>>>> */}
       <div className=" home__banner">
@@ -140,7 +138,8 @@ function Home() {
       <BookOfMonth/>
 
       {/* <<<<<<<<< BOOK TALKS  >>>>>>>>>>>> */}
-      <div className="home__talks">
+      <BookTalks/>
+      {/* <div className="home__talks">
         <div className="home__talks__head__row ">
           <h5>Book Talks</h5>
           <Link
@@ -206,7 +205,7 @@ function Home() {
             </Link>
           </Col>
         </Row>
-      </div>
+      </div> */}
 
    {/* <<<<<<<<< DISCOVER NEW  >>>>>>>>>>>> */}
 <Classic/>
@@ -215,6 +214,8 @@ function Home() {
     
       <Featur />
     </div>
+    <Footer/>
+    </>
   );
 }
 

@@ -1,0 +1,79 @@
+.bookTalk__modal{
+    /* height: 600px; */
+    /* width: 400px; */
+    /* border: solid red; */
+    position: relative;
+    padding: 30px;
+    margin-right: 10px;
+    overflow-y: scroll;
+    
+}
+#book__talk__input__1{
+    margin-top: 10px;
+    padding: 5px;
+    width: 80%;
+    font-size: 18px;
+    border: solid 2px;
+}
+#book__talk__input__2{
+    padding: 5px;
+    width: 80%;
+    font-size: 18px;
+    border: solid 2px;
+    
+}
+.bookTalk__modal h5{
+    margin-top: 10px;
+}
+.bookTalk__row{
+    padding: 5px;
+    border: solid 1px green;
+    margin-top: 10px;
+}
+.bookTalk__row__div{
+    justify-content: space-between;
+    display: flex;
+}
+.bookTalk__row__div input{
+width: 70%;
+padding-left: 5px;
+
+}
+.bookTalk__row__div textarea{
+    width: 100%;
+    margin-left: 10px;
+    padding-left: 5px;
+}
+#bookTalk__Cancel{
+    /* background-color: red; */
+    /* color: #fff; */
+    color: red;
+    position: absolute;
+    right: 0;
+    font-size: 30px;
+}
+.book__talk__book__show{
+    padding: 3px;
+    background-color: rgba(128, 128, 128, 0.295);
+}
+.book__talk__book__show:hover{
+    cursor: pointer;
+    background-color:rgba(255, 255, 255, 0.468);
+    /* border: 1px solid gray; */
+}
+ 
+
+  .bookTalk__button{
+        /* position:absolute; */
+        right: 0;
+        /* margin-right: 30px; */
+        padding: 3px;
+        width: 100px;
+        background-color: green;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        float: right;
+        margin-top: 20px;
+    }

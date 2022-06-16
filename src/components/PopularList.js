@@ -2,16 +2,6 @@ import "./../style/css/popularList.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-
-import review from "../images/popular/review.png";
-import pop1 from "../images/popular/pop1.jpg";
-import pop2 from "../images/popular/pop2.jpg";
-import pop3 from "../images/popular/pop3.jpg";
-import pop4 from "../images/popular/pop4.jpg";
-import pop5 from "../images/popular/pop5.jpg";
-import pop6 from "../images/popular/pop6.jpg";
-import pop7 from "../images/popular/pop7.jpg";
-import pop8 from "../images/popular/pop8.jpg";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -50,7 +40,7 @@ function PopularList() {
       setList(data.docs.map((doc) => doc));
 };
 useEffect  (()=>{
-  // fetchData()
+  fetchData()
 },[])
 
   

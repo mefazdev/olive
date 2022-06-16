@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Featur from "../components/Featur";
 import "../style/css/confirm.css";
 import { Link, useHistory } from "react-router-dom";
- 
+import shortid from 'shortid'
 import { db} from "../firebase";
 import axios from "axios";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -11,7 +11,7 @@ import {
   addDoc,
   collection,
   onSnapshot,
-  orderBy,
+  orderBy,  
   query,
   getDocs,
   doc,
@@ -24,6 +24,7 @@ import {
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
+import Header from "../components/Header";
 
 function loadScript(src) {
 	return new Promise((resolve) => {
@@ -134,12 +135,14 @@ function Confirm() {
     setOrder(order);
   }
   const passOrder = async()=>{
+     const orderId = shortid.generate()
     await addDoc(collection(db, "order"), {
       userId: user.uid,
       order:order,
       paymentType:payment,
-      status:'Not delevered',
+      status:'Not Shipped',
       total:total+50,
+      orderId:orderId,
       timestamp: serverTimestamp(),
 
       // data:data
@@ -193,9 +196,12 @@ deletCart()
 
   
   return (
+    <>
+    <Header/>
+    
     <div className="container">
       <div className="fullbody">
-         <button onClick={()=>console.log(order)}>onclick</button>
+         {/* <button onClick={()=>console.log(order)}>onclick</button> */}
         <div className="total-container container">
           <div className="review-container">
             <div className="review-list">
@@ -422,7 +428,7 @@ deletCart()
         </div>
       </div>
       <Featur />
-    </div>
+    </div> </>
   );
 }
 

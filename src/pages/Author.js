@@ -9,14 +9,34 @@ import best3 from "../images/author/best3.png";
 import best4 from "../images/author/best4.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Featur from "../components/Featur";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
-import InfoIcon from "@material-ui/icons/Info";
+import { useParams } from "react-router-dom";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where,
+  getDoc,
+} from "@firebase/firestore";
+import { db } from "../firebase";
+import Product from "../components/Product";
+import Header from "../components/Header";
 function Author() {
   const [show, setShow] = useState(false);
+  const [author,setAuthor] = useState({})
+  const [books,setBooks] = useState([])
+const id = useParams();
   const [item] = useState([
     {
       image: best1,
@@ -103,186 +123,106 @@ function Author() {
       price: "321",
     },
   ]);
+
+  const fetchData = async () => {
+    const docRef = doc(db, "authors", id.id);
+    const docSnap = await getDoc(docRef);
+
+    setAuthor(docSnap.data());
+  };
+  const fetchBooks = async () => {
+    
+      const q = await query(
+        collection(db, "products"),
+        where("author", "==", author.name)
+        // where( author.name , "==", "author",)
+      );
+      const data = await getDocs(q);
+      setBooks(data.docs.map((doc) => doc));
+    console.log("OKKKK",author.name.toString())
+    
+     
+    
+  };
+ useEffect(()=>{
+  fetchData()
+ },[])
+
+ useEffect(()=>{
+  fetchBooks()
+ },[author])
   return (
+    <>
+    <Header/>
+    
     <div className="author container">
       <div className="author__content">
         <Container>
           <Row>
             <Col sm="12" md="4" className="author__img__col">
-              <img className="col-12" src={pualo} />
+              <img className="col-12" src={author.image} />
             </Col>
             <Col className="author__data__col" md="7">
               <div className="author__data">
-                <h2>Paulo Coelho</h2>
+                <h2>{author.name}</h2>
                 <div className="author__data__row">
-                  <h5>Born</h5>
+                  <h5 onClick={fetchBooks}>Born</h5>
 
-                  <h6>24-07-1947</h6>
+                  <h6>{author.birth}</h6>
                 </div>
                 <div className="author__data__row">
                   <h5>Genre</h5>
 
-                  <h6>Drama, ‎romance</h6>
+                  <h6>{author.genre}</h6>
                 </div>
                 <div className="author__data__row">
                   <h5>Language</h5>
-                  <h6>Portuguese</h6>
+                  <h6>{author.language}</h6>
                 </div>
                 <div className="author__data__row">
                   <h5>Nationality</h5>
-                  <h6>Brazilian</h6>
+                  <h6>{author.nationality}</h6>
                 </div>
                 <div className="author__data__row">
                   <h5>Notable works</h5>
-                  <h6>The Alchemist</h6>
+                  <h6>{author.work}</h6>
                 </div>
                 <div className="author__data__row">
                   <h5>First book</h5>
-                  <h6>Theater For Education</h6>
+                  <h6>{author.firstBook}</h6>
                 </div>
                 <div className="author__data__row">
                   <h5>Latest Work</h5>
-                  <h6>The Archer</h6>
+                  <h6>{author.latestWork}</h6>
                 </div>
               </div>
             </Col>
           </Row>
-          {/* <<<<<<<< CART ADDED ALERT >>>>>>>>>> */}
-          {show ? (
-            <Alert variant="success" id="alert">
-              <CheckCircleIcon id="alert__success__icon" />
-
-              <div className="alert__success__text">
-                <p>Product added to your cart</p>
-                <Link to="/cart" style={{ textDecoration: "none" }}>
-                  <h6>CHECKOUT NOW</h6>
-                </Link>
-              </div>
-
-              <CloseIcon
-                type="button"
-                onClick={() => setShow(false)}
-                id="alert__close__icon"
-              />
-            </Alert>
-          ) : (
-            ""
-          )}
-
-          {/* <<<<<<<< LOGIN ALERT >>>>>>>>>> */}
-          {/* 
-                {show ? 
-                 <Alert variant="primary" id='login__alert'>
-                  
-                 
-                   <InfoIcon id='alert__success__icon'/>
-                   
-                 
-                 <p>Please Login</p>
-            
-                 <h6 type='button' onClick={()=>setShow(false)}>OK</h6>
-                 
-              
-               
-                 </Alert> :''} */}
-
-          {/* <<<<<<<<< WRONG ALERT >>>>>>>>> */}
-          {/* {show? 
-                 <Alert variant="danger" id='danger__alert'>
-                  
-                 
-                   <CheckCircleIcon id='alert__success__icon'/>
-                   
-               
-                 <p>Somthing went wrong</p>
-               
-                 <h6 type='button' onClick={()=>setShow(false)} >Refresh</h6>
-                 
-              
-                
-                 
-                
-                 </Alert> :''
-              }  */}
+         
           <Row>
             <Col sm="12" md="4">
               <div className="author__text">
                 <p className="col-12">
-                  Paulo Coelho was born in Rio de Janeiro, Brazil, and attended
-                  a Jesuit school. At 17, Coelho's parents committed him to a
-                  mental institution from which he escaped three times before
-                  being released at the age of 20.[2][3] Coelho later remarked
-                  that "It wasn't that they wanted to hurt me, but they didn't
-                  know what to do...
-                  <br />
-                  <br />
-                  They did not do that to destroy me, they did that to save
-                  me."At his parents' wishes, Coelho enrolled in law school and
-                  abandoned his dream of becoming a writer. One year later, he
-                  dropped out and lived life as a hippie, traveling through
-                  South America, North Africa, Mexico, and Europe and started
-                  using drugs in the 1960s.
-                  <br />
-                  <br />
-                  Upon his return to Brazil, Coelho worked as a songwriter,
-                  composing lyrics for Elis Regina, Rita Lee, and Brazilian icon
-                  Raul Seixas. Composing with Raul led to Coelho being
-                  associated with magic and occultism, due to the content of
-                  some songs. He is often accused that these songs were rip-offs
-                  of foreign songs not well known in Brazil at the time. In
-                  1974, by his account, he was arrested for "subversive"
-                  activities and tortured by the ruling military government, who
-                  had taken power ten years earlier and viewed his lyrics as
-                  left-wing and dangerous. Coelho also worked as an actor,
-                  journalist and theatre director before pursuing his writing
-                  career.
+               {author.description}
                 </p>
               </div>
             </Col>
 
             <Col className="author__books" md="7">
+              
               <h3>Books of Coelho</h3>
               <Row>
-                {item.map((data) => {
+                {books.map((data) => {
                   return (
-                    <Col xs="6" sm="4" md="3">
-                      <div className="book__item">
-                        <Link
-                          to="/bookSingle"
-                          style={{
-                            textDecoration: "none",
-                            color: "inherit",
-                            display: "flex",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <img src={data.image} />
-                        </Link>
-                        <Link
-                          to="/bookSingle"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <div className="book__item__name">
-                            <h6>{data.name}</h6>
-                            <p>{data.author}</p>
-                          </div>
-                        </Link>
-                        <div className="book__item__price__div">
-                          <div className="book__item__price__left">
-                            <p className="book__item__cut__price">
-                              ₹{data.cutPrice}
-                            </p>
-                            <p className="book__item__price">₹{data.price}</p>
-                          </div>
-
-                          <AddShoppingCartIcon
-                            type="button"
-                            onClick={() => setShow(true)}
-                            id="book__item___cart__icon"
-                          />
-                        </div>
-                      </div>
-                    </Col>
+                    <Product
+                    style={{ textDecoration: "none", color: "inherit" }} 
+             name={data.data().name}
+             author={data.data().author}
+             image={data.data().thumbnail}
+             price={data.data().price}
+             cutPrice={data.data().cutPrice}
+             id = {data.id}
+             />
                   );
                 })}
               </Row>
@@ -291,7 +231,7 @@ function Author() {
         </Container>
       </div>
       <Featur />
-    </div>
+    </div>  </>
   );
 }
 

@@ -56,57 +56,7 @@ const responsive = {
 function Malayalam() {
   const [show, setShow] = useState(false);
   const [product,setProduct] = useState([])
-  const [arrived, setArrived] = useState([
-    {
-      image: malayalam1,
-      name: "കളക്ടർ ബ്രോ",
-      author: "പ്രശാന്ത് നായർ",
-      cutPrice: "666",
-      price: "334",
-    },
-    {
-      image: malayalam2,
-      name: "ഒറിജിൻ",
-      author: "ഡാൻ ബ്രൗൺ",
-      cutPrice: "654",
-      price: "678",
-    },
-    {
-      image: malayalam3,
-      name: "പച്ച മഞ്ഞ ചുവപ്പ്",
-      author: "ഡി രാമകൃഷ്ണൻ",
-      cutPrice: "332",
-      price: "113",
-    },
-    {
-      image: malayalam4,
-      name: "ബാൽക്കൻ ഡയറി",
-      author: "ബെജു എൻ നായർ",
-      cutPrice: "884",
-      price: "756",
-    },
-    {
-      image: malayalam5,
-      name: "കേരള ഭക്ഷണ ചരിതം",
-      author: "സുമ ശിവദാസ്",
-      cutPrice: "445",
-      price: "300",
-    },
-    {
-      image: malayalam6,
-      name: "നമ്പാടന്റെ നമ്പറുകൾ",
-      author: "ലോനപ്പൻ",
-      cutPrice: "199",
-      price: "115",
-    },
-    {
-      image: malayalam7,
-      name: "നമ്പാടന്റെ നമ്പറുകൾ",
-      author: "ലോനപ്പൻ",
-      cutPrice: "199",
-      price: "115",
-    },
-  ]);
+ 
 
   const fetchData = async () => {
     const q = await query(
@@ -119,13 +69,18 @@ function Malayalam() {
   
 
   useEffect(()=>{
-    // fetchData()
+    fetchData()
   },[])
   return (
     <div className="malayalam">
       <div className="malayalam__head__row ">
         <h5>Popular Malayalam Books</h5>
-      
+        <Link
+          to="/malayalam"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <p>View all</p>
+        </Link>
       </div>
       
 
@@ -151,9 +106,9 @@ function Malayalam() {
         >
           {product.map((data) => {
             return (
-              <Link to={`/book/${data.id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-              >
+              // <Link to={`/book/${data.id}`}
+              // style={{ textDecoration: "none", color: "inherit" }}
+              // >
               <Product
                      style={{ textDecoration: "none", color: "inherit" }} 
               name={data.data().name}
@@ -161,9 +116,9 @@ function Malayalam() {
               image={data.data().thumbnail}
               price={data.data().price}
               cutPrice={data.data().cutPrice}
-              
+              id = {data.id}
               />
-              </Link>
+              // </Link>
             );
           })}
         </Carousel>

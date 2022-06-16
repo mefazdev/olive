@@ -18,7 +18,7 @@ import OrderDownload from './pages/OrderDownload';
 import About from './pages/About';
 import AddAddress from './pages/Address';
 import Address from './pages/AddAddress';
-import Blog from './pages/Blog';
+import Blog from './pages/BookTalk';
 import BookTalks from './pages/BookTalks';
 import Confirm from './pages/Confirm';
 import EditAddress from './pages/EditAdress';
@@ -36,8 +36,12 @@ import AddBook from './admin/AddBook';
 import BookList from './pages/BookList';
 import BookOfMonth from './admin/BookOfMonth';
 import AuthorOfMonth from './admin/AuthorOfMonth';
-import Oreders from './admin/Oreders';
- 
+import Oreders from './admin/Orders';
+import Malayalam from './pages/Malaylam';
+import AdminAuthors from './admin/Authors';
+import BookTalk from './admin/bookTalk';
+import OfferZoneAdmin from './admin/offerZone'
+import Login from './admin/Login';
 function App() {
   return (
     <div className="App">
@@ -45,10 +49,22 @@ function App() {
     <Router>
    
     <ScrollToTop/>
-    <Header/>
+    {/* <Header/> */}
     <Switch>
     <Route path='/admin/bookofmonth'>
       <BookOfMonth/>
+      </Route>
+      <Route path='/admin@olive'>
+      <Login/>
+      </Route>
+      <Route path='/admin/offerzone'>
+      <OfferZoneAdmin/>
+      </Route>
+      <Route path='/admin/authors'>
+      <AdminAuthors/>
+      </Route>
+      <Route path='/admin/bookTalk'>
+      <BookTalk/>
       </Route>
       <Route path='/admin/orders'>
       <Oreders/>
@@ -70,6 +86,9 @@ function App() {
       </Route>
     <Route path='/bestSeller'>
       <BestSeller />
+      </Route>
+      <Route path='/malayalam'>
+      <Malayalam />
       </Route>
     <Route path='/justArrived'>
       <JustArrived />
@@ -98,7 +117,7 @@ function App() {
     <Route path='/bookTalks'>
       <BookTalks/>
       </Route>
-    <Route path='/blog'>
+    <Route path='/booktalk/:id'>
       <Blog/>
       </Route>
     <Route path='/addAddress'>
@@ -110,7 +129,7 @@ function App() {
     <Route path='/about'>
       <About/>
       </Route>
-    <Route path='/orderdownload'>
+    <Route path='/orderdownload/:id'>
       <OrderDownload/>
       </Route>
     <Route path='/allorder'>
@@ -137,7 +156,7 @@ function App() {
     <Route path='/authors'>
       <Authors/>
       </Route>
-      <Route path='/author'>
+      <Route path='/author/:id'>
       <Author/>
       </Route>
       <Route path='/'>

@@ -9,7 +9,7 @@ import best1 from "../images/author/best1.png";
 import best2 from "../images/author/best2.png";
 import best3 from "../images/author/best3.png";
 import best4 from "../images/author/best4.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
 import Featur from "../components/Featur";
@@ -21,95 +21,74 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import InfoIcon from "@material-ui/icons/Info";
+import { db, storage } from "../firebase";
+import { auth } from "../firebase";
+import Product from "../components/Product";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where,
+  getDoc,
+} from "@firebase/firestore";
+import { useStateValue } from "../stateProvider";
+import { onAuthStateChanged } from "firebase/auth";
+import createUtilityClassName from "react-bootstrap/esm/createUtilityClasses";
+import Header from "../components/Header";
+
 function BookMark() {
   const [show, setShow] = useState(false);
-  const [item] = useState([
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma  ",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-  ]);
+  const [quantity, setQuantity] = useState(false);
+  const [user, setUser] = useState({});
+  const [bookId, setBookId] = useState();
+  const [bookMark, setBookMark] = useState([]);
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+  const fetchData = async () => {
+    const userId = (await user) ? user.uid : null;
+    if (userId) {
+      const q = await query(
+        collection(db, "bookMark"),
+        where("userId", "==", userId)
+      );
+      const docSnap = await getDocs(q);
+      setBookMark(docSnap.docs.map((doc) => doc));
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [user]);
+
+  useEffect(() => {
+    console.log(bookMark);
+  }, [bookMark]);
+  // const addToCart = async () => {
+  //   setQuantity(true);
+  //   if (!quantity) {
+  //     await addDoc(collection(db, "cart"), {
+  //       quantity: 1,
+  //       userId: user.uid,
+  //       bookId: id,
+  //       thumbnail: image,
+  //       name: name,
+  //       author: author,
+  //       price: price,
+  //       timestamp: serverTimestamp(),
+  //       // data:data
+  //     });
+  //   }
+  // };
   return (
+    <><Header/>
     <div className="bookmark container">
       <div className="path">
         <p>Home </p>
@@ -118,7 +97,7 @@ function BookMark() {
         <ArrowForwardIosIcon id="path__icon" />
         <p>My bookmarks</p>
       </div>
-
+      <button onClick={() => console.log(bookMark)}>CLICK</button>
       <div className="bookmark__header">
         <h2>My Bookmarks</h2>
         <div className="bookmark__img">
@@ -148,70 +127,21 @@ function BookMark() {
         ""
       )}
 
-      {/* <<<<<<<< LOGIN ALERT >>>>>>>>>> */}
-
-      {/* {show ? 
-                 <Alert variant="primary" id='login__alert'>
-                  
-                 
-                   <InfoIcon id='alert__success__icon'/>
-                   
-                 
-                 <p>Please Login</p>
-            
-                 <h6 type='button' onClick={()=>setShow(false)}>OK</h6>
-                 
-              
-               
-                 </Alert> :''} */}
-
-      {/* <<<<<<<<< WRONG ALERT >>>>>>>>> */}
-      {/* {show? 
-                 <Alert variant="danger" id='danger__alert'>
-                  
-                 
-                   <CheckCircleIcon id='alert__success__icon'/>
-                   
-               
-                 <p>Somthing went wrong</p>
-               
-                 <h6 type='button' onClick={()=>setShow(false)} >Refresh</h6>
-                 
-              
-                
-                 
-                
-                 </Alert> :''
-              }  */}
       <div className="bookmark__content">
         <Container>
           <Row>
-            {item.map((data) => {
+            {bookMark.map((data) => {
               return (
                 <Col xs="6" sm="3" md="2">
-                  <div className="book__item">
-                    <img src={data.image} />
-
-                    <div className="book__item__name">
-                      <h6>{data.name}</h6>
-                      <p>{data.author}</p>
-                    </div>
-
-                    <div className="book__item__price__div">
-                      <div className="book__item__price__left">
-                        <p className="book__item__cut__price">
-                          ₹{data.cutPrice}
-                        </p>
-                        <p className="book__item__price">₹{data.price}</p>
-                      </div>
-
-                      <AddShoppingCartIcon
-                        type="button"
-                        onClick={() => setShow(true)}
-                        id="book__item___cart__icon"
-                      />
-                    </div>
-                  </div>
+                  <Product
+                    name={data.data().name}
+                    author={data.data().author}
+                     image={data.data().thumbnail}
+                    // image=''
+                    price={data.data().price}
+                    cutPrice={data.data().cutPrice}
+                    id={data.id}
+                  />
                 </Col>
               );
             })}
@@ -222,7 +152,7 @@ function BookMark() {
         </Container>
       </div>
       <Featur />
-    </div>
+    </div> </>
   );
 }
 

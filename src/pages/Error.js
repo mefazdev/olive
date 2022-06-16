@@ -1,10 +1,14 @@
 import React from "react";
 import Featur from "../components/Featur";
+import Header from "../components/Header";
 import image from "../images/error.png";
 import "../style/css/error.css";
 
 function Error() {
   return (
+    <>
+    <Header/>
+   
     <div className="error container">
       <div className="error__content">
         <h1>ERROR 404</h1>
@@ -15,7 +19,7 @@ function Error() {
         </div>
       </div>
       <Featur />
-    </div>
+    </div>  </>
   );
 }
 

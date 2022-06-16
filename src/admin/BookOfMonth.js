@@ -15,12 +15,13 @@ import {
   serverTimestamp,
   deleteDoc,
   updateDoc,
-  where
+  where,getDoc
 } from "@firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { Table } from 'react-bootstrap';
 
 import CancelIcon from '@material-ui/icons/Cancel';
+import Cookies from 'universal-cookie';
 function BookOfMonth() {
     const [modalControl, setModalControl] = useState(false)
  const [name, setName] = useState('')
@@ -28,13 +29,21 @@ function BookOfMonth() {
  const [image, setImage] = useState('')
 const [uploading, setUploading] = useState(false) 
 const [bookMonths, setBookMonths] = useState([])
+const cookies = new Cookies();
 
+const admin = cookies.get('admin')
 const fetchData = async () => {
     const q = await query(collection(db, "bookMonth"), orderBy("timestamp", "desc"));
     onSnapshot(q, (snapshot) => {
       setBookMonths(snapshot.docs.map((doc) => doc));
       // console.log(snapshot.docs.map((doc) => doc.data))
     });
+  };
+  const fetchAdmin = async () => {
+    const docRef = doc(db, "admin","VCpm3OTuga0YidDTEIe4");
+    const docSnap = await getDoc(docRef);
+
+    // setAdmin(docSnap.data());
   };
  const handleUpload = async ()=>{
     setUploading(true)
@@ -73,10 +82,11 @@ const fetchData = async () => {
   };
   useEffect(()=>{
       fetchData()
-  })
+      fetchAdmin()
+  },[])
     return (
     <div>
-        <NavBar/>
+      {admin == 'true' ?  <> <NavBar/>
         <div className='ad__cat'>
     <div className='ad__act__head'>
     <h4>Book of the month</h4>
@@ -159,7 +169,8 @@ const fetchData = async () => {
    
   </tbody>
 </Table>
-    </div>
+    </div></> :''}
+       
     </div>
   )
 }

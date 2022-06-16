@@ -5,8 +5,12 @@ import { Link } from "react-router-dom";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import Header from "../components/Header";
 function MyOrder() {
   return (
+    <>
+    <Header/>
+    
     <div className="container">
       <div className="body">
         <div className="dashboard-container ">
@@ -157,7 +161,7 @@ function MyOrder() {
         </div>
       </div>
       <Featur />
-    </div>
+    </div></>
   );
 }
 

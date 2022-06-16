@@ -4,9 +4,29 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Featur from "../components/Featur";
 import { Link } from "react-router-dom";
+import { db, storage } from "../firebase";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where,
+  getDoc,
+} from "@firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import Moment from 'moment'
+import Header from "../components/Header";
 function AllOrder() {
   const [active] = useState([
     {
@@ -81,7 +101,33 @@ function AllOrder() {
       total: "1,855.00",
     },
   ]);
+  const [user, setUser] = useState({});
+  const [order,setOrder] = useState([])
+
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  const fetchData = async () => {
+    const userId = (await user) ? user.uid : null;
+    if (userId) {
+      const q = await query(
+        collection(db, "order"),
+        where("userId", "==", userId)
+      );
+      onSnapshot(q, (snapshot) => {
+        setOrder(snapshot.docs.map((doc) => doc.data()));
+      });
+    }
+  };
+
+  useEffect(()=>{
+    fetchData()
+  },[user])
   return (
+    <>
+    <Header/>
+    
     <div className="all__order container">
       <div className="path ">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -113,48 +159,57 @@ function AllOrder() {
           <h5>Active Orders</h5>
 
           <Row>
-            {active.map((data) => {
-              return (
-                <Col xs="12" sm="" md="4">
-                  <div className="order__box">
-                    <div className="order__box__content">
-                      <div className="order__box__first__row">
-                        <div className="order__box__first__row__left">
-                          <p>
-                            Order id:<span>{data.id}</span>{" "}
-                          </p>
-                          <h6>
-                            Date: <span>{data.date}</span>
-                          </h6>
+            {order.map((data) => {
+              if(data.status != 'Delivered'){
+                return (
+                  <Col xs="12" sm="" md="3">
+                    <div className="order__box">
+                      <div className="order__box__content">
+                        <div className="order__box__first__row">
+                          <div className="order__box__first__row__left">
+                            <p>
+                              Order id:<span>{data.orderId}</span>{" "}
+                            </p>
+                            <h6>
+                              Date: <span>{Moment(data.time).format( "MMM DD YYYY")}</span>
+                            </h6>
+                          </div>
+                          <div className="order__box__first__row__right">
+                            <p>Status: </p>
+                            <h6>{data.status}</h6>
+                          </div>
                         </div>
-                        <div className="order__box__first__row__right">
-                          <p>Status: </p>
-                          <h6>{data.status}</h6>
+  
+                        <div className="order__box__second__row">
+                          <div className="order__box__second__row__left">
+                            <p>
+                              <span>{data.order.length}</span> items{" "}
+                            </p>
+                            <h6>
+                              Total: ₹<span>{data.total}</span>
+                            </h6>
+                          </div>
+  
+                          <Link
+                            to="/orderDownload"
+                            style={{ textDecoration: "none", color: "inherit" }}
+                          >
+                            <ArrowForwardIcon id="order__arrow" />
+                          </Link>
                         </div>
-                      </div>
-
-                      <div className="order__box__second__row">
-                        <div className="order__box__second__row__left">
-                          <p>
-                            <span>{data.quantity}</span> items{" "}
-                          </p>
-                          <h6>
-                            Total: ₹<span>{data.total}</span>
-                          </h6>
-                        </div>
-
-                        <Link
-                          to="/orderDownload"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <ArrowForwardIcon id="order__arrow" />
-                        </Link>
                       </div>
                     </div>
-                  </div>
-                </Col>
-              );
-            })}
+                  </Col>
+                );
+              }else{
+                return(
+                  <h4 id='no__active__order__h4'>No active orders</h4>
+                )
+              }
+             
+            }
+            
+            )}
           </Row>
         </div>
 
@@ -163,53 +218,60 @@ function AllOrder() {
           <h5>Past Orders</h5>
 
           <Row>
-            {past.map((data) => {
-              return (
-                <Col xs="12" sm="6" md="5" lg="4" xl="3">
-                  <div className="order__box">
-                    <div className="order__box__content">
-                      <div className="order__box__first__row">
-                        <div className="order__box__first__row__left">
-                          <p>
-                            Order id:<span>{data.id}</span>{" "}
-                          </p>
-                          <h6>
-                            Date: <span>{data.date}</span>
-                          </h6>
+            {order.map((data) => {
+              if(data.status == 'Delivered'){
+                return (
+                  <Col xs="12" sm="6" md="5" lg="4" xl="3">
+                    <div className="order__box">
+                      <div className="order__box__content">
+                        <div className="order__box__first__row">
+                          <div className="order__box__first__row__left">
+                            <p>
+                              Order id:<span>{data.orderId}</span>{" "}
+                            </p>
+                            <h6>
+                              Date: <span>{Moment(data.time).format( "MMM DD YYYY")}</span>
+                            </h6>
+                          </div>
+                          <div className="order__box__first__row__right">
+                            <p>Status: </p>
+                            <h6>{data.status}</h6>
+                          </div>
                         </div>
-                        <div className="order__box__first__row__right">
-                          <p>Status: </p>
-                          <h6>{data.status}</h6>
+  
+                        <div className="order__box__second__row">
+                          <div className="order__box__second__row__left">
+                            <p>
+                              <span>{data.order.length}</span> items{" "}
+                            </p>
+                            <h6>
+                              Total: ₹<span>{data.total}</span>
+                            </h6> 
+                          </div>
+                          <Link
+                            to={`/orderDownload/8qqIFT0uDwcYqt9PZWVk`}
+                            style={{ textDecoration: "none", color: "inherit" }}
+                          >
+                            <ArrowForwardIcon id="order__arrow" />
+                          </Link>
                         </div>
-                      </div>
-
-                      <div className="order__box__second__row">
-                        <div className="order__box__second__row__left">
-                          <p>
-                            <span>{data.quantity}</span> items{" "}
-                          </p>
-                          <h6>
-                            Total: ₹<span>{data.total}</span>
-                          </h6>
-                        </div>
-                        <Link
-                          to="/orderDownload"
-                          style={{ textDecoration: "none", color: "inherit" }}
-                        >
-                          <ArrowForwardIcon id="order__arrow" />
-                        </Link>
                       </div>
                     </div>
-                  </div>
-                </Col>
-              );
+                  </Col>
+                );
+              }else{
+                return(
+                  <h4 id='no__active__order__h4'>No past orders</h4>
+                )
+              }
+              
             })}
           </Row>
         </div>
       </div>
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

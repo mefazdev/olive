@@ -28,6 +28,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import InfoIcon from "@material-ui/icons/Info";
+import Header from "../components/Header";
 function PreOrder() {
 
   const [quantity,setQuantity] = useState(1)
@@ -127,6 +128,9 @@ function PreOrder() {
   not gone unnoticed, and the new queen is out for blood. 
 `;
   return (
+    <>
+    <Header/>
+    
     <div className="preOrder container">
       <div className="path ">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -589,7 +593,7 @@ function PreOrder() {
       <PopularList />
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

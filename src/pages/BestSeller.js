@@ -34,6 +34,7 @@ import {
   FilterDrama,
   RepeatOutlined,
 } from "@material-ui/icons";
+import Header from "../components/Header";
 
 function BestSeller() {
   const [show, setShow] = useState(false);
@@ -41,6 +42,8 @@ function BestSeller() {
   const [products, setProducts] = useState([]);
   var [filteredData] = useState([]);
   const [finalDocs, setFinalDocs] = useState([]);
+  const [startIndex, setStartIndex] = useState(-1)
+  const [endIndex, setEndIndex] = useState(49)
 
   const fetchData = async () => {
     const q = await query(
@@ -73,7 +76,21 @@ function BestSeller() {
     filterData();
   }, [products]);
 
+
+  const nextPage = ()=>{
+    setStartIndex( startIndex + 49)
+    setEndIndex(endIndex + 49)
+  }
+  const prevPage = ()=>{
+    if(startIndex >= 48){
+      setStartIndex( startIndex - 49)
+      setEndIndex(endIndex - 49)
+    }
+     
+  }
   return (
+    <>
+    <Header/>
     <div className="categories container">
       <div className="path ">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -86,7 +103,7 @@ function BestSeller() {
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <p>Best seller</p>
-          <button >TEstttt</button>
+          
           {/* <button onClick={()=>console.log(docn)} >CLICKMEj</button> */}
         </Link>
       </div>
@@ -108,26 +125,32 @@ function BestSeller() {
 
               <Row>
                 {finalDocs.map((data, index) => {
-                  return (
-                    <Col id={index} xs="6" sm="4" md="2">
-                      <Link
-                        to={`/book/${data.id}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <Product
-                          id={index}
-                          name={data.data().name}
-                          author={data.data().author}
-                          image={data.data().thumbnail}
-                          price={data.data().price}
-                          cutPrice={data.data().cutPrice}
-                        />
-                      </Link>
-                    </Col>
-                  );
+                  if (index > startIndex && index < endIndex ){
+                    return (
+                      <Col id={index} xs="6" sm="4" md="2">
+                        
+                          <Product
+                            key={index}
+                            name={data.data().name}
+                            author={data.data().author}
+                            image={data.data().thumbnail}
+                            price={data.data().price}
+                            cutPrice={data.data().cutPrice}
+                            id = {data.id}
+                          />
+                     
+                      </Col>
+                    );
+                  }
+                  
                 })}
-                <div className="pagination__div">
+                {/* <div className="pagination__div">
                   <UsePagination />
+                </div> */}
+                <div className="pagination__div">
+                 
+                  <button onClick={prevPage}>PREV</button>
+                  <button onClick={nextPage}> NEXT</button>
                 </div>
               </Row>
             </div>
@@ -137,7 +160,7 @@ function BestSeller() {
       <PopularList />
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

@@ -8,7 +8,7 @@ import Header from "../components/Header";
 function About() {
   return (
     <>
-    {/* <Header/> */}
+    <Header/>
    
     <div className="about container">
       <div className="path ">

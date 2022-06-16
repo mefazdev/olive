@@ -8,22 +8,12 @@ import book from "../images/book-read.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Featur from "../components/Featur";
 import { useEffect, useState } from "react";
-import pop1 from "../images/popular/pop1.jpg";
-import pop2 from "../images/popular/pop2.jpg";
-import pop3 from "../images/popular/pop3.jpg";
-import pop4 from "../images/popular/pop4.jpg";
-import pop6 from "../images/popular/pop6.jpg";
-import pop8 from "../images/popular/pop8.jpg";
-import PopularList from "../components/PopularList";
-import UsePagination from "../components/Pagination";
-import Alert from "react-bootstrap/Alert";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CloseIcon from "@material-ui/icons/Close";
+ 
 import { Link } from "react-router-dom";
-import InfoIcon from "@material-ui/icons/Info";
-import FilterSearch from "../components/FilterSearch";
+ 
 import { collection, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
+import Header from "../components/Header";
 
 function Categories() {
   const [show, setShow] = useState(false);
@@ -41,6 +31,9 @@ function Categories() {
     fetchData()
   },[])
   return (
+    <>
+    <Header/>
+   
     <div className="categories container">
       <div className="path ">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -107,7 +100,7 @@ function Categories() {
       
 
       <Featur />
-    </div>
+    </div> </>
   );
 }
 

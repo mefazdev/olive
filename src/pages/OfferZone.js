@@ -14,7 +14,7 @@ import best3 from "../images/author/best3.png";
 import best4 from "../images/author/best4.png";
 import PopularList from "../components/PopularList";
 import UsePagination from "../components/Pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CloseIcon from "@material-ui/icons/Close";
@@ -36,7 +36,8 @@ import {
   where,
 } from "@firebase/firestore";
 import Product from "../components/Product";
-
+import Header from "../components/Header";
+// import Product from "./Product";
 function OfferZone() {
   const [show, setShow] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
@@ -126,7 +127,25 @@ function OfferZone() {
       price: "321",
     },
   ]);
+const [offerZone, setOfferZone ] = useState([])
+  
+  const fetchData = async () => {
+    const q = await query(
+      collection(db, "products"),
+      where("offerZone", "==", true),
+      // orderBy("timestamp", "desc")
+    );
+    const data = await getDocs(q);
+    setOfferZone(data.docs.map((doc) => doc));
+  };
+
+  useEffect(()=>{
+    fetchData()
+  },[])
   return (
+    <>
+    <Header/>
+    
     <div className="offer__zone container">
       <div className="path ">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
@@ -159,117 +178,36 @@ function OfferZone() {
                 {/* <p>Please login to view your parchase histor</p> */}
                 {/* if eligaible for offer */}
                 {/* <p>Congrates you are elgiable for this offer</p> */}
+             
               </div>
 
               <div className="offerzone__head__row ">
                 <h5>Offerzone</h5>
 
-                <p>5000 Books</p>
+                <p>{offerZone.length} Books</p>
               </div>
             </div>
 
-            {/* <<<<<<<< LOGIN ALERT >>>>>>>>>> */}
-
-            {show ? (
-              <Alert variant="success" id="alert">
-                <CheckCircleIcon id="alert__success__icon" />
-
-                <div className="alert__success__text">
-                  <p>Product added to your cart</p>
-                  <Link to="/cart" style={{ textDecoration: "none" }}>
-                    <h6>CHECKOUT NOW</h6>
-                  </Link>
-                </div>
-
-                <CloseIcon
-                  type="button"
-                  onClick={() => setShow(false)}
-                  id="alert__close__icon"
-                />
-              </Alert>
-            ) : (
-              ""
-            )}
-
-            {/* {show ? 
-                 <Alert variant="primary" id='login__alert'>
-                  
-                 
-                   <InfoIcon id='alert__success__icon'/>
-                   
-                 
-                 <p>Please Login</p>
             
-                 <h6 type='button' onClick={()=>setShow(false)}>OK</h6>
-                 
-              
-               
-                 </Alert> :''} */}
 
-            {/* <<<<<<<<< WRONG ALERT >>>>>>>>> */}
-            {/* {show? 
-                 <Alert variant="danger" id='danger__alert'>
-                  
-                 
-                   <CheckCircleIcon id='alert__success__icon'/>
-                   
-               
-                 <p>Somthing went wrong</p>
-               
-                 <h6 type='button' onClick={()=>setShow(false)} >Refresh</h6>
-                 
-              
-                
-                 
-                
-                 </Alert> :''
-              }  */}
+           
             <Row>
-              {item.map((data) => {
+              {offerZone.map((data) => {
                 return (
                   <Col xs="6" sm="4" md="2">
-                    <div className="book__item">
-                      <Link
-                        to="/bookSingle"
-                        style={{
-                          textDecoration: "none",
-                          color: "inherit",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <img src={data.image} />
-                      </Link>
-                      <Link
-                        to="/bookSingle"
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <div className="book__item__name">
-                          <h6>{data.name}</h6>
-                          <p>{data.author}</p>
-                        </div>
-                      </Link>
-                      <div className="book__item__price__div">
-                        <div className="book__item__price__left">
-                          <p className="book__item__cut__price">
-                            ₹{data.cutPrice}
-                          </p>
-                          <p className="book__item__price">₹{data.price}</p>
-                        </div>
-
-                        <AddShoppingCartIcon
-                          type="button"
-                          onClick={() => setShow(true)}
-                          id="book__item___cart__icon"
+                       <Product
+                          name={data.data().name}
+                          author={data.data().author}
+                          image={data.data().thumbnail}
+                          price={data.data().price}
+                          cutPrice={data.data().cutPrice}
+                          id={data.id}
                         />
-                      </div>
-                    </div>
+                  
                   </Col>
                 );
               })}
-              <div className="pagination__div">
-                <UsePagination />
-              </div>
+             
             </Row>
           </Col>
         </Row>
@@ -277,7 +215,7 @@ function OfferZone() {
 
       <PopularList />
       <Featur />
-    </div>
+    </div></>
   );
 }
 

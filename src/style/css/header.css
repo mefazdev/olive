@@ -27,6 +27,7 @@ display: flex;
 }
 
 .header__input__div{
+   position: relative;
    display: flex;
    flex-direction: row;
    align-items: center;
@@ -526,3 +527,28 @@ margin-left: 4px;
      flex-direction: column;
      align-items: center;
   }
+
+  .header__search__div{
+   position: absolute;
+   /* height: 400px; */
+   /* border: solid red; */
+   /* width: 100%;    */
+   top: 0;
+   margin-top: 40px;
+   background-color: rgb(255, 255, 255);
+   padding-top: 20px;
+   padding-bottom: 20px ;
+  }
+  .header__search__item{
+  min-width: 300px;
+   padding: 3px;
+   padding-left: 20px;
+  }
+  .header__search__item:hover{
+   background-color: rgba(128, 128, 128, 0.413);
+cursor: pointer;  
+}
+
+#search__cancel__icon{
+   position: absolute;
+}

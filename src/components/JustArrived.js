@@ -86,13 +86,13 @@ function JustArrived() {
               return (
                  
                   <Product
-                      // id={data.id}
+                     
                     name={data.data().name}
                     author={data.data().author}
-                    image={data.data().thumbnail}
+                    image={data.data().thumbnail}  
                     price={data.data().price}
                     cutPrice={data.data().cutPrice}
-                    offer={data.data().offer}
+                    offer={data.data().discount}
                      id={data.id}
                   />
           

@@ -1,57 +1,65 @@
 import "../style/css/authors.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
-import author3 from "../images/authors/author3.png";
-import author4 from "../images/authors/author4.png";
-import author5 from "../images/authors/author5.png";
-import author6 from "../images/authors/author6.png";
-import author7 from "../images/authors/author7.png";
-
-import author8 from "../images/authors/author8.png";
-import author9 from "../images/authors/author9.png";
-import author10 from "../images/authors/author10.png";
-import author11 from "../images/authors/author11.png";
-import author12 from "../images/authors/author12.png";
-import author13 from "../images/authors/author13.png";
-import author14 from "../images/authors/author14.png";
-import author15 from "../images/authors/author15.png";
-import author16 from "../images/authors/author16.png";
-import author17 from "../images/authors/author17.png";
-import author18 from "../images/authors/author18.png";
-import author19 from "../images/authors/paulo.png";
-import author20 from "../images/authors/review.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { db, storage } from "../firebase";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where,
+  startAt,
+  endAt
+ 
+} from "@firebase/firestore";
+import { useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Featur from "../components/Featur";
 import { Link } from "react-router-dom";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import Header from "../components/Header";
 function Authors() {
-  const [authors] = useState([
-    { image: author19 },
-    { image: author20 },
-    { image: author3 },
-    { image: author4 },
-    { image: author5 },
-    { image: author6 },
-    { image: author7 },
-    { image: author8 },
+  const [authors,setAuthors] = useState([]);
+ const [charector, setCharector] = useState('')
+ 
+ 
 
-    { image: author9 },
-    { image: author10 },
-    { image: author11 },
-    { image: author12 },
-    { image: author13 },
-    { image: author14 },
-    { image: author15 },
-    { image: author16 },
-    { image: author17 },
-    { image: author18 },
-    { image: author16 },
-    { image: author17 },
-    { image: author18 },
-  ]);
+   const fetchData = async () => {
+    const q = await query(
+      collection(db, "authors"),
+      orderBy("name"),
+      //  orderBy('timestamp', "desc")
+       );
+         const data =   await getDocs(q)
+           setAuthors(data.docs.map((doc) => doc));
+  };
+  const filterData = async () => {
+    const q = await query(
+      collection(db, "authors"),
+      orderBy ('name'),startAt('p'),endAt('o')
+      //  orderBy('timestamp', "desc")
+       );
+         const data =   await getDocs(q)
+           setAuthors(data.docs.map((doc) => doc));
+  };
+  useEffect(()=>{
+    fetchData()
+  },[])
+  useEffect(()=>{
+    // filterData()
+  },[charector])
   return (
+
+    <>
+    <Header/>
+    
     <div className="authors container">
 
         <div className="path ">
@@ -72,38 +80,38 @@ function Authors() {
       
             <Row>
               <Col md className="author__search__col">
-                <p style={{ textDecoration: "underline" }}>ALL</p>
-                <p>A</p>
+                <p onClick={fetchData}  style=  {  {  textDecoration:  "underline"  } }  >ALL</p>
+                <p onClick={()=>setCharector('A')}>A</p>
 
-                <p>B</p>
-                <p>C</p>
-                <p>D</p>
-                <p>E</p>
-                <p>F</p>
-                <p>G</p>
-                <p>H</p>
-                <p>I</p>
+                <p onClick={() =>filterData('B')}>B</p>
+                <p onClick={()=>filterData('C')}>C</p>
+                <p onClick={()=>filterData('D')}>D</p>
+                <p onClick={()=>filterData('E')}>E</p>
+                <p onClick={()=>filterData('F')}>F</p>
+                <p onClick={()=>filterData('G')}>G</p>
+                <p onClick={()=>filterData('H')}>H</p>
+                <p onClick={()=>filterData('I')}>I</p>
 
-                <p>J</p>
-                <p>K</p>
-                <p>L</p>
-                <p>M</p>
+                <p onClick={()=>filterData('J')}>J</p>
+                <p onClick={()=>filterData('K')}>K</p>
+                <p onClick={()=>filterData('L')}>L</p>
+                <p onClick={()=>filterData('M')}>M</p>
               </Col>
               <Col md className="author__search__col">
-                <p>N</p>
-                <p>O</p>
-                <p>P</p>
-                <p>Q</p>
-                <p>R</p>
+                <p onClick={()=>filterData('N')}>N</p>
+                <p onClick={()=>filterData('O')}>O</p>
+                <p onClick={()=>filterData('P')}>P</p>
+                <p onClick={()=>filterData('Q')}>Q</p>
+                <p onClick={()=>filterData('R')}>R</p>
 
-                <p>S</p>
-                <p>T</p>
-                <p>U</p>
-                <p>V</p>
-                <p>W</p>
-                <p>X</p>
-                <p>Y</p>
-                <p>Z</p>
+                <p onClick={()=>filterData('S')}>S</p>
+                <p onClick={()=>filterData('T')}>T</p>
+                <p onClick={()=>filterData('U')}>U</p>
+                <p onClick={()=>filterData('V')}>V</p>
+                <p onClick={()=>filterData('W')}>W</p>
+                <p onClick={()=>filterData('X')}>X</p>
+                <p onClick={()=>filterData('Y')}>Y</p>
+                <p onClick={()=>filterData('Z')}>Z</p>
               </Col>
             </Row>
          
@@ -116,19 +124,19 @@ function Authors() {
                 return (
                   <Col>
                     <Link
-                      to="/author"
+                     to={`/author/${data.id}`}
                       style={{ textDecoration: "none", color: "inherit" }}
                     >
                       <div className="authors__item">
-                        <img src={data.image} />
-                        <h6>Authors Name</h6>
-                        <p>1352 Books</p>
+                        <img src={data.data().image} />
+                        <h6>{data.data().name}</h6>
+                        {/* <p>1352 Books</p> */}
                       </div>
                     </Link>
                   </Col>
                 );
-              })}
-            </Row>
+              })} 
+            </Row>   
          
         </div>
       </div>
@@ -136,7 +144,7 @@ function Authors() {
         <Button id="author__load__button">LOAD MORE</Button>
       </div>
       <Featur />
-    </div>
+    </div> </>
   );
 }
 

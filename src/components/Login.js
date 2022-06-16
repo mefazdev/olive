@@ -40,7 +40,7 @@ function Login() {
       if(user){
         addUser()
       }
-      history.push('/dashboard')
+      // history.push('/dashboard')
     } catch (error) {
       alert( error);
       Alert(error)

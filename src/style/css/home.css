@@ -533,3 +533,7 @@ max-width: 250px;
 /* .book__item__name h6{
   font-size: 10px;
 } */
+
+.home__talks__div img{
+  max-height: 300px;
+}

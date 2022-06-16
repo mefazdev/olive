@@ -1,11 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../style/css/cart.css";
 import "../style/css/orderDownload.css";
 import cart1 from "../images/cart/cart1.png";
 import cart2 from "../images/cart/cart2.png";
 import { Button } from "@material-ui/core";
 import Featur from "../components/Featur";
+import Header from "../components/Header";
+import { db} from "../firebase";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,  
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where,
+  getDoc,
+} from "@firebase/firestore";
+
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
+import { useParams } from "react-router-dom";
 function OrderDownload() {
+
+  const id = useParams();
   const [cart] = useState([
     {
       name: "Rising Like a Storm",
@@ -32,12 +54,55 @@ function OrderDownload() {
       total: 510,
     },
   ]);
+ const [total,setTotal] = useState()
+  const [order,setOrder] = useState([])
+  const [address,setAddress] = useState({})
+  const [user, setUser] = useState({});
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+  const fetchData = async () => {
+    const docRef = doc(db, "order", id.id);
+    const docSnap = await getDocs(docRef);
+
+    setOrder(docSnap.data());
+  };
+
+  const fetchAddress = async () => {
+    const userId = await user?.uid;
+    if (user) {
+      
+      const docRef = doc(db, "address", userId);
+      const docSnap = await getDoc(docRef);
+  
+      setOrder(docSnap.data());
+    }
+  };
+  useEffect(()=>{
+    fetchAddress()
+    fetchData()
+  },[])
+  useEffect(()=>{
+    subTotal()
+  },[order])
+  const subTotal = async () => {
+    let sum = 0;
+
+    order.forEach((element) => {
+      let price = parseInt(element.data().price);
+      sum += price;
+    });
+    setTotal(sum);
+  };
   return (
+    <>
+    <Header/>
     <div className="order__down container">
       <div className="order__down__content">
         <div className="order__down__product">
           <div className="order__down__head">
             <span className="order__down__round">
+              <button onClick={()=>console.log(order)}></button>
               <p>1</p>
             </span>
             <h5>Products</h5>
@@ -53,7 +118,10 @@ function OrderDownload() {
                 <th id="total__th">Total</th>
               </tr>
 
-              {cart.map((data) => {
+              {order.map((data,index) => {
+                  let p = parseInt(data.price);
+                  let q = parseInt(data.quantity);
+                  const total = p * q;
                 return (
                   <tr>
                     <td>
@@ -75,7 +143,7 @@ function OrderDownload() {
                     </td>
                     <td id="table__td">
                       <h6>
-                        ₹<span>{data.total}</span>
+                        ₹<span>{ total}</span>
                       </h6>
                     </td>
                   </tr>
@@ -199,7 +267,7 @@ function OrderDownload() {
       </div>
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

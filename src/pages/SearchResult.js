@@ -17,6 +17,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import InfoIcon from "@material-ui/icons/Info";
 import FilterSearch from "../components/FilterSearch";
+import Header from "../components/Header";
 function SearchResult() {
   const [show, setShow] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
@@ -107,6 +108,9 @@ function SearchResult() {
     },
   ]);
   return (
+    <>
+    <Header/>
+    
     <div className="search container">
       <div className="path">
         <p>Home </p>
@@ -234,7 +238,7 @@ function SearchResult() {
 
       <PopularList />
       <Featur />
-    </div>
+    </div></>
   );
 }
 

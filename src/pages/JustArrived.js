@@ -9,19 +9,14 @@ import book from "../images/book-read.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Featur from "../components/Featur";
 import { useEffect, useState } from "react";
-import best1 from "../images/author/best1.png";
-import best2 from "../images/author/best2.png";
-import best3 from "../images/author/best3.png";
-import best4 from "../images/author/best4.png";
+ 
 import PopularList from "../components/PopularList";
 import UsePagination from "../components/Pagination";
-import Alert from "react-bootstrap/Alert";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CloseIcon from "@material-ui/icons/Close";
+ 
 import { Link } from "react-router-dom";
-import InfoIcon from "@material-ui/icons/Info";
+ 
 import FilterSearch from "../components/FilterSearch";
-import Product from "../components/JustArrivedBook";
+
 import JustArrivedBook from "../components/JustArrivedBook";
 import { db, storage } from "../firebase";
 import {
@@ -38,6 +33,7 @@ import {
   where,
 
 } from "@firebase/firestore";
+import Header from "../components/Header";
 
 
 function JustArrived() {
@@ -58,6 +54,9 @@ function JustArrived() {
     fetchData();
   }, []);
   return (
+    <>
+    <Header/>
+    
     <div className="categories container">
       <div className="path ">
         <p>Home </p>
@@ -115,7 +114,7 @@ function JustArrived() {
       <PopularList />
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

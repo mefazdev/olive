@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Featur from "../components/Featur";
+import Header from "../components/Header";
 import "../style/css/editAdress.css";
 
 function EditAddress() {
@@ -15,6 +16,9 @@ function EditAddress() {
   const [email, setEmail] = useState("");
 
   return (
+    <>
+    <Header/>
+
     <div className="container">
       <div className="body">
         <div className="container7">
@@ -165,7 +169,7 @@ function EditAddress() {
         </div>
       </div>
       <Featur />
-    </div>
+    </div>    </>
   );
 }
 

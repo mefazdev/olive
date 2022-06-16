@@ -18,16 +18,14 @@ import {
   serverTimestamp,
   deleteDoc,
   updateDoc,
-  where,
-  getDoc,
-
+  where,getDoc
 } from "@firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { Table } from 'react-bootstrap';
-
 import Cookies from 'universal-cookie';
-function AddBook() {
-//  const [admin,setAdmin] =useState ({})
+
+function OfferZone() {
+
     const [modalControl,setModalControl] = useState(false)
     const [uploading,setUploading] = useState (false)
     const [products, setProducts] = useState([]) 
@@ -60,14 +58,20 @@ function AddBook() {
    const [justArvd, setJustArvd] = useState(false)
  const [bSeller, setBSeler] = useState(false)
   const [authors,setAuthors] = useState([])
-
   const cookies = new Cookies();
-  const admin = (cookies.get(admin))
 
+  const admin = cookies.get('admin')
+  const fetchAdmin = async () => {
+    const docRef = doc(db, "admin","VCpm3OTuga0YidDTEIe4");
+    const docSnap = await getDoc(docRef);
 
-
+    // setAdmin(docSnap.data());
+  };
    const fetchData = async () => {
-    const q = await query(collection(db, "products"), orderBy("timestamp", "desc"));
+
+
+
+    const q = await query(collection(db, "products"),where("offerZone","==",true));
     onSnapshot(q, (snapshot) => {
       setProducts(snapshot.docs.map((doc) => doc));
       // console.log(snapshot.docs.map((doc) => doc.data))
@@ -90,9 +94,7 @@ function AddBook() {
 
   useEffect(()=>{
     fetchAuthors()
-    
   },[])
-  
 const handleUpload = async ()=>{
   setUploading(true)
 
@@ -103,7 +105,7 @@ const handleUpload = async ()=>{
    language:language,
    price:price,
    cutPrice:cutPrice,
-   discount:discount,
+   
    category:category,
    edition:edition,
    pages:pages,
@@ -112,11 +114,7 @@ const handleUpload = async ()=>{
    multimedia:multimedia,
    description:description,
    pubDate:pubDate,
-   justArrived:justArrived,
-   bestSeller:bestSeller,
-   classic:classic,
-   popMalayalam:popMalayalam,
-   offerZone:false,
+   offerZone:true,
   
   timestamp: serverTimestamp(),     
  });
@@ -201,88 +199,32 @@ const handleImageThree = (e)=>{
 const deletItem = async (id) => {
   await deleteDoc(doc(db, "products", id));
   const imageRef = ref(storage, `upload/${id}/image`);
-  deleteObject(imageRef).then(console.log("image deleted"));
+  deleteObject(imageRef);
 };
 
 
-const controlBestSeller = ()=>{
-  fetchBestSeller()
 
-  setBSeler(true)
-  setAll(false)
-  setPopMlm(false)
-  setJustArvd(false)
-  // fetchJustArrived()
-}
-const controlJustArrived = async ()=>{
-  setBSeler(false)
-  setAll(false)
-  setPopMlm(false)
-  setJustArvd(true)
-  fetchJustArrived()
-}
-const controlPopularMalayalam = ()=>{
-  setBSeler(false)
-  setAll(false)
-  setPopMlm(true)
-  setJustArvd(false)
-  fetchPopMalayalam()
-  
-}
-const fetchBestSeller = async () => {
-  const q = await query(
-   collection(db, "products"),
-    where("bestSeller", "==", true)
-  );
-      const data =   await getDocs(q)
-        setProducts(data.docs.map((doc) => doc));
-};
 
-const fetchJustArrived = async () => {
-  const q = await query(
-   collection(db, "products"),
-    where("justArrived", "==", true)
-  );
-      const data =   await getDocs(q)
-        setProducts(data.docs.map((doc) => doc));
-};
 
-const fetchPopMalayalam = async () => {
-  const q = await query(
-   collection(db, "products"),
-    where("popMalayalam", "==", true)
-  );
-      const data =   await getDocs(q)
-        setProducts(data.docs.map((doc) => doc));
-};
+ 
+
+ 
 useEffect(()=>{
 fethCategory()
 fetchData()
+fetchAdmin()
 },[])
     return (
-     
-      <>  
-      { admin ? <> <Navbar/>  
+      <>   
+      {admin == 'true' ? <><Navbar/>  
        <div className='ad__cat'>
     <div className='ad__act__head'>
-    <h4  onClick={()=>console.log('author>>>>',author)}>Uploads</h4>
+    <h4  >Offer zone books</h4>
    <button onClick={()=>setModalControl(true)} >Add</button>
     </div>  
  
     <div className='upload__content'>
-        <div className='upload__content__head'>
-        <p>
-          {
-             all ? 'All' : justArvd ? 'Just Arrived' : bSeller ? 'Best Seller' : popMlm ? 'Popular Malayalam': '' 
-          }
-        </p>
-        <div>  
-            <button onClick={fetchData}>All</button>
-            <button onClick={controlJustArrived}>Just Arrived</button>
-            <button onClick={controlBestSeller}>Best Seller</button>
-            <button onClick={controlPopularMalayalam}>Popular Malayalam</button>
-        </div>
-        </div>
+        
 
          <Table striped bordered hover id='ad__cat__table'>
   <thead>
@@ -319,8 +261,8 @@ fetchData()
   </tbody>
 </Table> 
     </div> 
-    </div></> : ""} 
-     
+    </div></> :''}
+      
 
     {/* <Modal
         show={true}
@@ -357,7 +299,7 @@ fetchData()
                  {authors.map((data,index)=>{
                    const option = data.data().name
                    return(
-                    <option  id={index}>
+                    <option  key={index}>
                    {option}
                    </option>
                    )
@@ -429,7 +371,7 @@ fetchData()
                  {fethedCategory.map((data,index)=>{
                    const option = data.data().title
                    return(
-                    <option  id={index}>
+                    <option  key={index}>
                    {option}
                    </option>
                    )
@@ -438,15 +380,7 @@ fetchData()
                </select>
 
              </div></Col>
-              <Col><div className='add__book__modal__row__item'>
-            
-               <input
-               placeholder='Discount'
-               value={discount}
-               onChange={((e)=>setDiscount(e.target.value))}
-               />
-
-             </div></Col>
+               
             
            </Row>
             
@@ -537,13 +471,7 @@ fetchData()
 
              </div></Col>
               <Col><div className='add__book__modal__row__item'>
-              {/* <label>Publishing Date</label>
-              <input
-              type='date'
-               placeholder='Publishing Date'
-               value={pubDate}
-               onChange={((e)=>setPubDate (e.target.value))}
-               /> */}
+              
                             </div></Col>
             </Row>
             <div className='ad__book__desc'>
@@ -552,47 +480,9 @@ fetchData()
               placeholder='Description'
               rows='5' />
             </div>
-            <Row>
-              <Col>  <div className='add__book__modal__radio'>
-              <label>Just Arrived ?</label>
-               <input
-               type='checkbox'
-              //  value={justArrived}
-               onChange={((e)=>setJustArrived(!justArrived))}
-               />
-
-             </div></Col>
-              <Col><div className='add__book__modal__radio'>
-              <label>Best Seller ?</label>
-              <input
-              type='checkbox'
-              //  placeholder='Publishing Date'
-               value={bestSeller}
-               onChange={((e)=>setBestSeller (!bestSeller))}
-               />
-                            </div></Col>
-            </Row>
             
-            <Row>
-              <Col>  <div className='add__book__modal__radio'>
-              <label>Popular Malayalam ?</label>
-               <input
-               type='checkbox'
-              //  value={multimedia}
-               onChange={((e)=>setPopMalayalam(!popMalayalam))}
-               />
-
-             </div></Col>
-              <Col><div className='add__book__modal__radio'>
-              <label>Classic</label>
-              <input
-              type='checkbox'
+            
              
-               
-               onChange={((e)=>setClassic (!classic))}
-               />
-                            </div></Col>
-            </Row>
             
            
              
@@ -612,4 +502,4 @@ fetchData()
   )
 }
 
-export default AddBook
+export default OfferZone

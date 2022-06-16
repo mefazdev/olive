@@ -25,6 +25,7 @@ import {
   where, getDoc
 } from "@firebase/firestore";
 import { auth } from "../firebase";
+import Header from "../components/Header";
 function AddAddress() {
   const [user, setUser] = useState({})
   const [quantity, setQuantity] = useState(false)
@@ -64,6 +65,7 @@ function AddAddress() {
     await deleteDoc(doc(db, "address", id));
   }
   return (
+    <><Header/>
     <div className=" container">
       <div className="container1">
         <div className="path" style={{ marginLeft: "-10px" }}>
@@ -162,7 +164,7 @@ function AddAddress() {
       </div>
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

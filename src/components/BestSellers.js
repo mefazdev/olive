@@ -13,6 +13,7 @@ import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, orderBy, query, getDocs } from "@firebase/firestore";
+
 import Product from "./Product";
 
 const responsive = {
@@ -34,6 +35,7 @@ function BestSellers() {
   const [bestSeller, setBestSeller] = useState([]);
   const [show, setShow] = useState(false);
   var [filteredData] = useState([]);
+ 
   const [finalDocs, setFinalDocs] = useState([]);
 
 
@@ -63,7 +65,7 @@ function BestSellers() {
   };
 
   useEffect(() => {
-    // fetchData();
+    fetchData();
   }, []);
   useEffect(() => {
     filterData();
@@ -109,21 +111,18 @@ function BestSellers() {
                 itemClass="popular__ani"
               >
                 {finalDocs.map((data, index) => {
-                  if (index < 10) {
+                  if (index < 20) {
                     return (
-                      <Link
-                        to={`/book/${data.id}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
+                      
                         <Product
                           name={data.data().name}
                           author={data.data().author}
                           image={data.data().thumbnail}
                           price={data.data().price}
                           cutPrice={data.data().cutPrice}
+                          id={data.id}
                         />
-                        {/* {data.data().timestamp} */}
-                      </Link>
+                  
                     );
                   }
                 })}
@@ -162,20 +161,21 @@ function BestSellers() {
                 itemClass="popular__ani"
               >
                 {finalDocs.map((data, index) => {
-                  if (index >= 10) {
+                  if (index >= 20   ) {
                     return (
-                      <Link
-                        to={`/book/${data.id}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
+                      // <Link
+                      //   to={`/book/${data.id}`}
+                      //   style={{ textDecoration: "none", color: "inherit" }}
+                      // >
                         <Product
                           name={data.data().name}
                           author={data.data().author}
                           image={data.data().thumbnail}
                           price={data.data().price}
                           cutPrice={data.data().cutPrice}
+                          id={data.id}
                         />
-                      </Link>
+                      
                     );
                   }
                 })}

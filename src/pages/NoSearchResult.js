@@ -8,10 +8,14 @@ import image from "../images/no-result.png";
 import "../style/css/searchResult.css";
 import { useState } from "react";
 import FilterSearch from "../components/FilterSearch";
+import Header from "../components/Header";
 
 function NoSearchResult() {
   const [openFilter, setOpenFilter] = useState(false);
   return (
+    <>
+    <Header/>
+    
     <div className="no__result container">
       <Row>
         {/* <<<<<<<<<<<<<<< FILTER SEARCH >>>>>>>>>>>>>>>>>>> */}
@@ -38,7 +42,7 @@ function NoSearchResult() {
       </Row>
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

@@ -32,6 +32,7 @@ import {
   where,
   getDoc,
 } from "@firebase/firestore";
+import HeaderSearch from "./HeaderSearch";
 function Header() {
   const [{ signupModal, basket, loginModal }, dispatch] = useStateValue();
   // const [{basket,signupModal}] = useStateValue();
@@ -110,8 +111,8 @@ function Header() {
                 <Link to="/" id="logo__link">
                   <img className="header__logo " src={logo} alt="logo" />
                 </Link>
-
-                <div className="header__input__div">
+              <HeaderSearch/>
+                {/* <div className="header__input__div">
                   <span className="header__serach__p">
                     <p>All Categories</p>
                   </span>
@@ -124,7 +125,7 @@ function Header() {
                       <SearchIcon />
                     </span>
                   </Link>
-                </div>
+                </div> */}
               </div>
               <Link
                 to="/cart"
@@ -208,7 +209,7 @@ function Header() {
             >
               <h5>Categories</h5>
             </NavLink>
-            <NavLink to="/preorder" activeClassName="nav__active" id="navLink">
+            <NavLink to="/ " activeClassName="nav__active" id="navLink">
               <h5>Pre-order</h5>
             </NavLink>
             <NavLink to="/error" activeClassName="nav__active" id="navLink">

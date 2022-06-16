@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { db, storage } from "../firebase";
+import { db  } from "../firebase";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {
-  addDoc,
+  
   collection,
-  onSnapshot,
+ 
   orderBy,
   query,
   getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where
+  
 } from "@firebase/firestore";
 
 function BoolOfMonth() {
 const [book,setBook] = useState([])
 const [author, setAuthor] = useState([])
-    const fetchBook = async () => {
+const [bookMore,setBookMore] = useState(true)
+const [authorMore,setAuthorMore] = useState(true) 
+const fetchBook = async () => {
         const q = await query(
           collection(db, "bookMonth"), orderBy("timestamp", "desc"));
              const data =   await getDocs(q)
-               setBook(data.docs.map((doc) => doc));
+               setBook(data.docs.map((doc) => doc.data()));
       };
       const fetchAuthor = async () => {
         const q = await query(
@@ -33,8 +31,8 @@ const [author, setAuthor] = useState([])
                setAuthor(data.docs.map((doc) => doc));
       };
       useEffect(()=>{
-        // fetchBook()
-        // fetchAuthor()
+        fetchBook()
+        fetchAuthor()
       },[])
       
   return (
@@ -49,23 +47,18 @@ const [author, setAuthor] = useState([])
                      return(
                        <>
 <Col md="4" id="month__book__col">
-                <img className="col-8 col-md-11" src={data.data().image} />
+                <img className="col-8 col-md-11" src={data.image} />
               </Col>
              
 <Col md="8">
                 <h6>Book of the month</h6>
-                <h4>Ayurveda: medicine without side-effects</h4>
+                <h4>{data.name}</h4>
                 <p>
-                  This book is not a defence of Ayurveda. A sound,
-                  scientific framework of healthcare that has saved
-                  countless lives over 5000 years does not need defenders.
-                  It needs champions, and to be given wings. In a world that
-                  needs Ayurveda more than ever, Dr G.G. Gangadharan, who
-                  has been researching both the theory and the practice for
-                  the past thirty-five years, shows in his book the logic
-                  behind the science.
-                  <span style={{ color: "#46CE04" }}>Read More</span>
-                </p>
+                <p>
+                    {bookMore ? data.description.slice(0,500) : data.description }
+                   
+                    <span onClick={()=>setBookMore(!bookMore)} style={{ color: "#46CE04",marginLeft:'5px',cursor:'pointer' }}>{bookMore ? 'Read more' :'Read less'}</span>
+                  </p>      </p>
               </Col>
                    
               </>
@@ -94,8 +87,9 @@ const [author, setAuthor] = useState([])
                   <h6>Author of the month</h6>
                   <h4>{data.data().name}</h4>
                   <p>
-                    {data.data().description}
-                    <span style={{ color: "#46CE04" }}>Read More</span>
+                    {authorMore ? data.data().description.slice(0,500) : data.data().description }
+                   
+                    <span onClick={()=>setAuthorMore(!authorMore)} style={{ color: "#46CE04",marginLeft:'5px',cursor:'pointer' }}>{authorMore ? 'Read more' :'Read less'}</span>
                   </p>
                 </Col>
                 </>

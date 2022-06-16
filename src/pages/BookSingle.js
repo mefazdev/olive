@@ -14,13 +14,7 @@ import ShareOutlinedIcon from "@material-ui/icons/ShareOutlined";
 import { useEffect, useState } from "react";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import ReactStars from "react-rating-stars-component";
-import best1 from "../images/author/best1.png";
-import best2 from "../images/author/best2.png";
-import best3 from "../images/author/best3.png";
-import best4 from "../images/author/best4.png";
-import pop4 from "../images/popular/pop4.jpg";
-import pop6 from "../images/popular/pop6.jpg";
-import pop8 from "../images/popular/pop8.jpg";
+import Moment from "moment";
 import prebook from "../images/prebook.png";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Featur from "../components/Featur";
@@ -31,6 +25,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "react-router-dom";
 import InfoIcon from "@material-ui/icons/Info";
 import { db, storage } from "../firebase";
+import { auth } from "../firebase";
 import {
   addDoc,
   collection,
@@ -43,134 +38,177 @@ import {
   deleteDoc,
   updateDoc,
   where,
-  getDoc
+  getDoc,
 } from "@firebase/firestore";
-import {
-    
-    useParams
-  } from "react-router-dom";
+import { useStateValue } from "../stateProvider";
+import { onAuthStateChanged } from "firebase/auth";
+import { useParams } from "react-router-dom";
 import Product from "../components/Product";
+import Header from "../components/Header";
 function BookSingle() {
-
-  const  id = useParams()
-  const [quantity,setQuantity] = useState(1)
+  const id = useParams();
+  const [quantity, setQuantity] = useState(1);
   const [bookMark, setBookMark] = useState(false);
   const [details, setDetails] = useState(true);
   const [review, setReview] = useState(false);
   const [show, setShow] = useState(false);
   const [isReadMore, setIsReadMore] = useState(true);
-const [product, setProduct] = useState({})
-const [bestSeller, setBestSeller] = useState([])
+  const [product, setProduct] = useState({});
+  const [bestSeller, setBestSeller] = useState([]);
+  const [{ basket }, dispatch] = useStateValue();
+  const [user, setUser] = useState({});
+  const [rate, setRate] = useState("");
+  const [comment, setComment] = useState("");
+  const [commentBox, setCommentBox] = useState(false);
+  const [reviewDoc, setReviewDoc] = useState([]);
+  const [reviewTitle, setReviewTitle] = useState("");
+  const [reviewLimit, setReviewLimit] = useState(6);
+  const [totalRate, setTotalRate] = useState();
+  const [oneStar,setOneStar] = useState()
+  const [twoStar,setTwoStar] = useState()
+  const [threeStar,setThreeStar] = useState()
+  const [fourStar,setFourStar] = useState()
+  const [fiveStar,setFiveStar] = useState()
+  // const [bestSeller, setBestSeller] = useState([])
+  // const [quantity, setQuantity] = useState(false);
 
   const fetchData = async () => {
-    const docRef =  doc(db, "products", id.id);
+    const docRef = doc(db, "products", id.id);
     const docSnap = await getDoc(docRef);
-        
-      setProduct(docSnap.data())        
-      console.log(docSnap.data())  
+
+    setProduct(docSnap.data());
   };
 
   const fetchBestSeller = async () => {
     const q = await query(
       collection(db, "products"),
-       where("bestSeller", "==", true)
-     );
-         const data =   await getDocs(q) 
-           setBestSeller(data.docs.map((doc) => doc));
+      where("bestSeller", "==", true)
+    );
+    const data = await getDocs(q);
+    setBestSeller(data.docs.map((doc) => doc));
   };
-  useEffect(()=>{
-    fetchData()
-    fetchBestSeller()
-  },[])
 
+  const fetchReview = async () => {
+    const bookId = (await id) ? id.id : null;
+    const q = await query(
+      collection(db, "review"),
+      where("bookId", "==", bookId)
+    );
+    onSnapshot(q, (snapshot) => {
+      setReviewDoc(snapshot.docs.map((doc) => doc.data()));
+    });
+    
+  };
+  
+  useEffect(() => {
+    fetchData();
+    fetchBestSeller();
+    calTotalRate();
+  }, [id]);
+  useEffect(() => {
+    calTotalRate();
+  }, [reviewDoc]);
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
 
+  const addToCart = async () => {
+    // setQuantity(true);
+    // if (!quantity) {
+    await addDoc(collection(db, "cart"), {
+      quantity: quantity,
+      userId: user.uid,
+      bookId: id,
+      thumbnail: product.thumbnail,
+      name: product.name,
+      author: product.author,
+      price: product.price,
+      timestamp: serverTimestamp(),
+      // data:data
+    });
+    // }
+  };
+  const addToBookMark = async () => {
+    setBookMark(!bookMark);
+    // setQuantity(true);
+    // if (!quantity) {
+    await addDoc(collection(db, "bookMark"), {
+      thumbnail: product.thumbnail,
+      name: product.name,
+      author: product.author,
+      price: product.price,
+      cutPrice: product.cutPrice,
+      userId: user.uid,
+      // bookId: id,
+      timestamp: serverTimestamp(),
+      // data:data
+    });
+    // }
+  };
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
-  const [data] = useState([
-    {
-      tittle: "Great Story! You Love it",
-      text: "Nice book... It should be read by the one who want to learn something to be better in life..... But in this book(think and.....) they have given only their own successful peopl example..Due to which a common man may think about them only except our own successful person....",
-      stars: 4,
-      date: "2021 April 7 | Alex M",
-    },
-    {
-      tittle: "Amazing offer on amazing books",
-      text: `'Ours have the world's greatest epic Shrimad Bhagwad Geeta this book alone can change the life of the man who read this...... It seems like I m exaggerating but trust me whoever read this epic no one could tell that it's not a perfect book..... Even other religious people read and admire this book.....'`,
-      stars: 3,
-      date: "2021 April 7 | Alex M",
-    },
-    {
-      tittle: "Box was damaged, and crumpled",
-      text: "The shipping was ok, but it could be the fault of the handling process. The box had dents and the books as well",
-      stars: 2,
-      date: "2021 April 7 | Alex M",
-    },
-    {
-      tittle:
-        "Waste of time for investors who wants to learn more about investing",
-      text: "Nice book... It should be read by the one who want to learn something to be better in life..... But in this book(think and.....) they have given only their own successful peopl example..Due to which a common man may think about them only except our own successful person....",
-      stars: 3,
-      date: "2021 April 7 | Alex M",
-    },
-  ]);
+ 
+   
 
-  const [item] = useState([
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma  ",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-  ]);
-  const description =  product.description ? product.description :''
+  const postReview = async () => {
+    await addDoc(collection(db, "review"), {
+      comment: comment,
+      rate: rate,
+      user: user.email.slice(0, 5),
+      bookId: id.id,
+      title: reviewTitle,
+      date: new Date(),
+      timestamp: serverTimestamp(),
+    });
+    setCommentBox(false);
+    setReviewTitle(null);
+    setComment(null);
+    setRate(null);
+  };
+
+  const calTotalRate = async () => {
+    let total = 0;
+    let oneStar = 0;
+    reviewDoc.forEach((element) => {
+    let star = parseInt(element.rate);
+    total += star;
+
+    if(star == 1){
+      let oneS = star
+    }else if(star == 2){
+      let twoS = star
+    }else if(star == 3) {
+     let threeS = star
+     setThreeStar(threeS)
+    }else if (star == 4){
+      let fourS = star
+      setFourStar(fourS)
+    }else if(star == 5){
+      let fiveS = star
+    }
+    });
+    setTotalRate(total);
+  };
+  
+  useEffect(() => {
+    fetchReview();
+  }, [id]);
+  const description = product.description ? product.description : "";
   return (
+    <>
+    <Header/>
+    
     <div className="book__single container">
       <div className="path ">
         <p>Home </p>
         <ArrowForwardIosIcon id="path__icon" />
         <p>Categories </p>
-        
+
         <ArrowForwardIosIcon id="path__icon" />
         <p>{product.name}</p>
       </div>
-
+      {/* <button onClick={()=>console.log(reviewDoc)}>CLICK</button> */}
       <div className="book__single__content">
         <Row>
           <Col id="book__single__img__col" md="3">
@@ -201,7 +239,7 @@ const [bestSeller, setBestSeller] = useState([])
                   <StarIcon id="book__star" />
                   <StarIcon id="book__star" />
                   <StarIcon id="book__star" />
-                  <p>(274)</p>
+                  <p>({totalRate})</p>
                 </div>
                 <div className="book__description__star__right">
                   <p>By</p>
@@ -213,43 +251,50 @@ const [bestSeller, setBestSeller] = useState([])
                 <h5>₹{product.price}</h5>
                 <p>
                   Book Format:
-                  <span style={{ paddingLeft: "5px" }}>{product.bookFormat}</span>
+                  <span style={{ paddingLeft: "5px" }}>
+                    {product.bookFormat}
+                  </span>
                 </p>
               </div>
               <div className="book__description__text">
                 <p>
-                  {isReadMore ? description.slice(0, 550) : description}
+                  {isReadMore ? description.slice(0, 200) : description}
                   <span
                     onClick={toggleReadMore}
                     style={{ color: "#46CE04", cursor: "pointer" }}
                   >
                     {isReadMore ? "...read more" : " show less"}
                   </span>
-                </p>  
+                </p>
               </div>
 
               <div className="book__description__button__row">
                 <div className="book__description_increment">
                   <Button
-                  onClick={()=>setQuantity(quantity > 0 ? quantity-1 : 0 )}
-                   id="add__button">
+                    onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
+                    id="add__button"
+                  >
                     -
                   </Button>
                   <p>{quantity}</p>
-                  <Button onClick={()=>setQuantity(quantity+1)} id="add__button">
+                  <Button
+                    onClick={() => setQuantity(quantity + 1)}
+                    id="add__button"
+                  >
                     +
                   </Button>
                 </div>
-                <Button onClick={""} type="button" id="book__add__button">
+                <Button
+                  onClick={addToCart}
+                  type="button"
+                  id="book__add__button"
+                >
                   Add to cart
                 </Button>
               </div>
 
               <div className="book__share__row">
-                <div
-                  className="book__book__mark"
-                  onClick={() => setBookMark(!bookMark)}
-                >
+                <div className="book__book__mark" onClick={addToBookMark}>
                   <BookmarkBorderIcon
                     id="book__bookmark__icon"
                     className={bookMark ? "bookMark" : "book__bookmark__icon"}
@@ -288,7 +333,7 @@ const [bestSeller, setBestSeller] = useState([])
                         : "book__detailes__head__h6"
                     }
                   >
-                    Reviews (12)
+                    Reviews ({reviewDoc.length})
                   </h6>
                 </div>
               </div>
@@ -363,7 +408,7 @@ const [bestSeller, setBestSeller] = useState([])
                           <div className="book__review__rating">
                             <h1>4.7</h1>
                             <div className="book__review__rating__right">
-                              <p>285 Reviews</p>
+                              <p>{reviewDoc.length} Reviews</p>
                               <div className="book__review__rating__star">
                                 <StarIcon id="book__star" />
                                 <StarIcon id="book__star" />
@@ -374,7 +419,12 @@ const [bestSeller, setBestSeller] = useState([])
                             </div>
                           </div>
 
-                          <button id="review__button">Write a Review</button>
+                          <button
+                            onClick={() => setCommentBox(true)}
+                            id="review__button"
+                          >
+                            Write a Review
+                          </button>
                         </div>
                       </Col>
                       <Col id="progress__col">
@@ -385,10 +435,10 @@ const [bestSeller, setBestSeller] = useState([])
                             <ProgressBar
                               className="progress__bar"
                               variant="warning"
-                              now={80}
+                              now={fiveStar}
                             />
 
-                            <p>200</p>
+                            <p>{fiveStar}</p>
                           </div>
                           <div className="book__progress">
                             <p>4 Star</p>
@@ -396,32 +446,22 @@ const [bestSeller, setBestSeller] = useState([])
                             <ProgressBar
                               className="progress__bar"
                               variant="warning"
-                              now={60}
+                              now={fourStar} 
                             />
 
-                            <p>50</p>
+                            <p>{fourStar}</p>
                           </div>
-                          <div className="book__progress">
-                            <p>5 Star</p>
-
-                            <ProgressBar
-                              className="progress__bar"
-                              variant="warning"
-                              now={40}
-                            />
-
-                            <p>200</p>
-                          </div>
+                          
                           <div className="book__progress">
                             <p>3 Star</p>
 
                             <ProgressBar
                               className="progress__bar"
                               variant="warning"
-                              now={30}
+                              now={threeStar}
                             />
 
-                            <p>14</p>
+                            <p>{threeStar}</p>
                           </div>
                           <div className="book__progress">
                             <p>2 Star</p>
@@ -429,10 +469,10 @@ const [bestSeller, setBestSeller] = useState([])
                             <ProgressBar
                               className="progress__bar"
                               variant="warning"
-                              now={15}
+                              now={twoStar}
                             />
 
-                            <p>20</p>
+                            <p>{twoStar}</p>
                           </div>
                           <div className="book__progress">
                             <p>1 Star</p>
@@ -440,47 +480,91 @@ const [bestSeller, setBestSeller] = useState([])
                             <ProgressBar
                               className="progress__bar"
                               variant="warning"
-                              now={10}
+                              now={oneStar}
                             />
 
-                            <p>8</p>
+                            <p>{oneStar}</p>
                           </div>
                         </div>
                       </Col>
                     </Row>
                   </div>
+                  {commentBox ? (
+                    <div className="reciew__input">
+                      <input
+                        placeholder="Title"
+                        onChange={(e) => setReviewTitle(e.target.value)}
+                      />
+                      <textarea
+                        placeholder="Comment"
+                        onChange={(e) => setComment(e.target.value)}
+                        rows={3}
+                      />
+                      <Row>
+                        <Col>
+                          <p>Rate this book</p>
+                          <ReactStars
+                            classNames="add__rate"
+                            // id="review__stars"
+                            count={5}
+                            onChange={setRate}
+                            size={34}
+                            activeColor="#ffd700"
+                          />
+                        </Col>
+                        <Col>
+                          <button onClick={postReview}>Post</button>
+                        </Col>
+                      </Row>
+                    </div>
+                  ) : (
+                    ""
+                  )}
 
                   <div className="book__review__content">
                     <Row>
                       <Col xs="12" md="8">
-                        {data.map((data) => {
-                          return (
-                            <div>
-                              <div className="review__content__head">
-                                <h6>{data.tittle}</h6>
-                                <div className="review__stars__div">
-                                  <ReactStars
-                                    id="review__stars"
-                                    count={5}
-                                    value={data.stars}
-                                    size={24}
-                                    activeColor="#ffd700"
-                                  />
-                                </div>
-                              </div>
-                              <div className="review__text">
-                                <p>{data.text}</p>
-                                <div className="review__date">
-                                  <h6>{data.date}</h6>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
+                        {reviewDoc.map((data, index) => {
+                          if (index < reviewLimit) {
+                            const date = Moment(data.time).format(
+                              "MMM DD YYYY"
+                            );
 
-                        <div className="review__more">
-                          <h5 type="text">View All Reviews</h5>
-                        </div>
+                            return (
+                              <div>
+                                <div className="review__content__head">
+                                  <h6>{data.title}</h6>
+                                  <div className="review__stars__div">
+                                    <ReactStars
+                                      id="review__stars"
+                                      count={5}
+                                      value={data.rate}
+                                      size={24}
+                                      activeColor="#ffd700"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="review__text">
+                                  <p>{data.comment}</p>
+                                  <div className="review__date">
+                                    <h6>
+                                      {date} {data.user}
+                                    </h6>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+                        })}
+                        {reviewDoc.length != 0 ? (
+                          <div className="review__more">
+                            <h5 type="text" onClick={() => setReviewLimit(200)}>
+                              View All Reviews
+                            </h5>
+                          </div>
+                        ) : (
+                          ""
+                        )}
                       </Col>
                     </Row>
                   </div>
@@ -491,7 +575,7 @@ const [bestSeller, setBestSeller] = useState([])
         </Row>
 
         {/* <<<<<<<<<<< ALSO BROUGHT BOOKS */}
-       
+
         <div className="also__brought">
           <div className="also__brought__head">
             <h6>
@@ -502,14 +586,22 @@ const [bestSeller, setBestSeller] = useState([])
           </div>
 
           <Row>
-            {bestSeller.map((data,index) => {
-              if(index < 7){
+            {bestSeller.map((data, index) => {
+              if (index < 7) {
                 return (
-                
                   <Col id={index} xs="6" sm="4" md="2">
-                    <div className="book__item">
+                    <Product
+                     style={{ textDecoration: "none", color: "inherit" }} 
+              name={data.data().name}
+              author={data.data().author}
+              image={data.data().thumbnail}
+              price={data.data().price}
+              cutPrice={data.data().cutPrice}
+              id = {data.id}
+              />
+                    {/* <div className="book__item">
                       <Link
-                       to={`/book/${data.id}`}
+                        to={`/book/${data.id}`}
                         style={{
                           textDecoration: "none",
                           color: "inherit",
@@ -533,20 +625,24 @@ const [bestSeller, setBestSeller] = useState([])
                           <p className="book__item__cut__price">
                             ₹{data.data().cutPrice}
                           </p>
-                          <p className="book__item__price">₹{data.data().price}</p>
+                          <p className="book__item__price">
+                            ₹{data.data().price}
+                          </p>
                         </div>
-   
+
                         <AddShoppingCartIcon
+                          onClick={user ? addToCart : openLogin}
+                          // id={
+                          //   !quantity ? "arrived___cart__icon" : "arrived___cart__icon__active"
+                          // }
                           type="button"
-                    
                           id="book__item___cart__icon"
                         />
                       </div>
-                    </div>
+                    </div> */}
                   </Col>
                 );
               }
-              
             })}
           </Row>
         </div>
@@ -556,7 +652,7 @@ const [bestSeller, setBestSeller] = useState([])
       <PopularList />
 
       <Featur />
-    </div>
+    </div></>
   );
 }
 

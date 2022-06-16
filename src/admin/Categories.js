@@ -16,10 +16,11 @@ import {
   doc,
   serverTimestamp,
   deleteDoc,
-  updateDoc,
+  updateDoc,getDoc
 } from "@firebase/firestore";
 import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { Table } from 'react-bootstrap';
+import Cookies from 'universal-cookie';
 
 function Categories() {
     const [modalControl, setModalControl] = useState(false)
@@ -27,7 +28,9 @@ function Categories() {
     const [image, setImage] = useState(null)
     const [uploading, setUploading] = useState(false)
     const [categories, setCategories] = useState([])
+    const cookies = new Cookies();
 
+    const admin = cookies.get('admin')
 
       const fetchData = async () => {
         const q = await query(collection(db, "categories"), orderBy("timestamp", "desc"));
@@ -36,7 +39,12 @@ function Categories() {
           // console.log(snapshot.docs.map((doc) => doc.data))
         });
       };
-
+      const fetchAdmin = async () => {
+        const docRef = doc(db, "admin","VCpm3OTuga0YidDTEIe4");
+        const docSnap = await getDoc(docRef);
+    
+        // setAdmin(docSnap.data());
+      };
     const handleUpload = async ()=>{
 setUploading(true)
 const docRef = await addDoc(collection(db, "categories"), {
@@ -83,11 +91,12 @@ const docRef = await addDoc(collection(db, "categories"), {
 
     useEffect (()=>{
         fetchData()
+        fetchAdmin()
     },[])
   return (
 
     <>
-    <Navbar/>
+    {admin == 'true'  ? <><Navbar/>
         <div className='ad__cat'>
             <div className='ad__act__head'>
             <h4>Categories</h4>
@@ -121,7 +130,8 @@ const docRef = await addDoc(collection(db, "categories"), {
    
   </tbody>
 </Table>
-        </div>
+        </div></> :''}
+    
         <Modal
         show={modalControl}
         size="lg"
