@@ -26,6 +26,7 @@ import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storag
 import { Table } from 'react-bootstrap';
 
 import Cookies from 'universal-cookie';
+import { Link } from 'react-router-dom';
 function AddBook() {
 //  const [admin,setAdmin] =useState ({})
     const [modalControl,setModalControl] = useState(false)
@@ -62,7 +63,7 @@ function AddBook() {
   const [authors,setAuthors] = useState([])
 
   const cookies = new Cookies();
-  const admin = (cookies.get(admin))
+  const admin = (cookies.get('admin'))
 
 
 
@@ -262,10 +263,10 @@ fetchData()
     return (
      
       <>  
-      { admin ? <> <Navbar/>  
+      { admin == 'true' ? <> <Navbar/>  
        <div className='ad__cat'>
     <div className='ad__act__head'>
-    <h4  onClick={()=>console.log('author>>>>',author)}>Uploads</h4>
+    <h4  >Uploads</h4>
    <button onClick={()=>setModalControl(true)} >Add</button>
     </div>  
  
@@ -383,7 +384,7 @@ fetchData()
 
              </div></Col>
             </Row>
-            
+            <p>Please make sure you have added the author in  authors page <span><Link to='/admin/authors'>Add now</Link> </span></p>
             <Row>
               <Col  >  <div className='add__book__modal__row__item'>
              
@@ -450,7 +451,7 @@ fetchData()
             
            </Row>
             
-  
+           <p>Please make sure you have added the category in  category page <span><Link to='/admin/categories'>Add now</Link> </span></p>
             <Row>
               <Col>  <div className='add__book__modal__row__item'>
                <input

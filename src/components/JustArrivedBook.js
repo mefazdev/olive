@@ -50,8 +50,16 @@ function Product({
         timestamp: serverTimestamp(),
         // data:data
       });
+      openToast()
     }
   };
+
+  const openToast = ()=>{
+    dispatch({
+      type: 'SHOW__TOAST',
+      toast: true
+    })
+  }
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);

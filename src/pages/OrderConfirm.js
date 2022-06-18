@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Featur from "../components/Featur";
 import "../style/css/orderConfirm.css";
@@ -11,7 +11,24 @@ import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import Header from "../components/Header";
+import { auth, db, storage } from "../firebase";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  updateDoc,
+  where,
+  getDoc,
+} from "@firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 function OrderConfirm() {
+  const [bestSeller, setBestSeller] = useState([]);
   const [bookMark, setBookMark] = useState(false);
   const [item] = useState([
     {
@@ -57,6 +74,46 @@ function OrderConfirm() {
       price: "321",
     },
   ]);
+  const [user, setUser] = useState({});
+  var [filteredData] = useState([]);
+ 
+  const [finalDocs, setFinalDocs] = useState([]);
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  
+
+
+
+  const fetchData = async () => {
+    const q = await query(
+      collection(db, "products"),
+      orderBy("timestamp", "desc")
+    );
+    const data = await getDocs(q);
+    setBestSeller(data.docs.map((doc) => doc));
+  };
+
+  const filterData = () => {
+    bestSeller.map((data) => {
+      // filteredData.push(data)
+      if (data.data().bestSeller == true) {
+        // console.log('data>>>>',data.data().name)
+
+        filteredData = [...filteredData, data];
+
+        // setFilteredData(data)
+        setFinalDocs(filteredData);
+      }
+    });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  useEffect(() => {
+    filterData();
+  }, [bestSeller]);
   return (
     <>
     <Header/>
@@ -81,7 +138,7 @@ function OrderConfirm() {
           </div>
           <div className="confirm-middle">
             <p className="check-name">
-              Hey <span>Alex</span>,
+              Hey <span> {user   && user.email ? user.email.slice(0, 5) : ""}</span>,
             </p>
             <p className="check-text">
               meanwhile check this recommendations. Handcrafted for you
@@ -90,26 +147,29 @@ function OrderConfirm() {
 
           <Container className="confirm__book__container">
             <Row>
-              {item.map((data) => {
-                return (
-                  <Col xs="6" sm="6" md="4">
-                    <div className="confirm__book__item">
-                      <img src={data.image} />
-
-                      <div className="confirm__item__name">
-                        <h6>{data.name}</h6>
-                        <p>{data.author}</p>
+              {finalDocs.map((data,index) => {
+                if(index < 7){
+                  return (
+                    <Col key={index} xs="6" sm="6" md="4">
+                      <div className="confirm__book__item">
+                        <img src={data.data().thumbnail} />
+  
+                        <div className="confirm__item__name">
+                          <h6>{data.data().name}</h6>
+                          <p>{data.data().author}</p>
+                        </div>
+                        <div className="confirm__item__bookmark">
+                          <BookmarkBorderIcon
+                            id="confirm__book__mark__icon"
+                            className="book__bookmark__not"
+                          />
+                          <h5 >ADD TO BOOKMARK</h5>
+                        </div>
                       </div>
-                      <div className="confirm__item__bookmark">
-                        <BookmarkBorderIcon
-                          id="confirm__book__mark__icon"
-                          className="book__bookmark__not"
-                        />
-                        <h5 >ADD TO BOOKMARK</h5>
-                      </div>
-                    </div>
-                  </Col>
-                );
+                    </Col>
+                  );
+                }
+              
               })}
             </Row>
           </Container>

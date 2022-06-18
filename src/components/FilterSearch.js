@@ -48,9 +48,9 @@ function FilterSearch() {
               <div className="search__item__row">
                 <input type="checkbox" /> <p>Hindi</p>
               </div>
-              <div className="search__item__row">
+              {/* <div className="search__item__row">
                 <input type="checkbox" /> <p>Hindi</p>
-              </div>
+              </div> */}
             </div>
           </Dropdown.Menu>
         </Dropdown>
@@ -96,9 +96,9 @@ function FilterSearch() {
               </div>
             </div>
           </Dropdown.Menu>
-        </Dropdown>
+        </Dropdown> 
 
-        {/* BY DATE */}
+        {/* {/* BY DATE */}
 
         <Dropdown id="search__dropdown">
           <Dropdown.Toggle variant="none" id="dropdown-basic">

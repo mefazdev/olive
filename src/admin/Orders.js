@@ -160,12 +160,12 @@ const ControlDeliver = async (id,status)=>{
    
   const updateRef=  await updateDoc (docRef,  {
    status:'Shipped',
-   shippedDate:serverTimestamp()
+   shippedDate:moment(new Date()).unix()
   })
    } else if(status === 'Shipped'){
     const updateRef=  await updateDoc (docRef,  {
       status:'Delivered',
-      deliveredDate:serverTimestamp()
+      deliveredDate: moment(new Date()).unix()
      })
    }else {
     return""
@@ -218,18 +218,22 @@ const ControlDeliver = async (id,status)=>{
               <th>Status</th>
               <th>Address</th>
               <th>Action</th>
-            </tr>
+            </tr> 
           </thead>
           <tbody>
             {orders.map((data, index) => {
+              // const d = data.data().recivedDate
+              // const date = moment(d).format("MMM DD, YYYY");
+              // const date = moment(d).format('MMM DD YYYY')
+              const d = data.data().recivedDate
+              const date = moment.unix(d).format("MMM DD, YY");
+ 
               const no = orders.length - index;
               //   setUser(data.data().userId)
               return (
                 <tr key={index}>
                   <td>{no}</td>
-                  <td>{moment(data.time).format(
-                              "MMM DD YYYY"
-                            )}</td>
+                  <td>{date}</td>
                   <td>{data.data().orderId}</td>
                   <td>
                     {data.data().order.map((order) => {

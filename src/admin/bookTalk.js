@@ -152,7 +152,7 @@ const fetchBookNames = async () => {
       {admin == 'true' ? <><NavBar/>
         <div className='ad__cat'>
     <div className='ad__act__head'>
-    <h4>Book of the month</h4>
+    <h4>Book Talk</h4>
    <button onClick={()=>setModal(true)} >Add</button>
     </div>  
  

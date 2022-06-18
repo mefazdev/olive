@@ -552,3 +552,11 @@ cursor: pointer;
 #search__cancel__icon{
    position: absolute;
 }
+
+
+.toster{
+   position: absolute;
+   right: 0;
+   z-index: 100;
+   background-color: #fff;
+}

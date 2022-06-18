@@ -7,6 +7,7 @@ import { Button } from "@material-ui/core";
 import Featur from "../components/Featur";
 import Header from "../components/Header";
 import { db} from "../firebase";
+import moment from "moment";
 import {
   addDoc,
   collection,
@@ -25,6 +26,8 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { useParams } from "react-router-dom";
+import { relativeTimeRounding } from "moment";
+import { Col, Row } from "react-bootstrap";
 function OrderDownload() {
 
   const id = useParams();
@@ -55,15 +58,20 @@ function OrderDownload() {
     },
   ]);
  const [total,setTotal] = useState()
-  const [order,setOrder] = useState([])
-  const [address,setAddress] = useState({})
+  const [order,setOrder] = useState({})
+  const [address,setAddress] = useState([])
   const [user, setUser] = useState({});
+
+const recivedDate = moment.unix(order.recivedDate).format("MMM DD, YY");
+const shippedDate = moment.unix(order.shippedDate).format("MMM DD, YY");
+const deliveredDate = moment.unix(order.deliveredDate).format("MMM DD, YY");
+
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
   const fetchData = async () => {
     const docRef = doc(db, "order", id.id);
-    const docSnap = await getDocs(docRef);
+    const docSnap = await getDoc(docRef);
 
     setOrder(docSnap.data());
   };
@@ -71,86 +79,62 @@ function OrderDownload() {
   const fetchAddress = async () => {
     const userId = await user?.uid;
     if (user) {
-      
-      const docRef = doc(db, "address", userId);
-      const docSnap = await getDoc(docRef);
-  
-      setOrder(docSnap.data());
-    }
+      const q = await query(
+        collection(db, "address"),
+        where("userID", "==", user?.uid)
+      );
+      const data = await getDocs(q);
+      setAddress(data.docs.map((doc) => doc.data()));
+    } 
   };
+  useEffect(()=>{
+  
+    fetchData()
+  },[id])
   useEffect(()=>{
     fetchAddress()
-    fetchData()
-  },[])
-  useEffect(()=>{
-    subTotal()
-  },[order])
-  const subTotal = async () => {
-    let sum = 0;
+  },[user])
+  // const subTotal = async () => {
+  //   let sum = 0;
 
-    order.forEach((element) => {
-      let price = parseInt(element.data().price);
-      sum += price;
-    });
-    setTotal(sum);
-  };
+  //   order.forEach((element) => {
+  //     let price = parseInt(element.data().price);
+  //     sum += price;
+  //   });
+  //   setTotal(sum);
+  // };
   return (
     <>
     <Header/>
     <div className="order__down container">
       <div className="order__down__content">
+        {/* <h1>{user.uid}</h1> */}
+      {/* <button onClick={()=>console.log(order)}>ORDER</button> */}
         <div className="order__down__product">
           <div className="order__down__head">
             <span className="order__down__round">
-              <button onClick={()=>console.log(order)}></button>
+            
               <p>1</p>
             </span>
             <h5>Products</h5>
           </div>
-
-          {/* <<<<<<<<<<< PRODUCT TABLE >>>>>>>>>>> */}
-          <div className="cart__table">
-            <table>
-              <tr className="table__row">
-                <th id="product__th">Product</th>
-                <th id="price__th">Price</th>
-                <th id="qty__th">Qty</th>
-                <th id="total__th">Total</th>
-              </tr>
-
-              {order.map((data,index) => {
-                  let p = parseInt(data.price);
-                  let q = parseInt(data.quantity);
-                  const total = p * q;
-                return (
-                  <tr>
-                    <td>
-                      <div className="cart__item">
-                        <img src={data.image} />
-                        <div>
-                          <h6>{data.name}</h6>
-                          <p>{data.author}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td id="table__td">
-                      <h6>
-                        ₹<span>{data.price}</span>{" "}
-                      </h6>
-                    </td>
-                    <td id="table__td">
-                      <h6>{data.quantity}</h6>
-                    </td>
-                    <td id="table__td">
-                      <h6>
-                        ₹<span>{ total}</span>
-                      </h6>
-                    </td>
-                  </tr>
-                );
-              })}
-            </table>
+  <Row>
+    {order.order ? order.order.map((data,index)=>{
+      return(
+        <Col sm="auto" md="3">
+          <div className="order__item">
+            <img src={data.thumbnail} />
+            <h6>{data.name}</h6>
+            <p>₹{data.price}</p>
+            <h5>Qty : {data.quantity}</h5>
           </div>
+        </Col>
+      )
+    }):''}
+   
+  </Row>
+         
+          
         </div>
 
         {/* <<<<<<<< ADDRESS >>>>>>>>>>>>>> */}
@@ -162,17 +146,21 @@ function OrderDownload() {
             </span>
             <h5>Address</h5>
           </div>
-
-          <div className="order__down__adress__box">
+   {address.map((data,index)=>{
+    return(
+<div className="order__down__adress__box">
             <div className="order__down__adress__content">
-              <h6>Joseph P</h6>
-              <p>House No: 12,</p>
-              <p>Palayam Road,</p>
-              <p> Kozhikode</p>
-              <p>Kerala </p>
-              <p>India, 673001</p>
+              <h6>{data.name}</h6>
+              <p>House No: {data.houseNo}</p>
+              <p>{data.streetAddress}</p>
+              <p>{data.district}</p>
+              <p>{data.state}</p>
+              <p>India, {data.pin}</p>
             </div>
           </div>
+    )
+   })}
+          
         </div>
         {/* <<<<<<<<< Amount Breakdown >>>>>>>> */}
         <div className="order__down__amount">
@@ -190,23 +178,16 @@ function OrderDownload() {
                   <p>Sub Total :</p>
                 </div>
                 <div className="order__down__amount__right">
-                  <p>₹ 1250</p>
+                  <p>₹ {order.total - 50}</p>
                 </div>
               </div>
-              <div className="order__down__amount__row">
-                <div className="order__down__amount__left">
-                  <p>Tax (18%) :</p>
-                </div>
-                <div className="order__down__amount__right">
-                  <p>₹ 225</p>
-                </div>
-              </div>
+               
               <div className="order__down__amount__row">
                 <div className="order__down__amount__left">
                   <p>Shipping Charge :</p>
                 </div>
                 <div className="order__down__amount__right">
-                  <p>₹ 25</p>
+                  <p>₹ 50</p>
                 </div>
               </div>
               <div className="order__down__amount__row">
@@ -214,7 +195,7 @@ function OrderDownload() {
                   <h6>TOTAL</h6>
                 </div>
                 <div className="order__down__amount__right">
-                  <h5>₹1500</h5>
+                  <h5>₹ {order.total}</h5>
                 </div>
               </div>
             </div>
@@ -235,28 +216,34 @@ function OrderDownload() {
             <div className="order__down__status__content">
               <div className="order__down__status__row">
                 <div className="order__down__status__left">
-                  <p>12-12-2020</p>
+                  
+                  <p>
+                  {order.status === 'Not Shipped' ? recivedDate :
+                  order.status === 'Shipped' ? shippedDate : deliveredDate
+                  }          
+                  {/* {recivedDate} */}
+                  </p>
                 </div>
                 <div className="order__down__status__right">
-                  <p>Order Received</p>
+                  <p>{order.status   }</p>
                 </div>
               </div>
-              <div className="order__down__status__row">
+              {/* <div className="order__down__status__row">
                 <div className="order__down__status__left">
                   <p>13-12-2020</p>
                 </div>
                 <div className="order__down__status__right">
                   <p>Shipped</p>
                 </div>
-              </div>
-              <div className="order__down__status__row">
+              </div> */}
+              {/* <div className="order__down__status__row">
                 <div className="order__down__status__left">
                   <p>18-12-2020</p>
                 </div>
                 <div className="order__down__status__right">
                   <p>Delivered</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

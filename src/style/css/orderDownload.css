@@ -382,3 +382,27 @@ font-family: 'DM Sans', sans-serif;
 
 
 }
+
+.order__download__item img{
+height: 150px;
+border: solid red;
+}
+.order__item{
+    margin-top: 10px;
+}
+.order__item img{
+max-height: 150px;
+}
+.order__item h5{
+font-size: 14px;
+margin-top:-13px;
+}
+.order__item h6{
+font-size: 14px;
+margin-top: 5px;
+
+}
+.order__item p{
+font-size: 14px;
+margin-top: -6px;
+}

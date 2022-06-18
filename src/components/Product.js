@@ -21,10 +21,12 @@ import {
   getDoc,
 } from "@firebase/firestore";
 import { auth } from "../firebase";
+import { Button, Col, Row, Toast } from "react-bootstrap";
 function Product({ id, image, name, author, price, cutPrice }) {
   const [user, setUser] = useState({});
   const [quantity, setQuantity] = useState(false);
   const [{ basket }, dispatch] = useStateValue();
+  const [show, setShow] = useState(false);
   const addToCart = async () => {
     setQuantity(true);
     if (!quantity) {
@@ -38,9 +40,16 @@ function Product({ id, image, name, author, price, cutPrice }) {
         price: price,
         timestamp: serverTimestamp(),
       });
+      openToast();
     }
+    
   };
-
+  const openToast = ()=>{
+    dispatch({
+      type: 'SHOW__TOAST',
+      toast: true
+    })
+  }
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
@@ -84,6 +93,26 @@ function Product({ id, image, name, author, price, cutPrice }) {
           }
         />
       </div>
+ 
+        {/* <Toast onClose={() => setShow(false)} show={true} delay={3000} autohide>
+          <Toast.Header>
+            <img
+              src={image}
+              className="rounded me-2"
+              alt=""
+            />  
+            <strong className="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+          </Toast.Header>
+          <Toast.Body>
+          <img
+              src={image}
+              className="rounded me-2"
+              alt=""
+            />
+            Woohoo, you're reading this text in a Toast!</Toast.Body>
+        </Toast> */}
+     
     </div>
   );
 }

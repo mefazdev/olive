@@ -25,7 +25,7 @@ import {
 } from "@firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
-import Moment from 'moment'
+import moment from 'moment'
 import Header from "../components/Header";
 function AllOrder() {
   const [active] = useState([
@@ -116,7 +116,7 @@ function AllOrder() {
         where("userId", "==", userId)
       );
       onSnapshot(q, (snapshot) => {
-        setOrder(snapshot.docs.map((doc) => doc.data()));
+        setOrder(snapshot.docs.map((doc) => doc ));
       });
     }
   };
@@ -160,7 +160,7 @@ function AllOrder() {
 
           <Row>
             {order.map((data) => {
-              if(data.status != 'Delivered'){
+              if(data.data().status != 'Delivered'){
                 return (
                   <Col xs="12" sm="" md="3">
                     <div className="order__box">
@@ -168,30 +168,33 @@ function AllOrder() {
                         <div className="order__box__first__row">
                           <div className="order__box__first__row__left">
                             <p>
-                              Order id:<span>{data.orderId}</span>{" "}
+                              Order id:<span>{data.data().orderId}</span>{" "}
                             </p>
                             <h6>
-                              Date: <span>{Moment(data.time).format( "MMM DD YYYY")}</span>
+                              Date: <span>
+                              {moment.unix(data.data().recivedDate).format("MMM DD, YY")}
+                                {/* {Moment(data.time).format( "MMM DD YYYY")} */}
+                                </span>
                             </h6>
                           </div>
                           <div className="order__box__first__row__right">
                             <p>Status: </p>
-                            <h6>{data.status}</h6>
+                            <h6>{data.data().status}</h6>
                           </div>
                         </div>
   
                         <div className="order__box__second__row">
                           <div className="order__box__second__row__left">
                             <p>
-                              <span>{data.order.length}</span> items{" "}
+                              <span>{data.data().order.length}</span> items{" "}
                             </p>
                             <h6>
-                              Total: ₹<span>{data.total}</span>
+                              Total: ₹<span>{data.data().total}</span>
                             </h6>
                           </div>
-  
+    
                           <Link
-                            to="/orderDownload"
+                            to={`/orderDownload/${data.id}`}
                             style={{ textDecoration: "none", color: "inherit" }}
                           >
                             <ArrowForwardIcon id="order__arrow" />
@@ -201,11 +204,12 @@ function AllOrder() {
                     </div>
                   </Col>
                 );
-              }else{
-                return(
-                  <h4 id='no__active__order__h4'>No active orders</h4>
-                )
               }
+              // else{
+              //   return(
+              //     <h4 id='no__active__order__h4'>No active orders</h4>
+              //   )
+              // }
              
             }
             
@@ -219,7 +223,7 @@ function AllOrder() {
 
           <Row>
             {order.map((data) => {
-              if(data.status == 'Delivered'){
+              if(data.data().status == 'Delivered'){
                 return (
                   <Col xs="12" sm="6" md="5" lg="4" xl="3">
                     <div className="order__box">
@@ -230,26 +234,26 @@ function AllOrder() {
                               Order id:<span>{data.orderId}</span>{" "}
                             </p>
                             <h6>
-                              Date: <span>{Moment(data.time).format( "MMM DD YYYY")}</span>
+                              Date: <span>{moment(data.time).format( "MMM DD YYYY")}</span>
                             </h6>
                           </div>
                           <div className="order__box__first__row__right">
                             <p>Status: </p>
-                            <h6>{data.status}</h6>
+                            <h6>{data.data().status}</h6>
                           </div>
                         </div>
   
                         <div className="order__box__second__row">
                           <div className="order__box__second__row__left">
                             <p>
-                              <span>{data.order.length}</span> items{" "}
+                              <span>{data.data().order.length}</span> items{" "}
                             </p>
                             <h6>
-                              Total: ₹<span>{data.total}</span>
+                              Total: ₹<span>{data.data().total}</span>
                             </h6> 
                           </div>
                           <Link
-                            to={`/orderDownload/8qqIFT0uDwcYqt9PZWVk`}
+                            to={`/orderDownload/${data.id}`}
                             style={{ textDecoration: "none", color: "inherit" }}
                           >
                             <ArrowForwardIcon id="order__arrow" />
@@ -259,11 +263,7 @@ function AllOrder() {
                     </div>
                   </Col>
                 );
-              }else{
-                return(
-                  <h4 id='no__active__order__h4'>No past orders</h4>
-                )
-              }
+              } 
               
             })}
           </Row>

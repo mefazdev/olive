@@ -21,7 +21,8 @@ import {
   where,
   getDoc,
 } from "@firebase/firestore";
-
+ 
+import moment from "moment";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import Header from "../components/Header";
@@ -143,6 +144,7 @@ function Confirm() {
       status:'Not Shipped',
       total:total+50,
       orderId:orderId,
+      recivedDate: moment(new Date()).unix(),
       timestamp: serverTimestamp(),
 
       // data:data

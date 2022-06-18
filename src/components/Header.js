@@ -33,19 +33,26 @@ import {
   getDoc,
 } from "@firebase/firestore";
 import HeaderSearch from "./HeaderSearch";
+import { Button, Col, Row, Toast } from "react-bootstrap";
+import { CardTravelOutlined } from "@material-ui/icons";
 function Header() {
-  const [{ signupModal, basket, loginModal }, dispatch] = useStateValue();
+  const [{ signupModal, basket, loginModal,openToast }, dispatch] = useStateValue();
   // const [{basket,signupModal}] = useStateValue();
   const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
-  const [showSignupModal, setShowSignupModal] = useState(false);
-  const [showLoginModal, setShowLoginupModal] = useState(false);
+  const [show, setShow] = useState(false);
+
+
  const [cart, setCart] = useState([])
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
 
-  
+  const closeToast = ()=>{
+    dispatch({
+      type:"HIDE__TOAST"
+    })
+  }
   const fetchData = async () => {
      if (user){
       const q = await query(collection(db,"cart"),where('userId', '==', user?.uid ));
@@ -95,10 +102,11 @@ function Header() {
       signupModal: false,
     });
   };
+
   return (
     <div className="header">
       <div className="header__section__one ">
-        {/* <button onClick={()=>console.log("HHE>>>0",signupModal)}>HELLOOO</button> */}
+        {/* <button onClick={()=>console.log("HHE>>>0",)}>HELLOOO</button> */}
         <div className="  header_first__row container">
           <div className="  header_first__row__div">
             <MenuSharpIcon
@@ -189,6 +197,7 @@ function Header() {
           </div>
         </div>
       </div>
+      
       <div className="header__second__row ">
         <div className="navbars container">
           <div className="nav__items">
@@ -251,11 +260,16 @@ function Header() {
               type="button"
               onClick={() => setOpen(!open)}
             >
-              <PermIdentityIcon
+              <Link to='/dashboard' style={{textDecoration:'none',color:'inherit'}}><PermIdentityIcon
                 id="collpase__login__icon"
-                onClick={openLogin}
-              />
-              <p>{user ? "Sign Out" : "Sign In"} </p>
+                // onClick={openLogin}
+              /></Link>
+              {/* <p
+              onClick={user ? logOut : openLogin}
+              >{!user ? "Sign In" : "Sign Out"} </p> */}
+              <p
+              onClick={user ? logOut : openLogin}
+              >{!user ? "Sign In" : "Sign Out"} </p>
             </div>
           </div>
 
@@ -318,6 +332,15 @@ function Header() {
           >
             <h6>OFFERSZONE</h6>
           </NavLink>
+          <NavLink
+            to="/dashboard"
+            activeClassName="nav__active__collapse"
+            a
+            id="navLink"
+            onClick={() => setOpen(!open)}
+          >
+            <h6>DASHBOARD</h6>
+          </NavLink>
         </div>
       </Collapse>
 
@@ -346,6 +369,33 @@ function Header() {
           <Login />
         </Modal.Body>
       </Modal>
+{/* 
+      <Row>
+      <Col xs={6}> */}
+      <div className="toster">
+        <Toast
+        
+        onClose={closeToast} show={openToast ? openToast:false} delay={3000} autohide>
+          <Toast.Header>
+            <img
+              src="holder.js/20x20?text=%20"
+              className="rounded me-2"
+              alt=""
+            />
+            <strong className="me-auto">Olive Books</strong>
+            <small>Just now</small>
+          </Toast.Header>
+          <Toast.Body>Item added to your cart
+            <Link to='cart'><Button style={{marginLeft:'10px'}}>View</Button></Link>
+            
+          </Toast.Body>
+        </Toast>
+        </div>
+      {/* </Col> */}
+      {/* <Col xs={6}>
+        <Button onClick={() => setShow(true)}>Show Toast</Button>
+      </Col> */}
+    {/* </Row> */}
     </div>
   );
 }

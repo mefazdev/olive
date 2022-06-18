@@ -114,7 +114,7 @@ const fetchData = async () => {
         <><NavBar/>
           <div className='ad__cat'>
       <div className='ad__act__head'>
-      <h4>Author of the month</h4>
+      <h4>Authors</h4>
      <button onClick={()=>setModalControl(true)} >Add</button>
       </div>  
    
