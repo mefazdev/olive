@@ -3,11 +3,9 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import Carousel from "react-bootstrap/Carousel";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import book from "../images/single.png";
+ 
 import StarIcon from "@material-ui/icons/Star";
-import AddIcon from "@material-ui/icons/Add";
-import MinimizeIcon from "@material-ui/icons/Minimize";
+ 
 import { Button } from "@material-ui/core";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import ShareOutlinedIcon from "@material-ui/icons/ShareOutlined";
@@ -15,28 +13,23 @@ import { useEffect, useState } from "react";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import ReactStars from "react-rating-stars-component";
 import Moment from "moment";
-import prebook from "../images/prebook.png";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+ 
 import Featur from "../components/Featur";
 import PopularList from "../components/PopularList";
-import Alert from "react-bootstrap/Alert";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CloseIcon from "@material-ui/icons/Close";
-import { Link } from "react-router-dom";
-import InfoIcon from "@material-ui/icons/Info";
-import { db, storage } from "../firebase";
+ 
+import { db } from "../firebase";
 import { auth } from "../firebase";
+import Footer from '../components/Footer'
 import {
   addDoc,
   collection,
   onSnapshot,
-  orderBy,
+ 
   query,
   getDocs,
   doc,
   serverTimestamp,
-  deleteDoc,
-  updateDoc,
+ 
   where,
   getDoc,
 } from "@firebase/firestore";
@@ -55,7 +48,7 @@ function BookSingle() {
   const [isReadMore, setIsReadMore] = useState(true);
   const [product, setProduct] = useState({});
   const [bestSeller, setBestSeller] = useState([]);
-  const [{ basket }, dispatch] = useStateValue();
+ 
   const [user, setUser] = useState({});
   const [rate, setRate] = useState("");
   const [comment, setComment] = useState("");
@@ -69,8 +62,7 @@ function BookSingle() {
   const [threeStar,setThreeStar] = useState()
   const [fourStar,setFourStar] = useState()
   const [fiveStar,setFiveStar] = useState()
-  // const [bestSeller, setBestSeller] = useState([])
-  // const [quantity, setQuantity] = useState(false);
+ 
 
   const fetchData = async () => {
     const docRef = doc(db, "products", id.id);
@@ -176,8 +168,10 @@ function BookSingle() {
 
     if(star == 1){
       let oneS = star
+      setOneStar(oneS)
     }else if(star == 2){
       let twoS = star
+      setTwoStar(twoS)
     }else if(star == 3) {
      let threeS = star
      setThreeStar(threeS)
@@ -186,6 +180,7 @@ function BookSingle() {
       setFourStar(fourS)
     }else if(star == 5){
       let fiveS = star
+      setFiveStar(fiveS)
     }
     });
     setTotalRate(total);
@@ -218,9 +213,7 @@ function BookSingle() {
               indicators={true}
               id="book__single__carousel"
             >
-              {/* <Carousel.Item>
-                <img className="col-12" src={product.thumbnail} />
-              </Carousel.Item> */}
+             
               <Carousel.Item>
                 <img className="col-12" src={product.image2} />
               </Carousel.Item>
@@ -599,47 +592,7 @@ function BookSingle() {
               cutPrice={data.data().cutPrice}
               id = {data.id}
               />
-                    {/* <div className="book__item">
-                      <Link
-                        to={`/book/${data.id}`}
-                        style={{
-                          textDecoration: "none",
-                          color: "inherit",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <img src={data.data().thumbnail} />
-                      </Link>
-                      <Link
-                        to="/bookSingle"
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <div className="book__item__name">
-                          <h6>{data.data().name}</h6>
-                          <p>{data.data().author}</p>
-                        </div>
-                      </Link>
-                      <div className="book__item__price__div">
-                        <div className="book__item__price__left">
-                          <p className="book__item__cut__price">
-                            ₹{data.data().cutPrice}
-                          </p>
-                          <p className="book__item__price">
-                            ₹{data.data().price}
-                          </p>
-                        </div>
-
-                        <AddShoppingCartIcon
-                          onClick={user ? addToCart : openLogin}
-                          // id={
-                          //   !quantity ? "arrived___cart__icon" : "arrived___cart__icon__active"
-                          // }
-                          type="button"
-                          id="book__item___cart__icon"
-                        />
-                      </div>
-                    </div> */}
+                   
                   </Col>
                 );
               }
@@ -652,7 +605,9 @@ function BookSingle() {
       <PopularList />
 
       <Featur />
-    </div></>
+    </div>
+    <Footer/>
+    </>
   );
 }
 

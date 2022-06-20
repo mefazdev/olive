@@ -1,17 +1,16 @@
 import { Alert } from "bootstrap";
-import { signInWithEmailAndPassword,onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+
 import { auth } from "../firebase";
 import { useStateValue } from "../stateProvider";
 
 function Login() {
-  const history = useHistory()
   const [{ signupModal }, dispatch] = useStateValue();
- const [email,setEmail] = useState('')
- const [password,setPassword] = useState('')
- const [user, setUser] = useState({})
- onAuthStateChanged(auth, (currentUser) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({});
+  onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
   const openSignup = () => {
@@ -25,7 +24,6 @@ function Login() {
     });
   };
   const closeLogin = () => {
-    
     dispatch({
       type: "CLOSE__LOGIN__MODAL",
       loginModal: false,
@@ -37,21 +35,19 @@ function Login() {
       const user = await signInWithEmailAndPassword(auth, email, password);
       // console.log("user >>>>>", user);
       closeLogin();
-      if(user){
-        addUser()
+      if (user) {
+        addUser();
       }
       // history.push('/dashboard')
     } catch (error) {
-      alert( error);
-      Alert(error)
+      alert(error);
+      Alert(error);
     }
-    
   };
   const addUser = () => {
     dispatch({
       type: "SET_USER",
-      user: user ? user.uid : '',
-       
+      user: user ? user.uid : "",
     });
     // console.log(user);
   };
@@ -86,14 +82,14 @@ function Login() {
               className="log-input"
               type="email"
               placeholder="  Email ID"
-              onChange={((e)=>setEmail(e.target.value))}
+              onChange={(e) => setEmail(e.target.value)}
             />
-            <br></br>   
+            <br></br>
             <input
               className="log-input"
               type="password"
               placeholder="  Password"
-              onChange={((e)=>setPassword(e.target.value))}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div className="btn-container">
               <p>
@@ -101,11 +97,9 @@ function Login() {
               </p>
 
               {/* <Link to="/address"> */}
-                <button
-                onClick={login}
-                className="signin-btn" type="button">
-                  LOGIN
-                </button> 
+              <button onClick={login} className="signin-btn" type="button">
+                LOGIN
+              </button>
               {/* </Link> */}
             </div>
           </div>

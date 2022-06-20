@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import book from "../images/book-read.png";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+ 
 import Featur from "../components/Featur";
 import { useEffect, useState } from "react";
 
@@ -14,31 +14,22 @@ import UsePagination from "../components/Pagination";
 import { Link } from "react-router-dom";
 
 import FilterSearch from "../components/FilterSearch";
-import { db, storage } from "../firebase";
+import { db  } from "../firebase";
 import {
-  addDoc,
+ 
   collection,
-  onSnapshot,
+ 
   orderBy,
   query,
   getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where,
+  
 } from "@firebase/firestore";
 import Product from "../components/Product";
-import {
-  ContactsOutlined,
-  FilterDrama,
-  RepeatOutlined,
-} from "@material-ui/icons";
+ 
 import Header from "../components/Header";
-
+import Footer from '../components/Footer'
 function Malayalam() {
-  const [show, setShow] = useState(false);
-  const [openFilter, setOpenFilter] = useState(false);
+ 
   const [products, setProducts] = useState([]);
   var [filteredData] = useState([]);
   const [finalDocs, setFinalDocs] = useState([]);
@@ -97,17 +88,14 @@ function Malayalam() {
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <p>Home </p>
         </Link>
-    {/* <button onClick={()=>console.log('sss >>>', startIndex)}>Start</button>
-    <button onClick={()=>console.log('eeee >>>', endIndex)}>end</button>
-    */}
+    
         <ArrowForwardIosIcon id="path__icon" />
         <Link
           to="/bestSeller"
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <p>Popular Malayalam</p>
-          
-          {/* <button onClick={()=>console.log(docn)} >CLICKMEj</button> */}
+           
         </Link>
       </div>
 
@@ -163,7 +151,7 @@ function Malayalam() {
       <PopularList />
 
       <Featur />
-    </div> </>
+    </div> <Footer/> </>
   );
 }
 

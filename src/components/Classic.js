@@ -1,18 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db, storage } from "../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where,
-} from "@firebase/firestore";
+import { collection, query, getDocs, where } from "@firebase/firestore";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
@@ -57,16 +45,6 @@ function Classic() {
               );
             }
           })}
-
-          {/* <Col className="home__discover__col" sm="6" lg="3">
-          <img className="col-12" src={discover2} />
-        </Col>
-        <Col className="home__discover__col" sm="6" lg="3">
-          <img className="col-12" src={discover3} />
-        </Col> */}
-          {/* <Col className="home__discover__col" sm="6" lg="3">
-          <img className="col-12" src={discover4} />
-        </Col> */}
         </Row>
       </div>
     </div>

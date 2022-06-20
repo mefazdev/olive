@@ -28,7 +28,6 @@ const responsive = {
   },
 };
 function JustArrived() {
-  
   const [show, setShow] = useState(false);
   const [arrived, setArrived] = useState([]);
 
@@ -41,17 +40,11 @@ function JustArrived() {
     setArrived(data.docs.map((doc) => doc));
   };
 
-
   useEffect(() => {
     fetchData();
   }, []);
 
-
-
-// ADD TO CART FUNCTIONS
-
-
-
+  // ADD TO CART FUNCTIONS
 
   return (
     <div className="arrived">
@@ -84,18 +77,15 @@ function JustArrived() {
           {arrived.map((data, index) => {
             if (index < 20) {
               return (
-                 
-                  <Product
-                     
-                    name={data.data().name}
-                    author={data.data().author}
-                    image={data.data().thumbnail}  
-                    price={data.data().price}
-                    cutPrice={data.data().cutPrice}
-                    offer={data.data().discount}
-                     id={data.id}
-                  />
-          
+                <Product
+                  name={data.data().name}
+                  author={data.data().author}
+                  image={data.data().thumbnail}
+                  price={data.data().price}
+                  cutPrice={data.data().cutPrice}
+                  offer={data.data().discount}
+                  id={data.id}
+                />
               );
             }
           })}

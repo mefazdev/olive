@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../style/css/header.css";
 import logo from "../images/logo.png";
-import SearchIcon from "@material-ui/icons/Search";
+
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import Collapse from "react-bootstrap/Collapse";
 import { Link, NavLink } from "react-router-dom";
@@ -17,59 +17,41 @@ import { useStateValue } from "../stateProvider";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 // import { auth } from "../firebase";
-import { db, storage } from "../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where,
-  getDoc,
-} from "@firebase/firestore";
+import { db } from "../firebase";
+import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import HeaderSearch from "./HeaderSearch";
-import { Button, Col, Row, Toast } from "react-bootstrap";
-import { CardTravelOutlined } from "@material-ui/icons";
+import { Button, Toast } from "react-bootstrap";
+
 function Header() {
-  const [{ signupModal, basket, loginModal,openToast }, dispatch] = useStateValue();
+  const [{ signupModal, loginModal, openToast }, dispatch] = useStateValue();
   // const [{basket,signupModal}] = useStateValue();
   const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
-  const [show, setShow] = useState(false);
 
-
- const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]);
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
 
-  const closeToast = ()=>{
+  const closeToast = () => {
     dispatch({
-      type:"HIDE__TOAST"
-    })
-  }
+      type: "HIDE__TOAST",
+    });
+  };
   const fetchData = async () => {
-     if (user){
-      const q = await query(collection(db,"cart"),where('userId', '==', user?.uid ));
+    if (user) {
+      const q = await query(
+        collection(db, "cart"),
+        where("userId", "==", user?.uid)
+      );
       onSnapshot(q, (snapshot) => {
         setCart(snapshot.docs.map((doc) => doc));
-  
-      
       });
-     }
-       
-     
-  
-    
+    }
   };
-  useEffect (()=>{
-    fetchData()
-  },[user])
+  useEffect(() => {
+    fetchData();
+  }, [user]);
   const checkActive = (match, location) => {
     //some additional logic to verify you are in the home URI
     if (!location) return false;
@@ -83,7 +65,6 @@ function Header() {
   };
 
   const openLogin = () => {
-    
     dispatch({
       type: "OPEN__LOGIN__MODAL",
       signinModal: true,
@@ -119,7 +100,7 @@ function Header() {
                 <Link to="/" id="logo__link">
                   <img className="header__logo " src={logo} alt="logo" />
                 </Link>
-              <HeaderSearch/>
+                <HeaderSearch />
                 {/* <div className="header__input__div">
                   <span className="header__serach__p">
                     <p>All Categories</p>
@@ -148,18 +129,20 @@ function Header() {
 
             <div className="header_first__row__right ">
               <div className="header__login">
-                <Link to='/dashboard' style={{textDecoration:'none',color:'inherit'}}>
-                
-                <div className="header__account__div">
-                  <PermIdentityIcon
-                    // onClick={}
-                    id="login__icon"
-                  />
-                  <h5>
-                    {user   && user.email ? user.email.slice(0, 5) : ""}
-                    {/* My Account */}
-                  </h5>
-                </div>
+                <Link
+                  to="/dashboard"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div className="header__account__div">
+                    <PermIdentityIcon
+                      // onClick={}
+                      id="login__icon"
+                    />
+                    <h5>
+                      {user && user.email ? user.email.slice(0, 5) : ""}
+                      {/* My Account */}
+                    </h5>
+                  </div>
                 </Link>
                 <div
                   className="header__login__div"
@@ -197,7 +180,7 @@ function Header() {
           </div>
         </div>
       </div>
-      
+
       <div className="header__second__row ">
         <div className="navbars container">
           <div className="nav__items">
@@ -260,16 +243,21 @@ function Header() {
               type="button"
               onClick={() => setOpen(!open)}
             >
-              <Link to='/dashboard' style={{textDecoration:'none',color:'inherit'}}><PermIdentityIcon
-                id="collpase__login__icon"
-                // onClick={openLogin}
-              /></Link>
+              <Link
+                to="/dashboard"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <PermIdentityIcon
+                  id="collpase__login__icon"
+                  // onClick={openLogin}
+                />
+              </Link>
               {/* <p
               onClick={user ? logOut : openLogin}
               >{!user ? "Sign In" : "Sign Out"} </p> */}
-              <p
-              onClick={user ? logOut : openLogin}
-              >{!user ? "Sign In" : "Sign Out"} </p>
+              <p onClick={user ? logOut : openLogin}>
+                {!user ? "Sign In" : "Sign Out"}{" "}
+              </p>
             </div>
           </div>
 
@@ -369,13 +357,14 @@ function Header() {
           <Login />
         </Modal.Body>
       </Modal>
-{/* 
-      <Row>
-      <Col xs={6}> */}
+
       <div className="toster">
         <Toast
-        
-        onClose={closeToast} show={openToast ? openToast:false} delay={3000} autohide>
+          onClose={closeToast}
+          show={openToast ? openToast : false}
+          delay={3000}
+          autohide
+        >
           <Toast.Header>
             <img
               src="holder.js/20x20?text=%20"
@@ -385,17 +374,14 @@ function Header() {
             <strong className="me-auto">Olive Books</strong>
             <small>Just now</small>
           </Toast.Header>
-          <Toast.Body>Item added to your cart
-            <Link to='cart'><Button style={{marginLeft:'10px'}}>View</Button></Link>
-            
+          <Toast.Body>
+            Item added to your cart
+            <Link to="cart">
+              <Button style={{ marginLeft: "10px" }}>View</Button>
+            </Link>
           </Toast.Body>
         </Toast>
-        </div>
-      {/* </Col> */}
-      {/* <Col xs={6}>
-        <Button onClick={() => setShow(true)}>Show Toast</Button>
-      </Col> */}
-    {/* </Row> */}
+      </div>
     </div>
   );
 }

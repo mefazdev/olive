@@ -6,32 +6,10 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { Image } from "react-img-placeholder";
 import { useStateValue } from "../stateProvider";
 import { onAuthStateChanged } from "firebase/auth";
-import { db, storage } from "../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where,
-  getDoc,
-} from "@firebase/firestore";
+import { db } from "../firebase";
+import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { auth } from "../firebase";
-function Product({
-  id,
-  image,
-  offer,
-  name,
-  author,
-  price,
-  cutPrice,
-  placeholder,
-}) {
+function Product({ id, image, offer, name, author, price, cutPrice }) {
   const [{ basket }, dispatch] = useStateValue();
   const [user, setUser] = useState({});
   const [quantity, setQuantity] = useState(false);
@@ -48,23 +26,22 @@ function Product({
         author: author,
         price: price,
         timestamp: serverTimestamp(),
-        // data:data
       });
-      openToast()
+      openToast();
     }
   };
 
-  const openToast = ()=>{
+  const openToast = () => {
     dispatch({
-      type: 'SHOW__TOAST',
-      toast: true
-    })
-  }
+      type: "SHOW__TOAST",
+      toast: true,
+    });
+  };
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
- 
+
   const openLogin = () => {
     dispatch({
       type: "OPEN__LOGIN__MODAL",

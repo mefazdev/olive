@@ -1,32 +1,18 @@
 import React, { useState } from "react";
 import Featur from "../components/Featur";
 import "../style/css/address.css";
-import { Link ,useHistory} from "react-router-dom";
-import {
- 
-  onAuthStateChanged
-} from "firebase/auth";
+import { Link, useHistory } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import Footer from "../components/Footer";
 import { db, storage } from "../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where, getDoc
-} from "@firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { auth } from "../firebase";
 import Header from "../components/Header";
- 
+
 function Address() {
-  const [user, setUser] = useState({})
-  const [quantity, setQuantity] = useState(false)
-  
+  const [user, setUser] = useState({});
+  const [quantity, setQuantity] = useState(false);
+
   const [name, setName] = useState("");
   const [houseNo, setHouseNo] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
@@ -38,33 +24,31 @@ function Address() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
-  const history = useHistory()
+  const history = useHistory();
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
- const userId = user?.uid
-  const addAdress = async ()=>{
-    await addDoc(collection(db,'address'),{
-    name:name,
-    houseNo:houseNo,
-    streetAddress:streetAddress,
-    streetAddress2:streetAddress2,
-    town:town,
-    district:district,
-    state:state, 
-    pin:pin,
-    phone:phone,
-    email:email,
-    timestamp: serverTimestamp(),
-    userID : user.uid
-
-
-    })
-    history.push('/address')
-  }
+  const userId = user?.uid;
+  const addAdress = async () => {
+    await addDoc(collection(db, "address"), {
+      name: name,
+      houseNo: houseNo,
+      streetAddress: streetAddress,
+      streetAddress2: streetAddress2,
+      town: town,
+      district: district,
+      state: state,
+      pin: pin,
+      phone: phone,
+      email: email,
+      timestamp: serverTimestamp(),
+      userID: user.uid,
+    });
+    history.push("/address");
+  };
   return (
     <div>
-      <Header/>
+      <Header />
       <div className="body">
         <div className="container5 container">
           <div className="title-container5">
@@ -85,9 +69,8 @@ function Address() {
                   <input
                     className="in"
                     type="text"
-                 
                     value={name}
-                    onChange={((e) => setName(e.target.value))}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
 
@@ -96,8 +79,7 @@ function Address() {
                   <input
                     className="in"
                     type="text"
-                    
-                    onChange={((e)=>setHouseNo(e.target.value))}
+                    onChange={(e) => setHouseNo(e.target.value)}
                   />
                 </div>
               </div>
@@ -113,9 +95,8 @@ function Address() {
                     <input
                       className="in"
                       type="text"
-                      
                       value={streetAddress}
-                     onChange={((e)=>setStreetAddress(e.target.value))}
+                      onChange={(e) => setStreetAddress(e.target.value)}
                     />
                   </div>
                 </div>
@@ -125,9 +106,8 @@ function Address() {
                     <input
                       className="in"
                       type="text"
-                  
                       value={streetAddress2}
-                      onChange={((e)=>setStreetAddress2(e.target.value))}
+                      onChange={(e) => setStreetAddress2(e.target.value)}
                     />
                   </div>
                 </div>
@@ -139,7 +119,7 @@ function Address() {
                       type="text"
                       name="town"
                       value={town}
-                      onChange={((e) => setTown(e.target.value))}
+                      onChange={(e) => setTown(e.target.value)}
                     />
                   </div>
                 </div>
@@ -149,9 +129,8 @@ function Address() {
                     <input
                       className="in"
                       type="text"
-                      
                       value={district}
-                      onChange={((e) => setDistrict(e.target.value))}
+                      onChange={(e) => setDistrict(e.target.value)}
                     />
                   </div>
                 </div>
@@ -163,7 +142,7 @@ function Address() {
                       type="text"
                       name="statee"
                       value={state}
-                     onChange={((e)=>setState(e.target.value))}
+                      onChange={(e) => setState(e.target.value)}
                     />
                   </div>
                 </div>
@@ -173,9 +152,8 @@ function Address() {
                     <input
                       className="in"
                       type="text"
-                
                       value={pin}
-                     onChange={((e)=>setPin(e.target.value))}
+                      onChange={(e) => setPin(e.target.value)}
                     />
                   </div>
                 </div>
@@ -187,7 +165,7 @@ function Address() {
                       type="text"
                       name="phone"
                       value={phone}
-                     onChange={((e)=>setPhone(e.target.value))}
+                      onChange={(e) => setPhone(e.target.value)}
                     />
                   </div>
                 </div>
@@ -197,9 +175,8 @@ function Address() {
                     <input
                       className="in"
                       type="email"
-                      
                       value={email}
-                     onChange={((e)=>setEmail(e.target.value))}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                 </div>
@@ -218,7 +195,9 @@ function Address() {
                   to="/dashboard"
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
-                  <button className="save-btn" onClick={addAdress}>Save & Continue</button>
+                  <button className="save-btn" onClick={addAdress}>
+                    Save & Continue
+                  </button>
                 </Link>
               </div>
             </div>
@@ -226,6 +205,7 @@ function Address() {
         </div>{" "}
       </div>
       <Featur />
+      <Footer />
     </div>
   );
 }

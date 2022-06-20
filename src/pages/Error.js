@@ -3,7 +3,7 @@ import Featur from "../components/Featur";
 import Header from "../components/Header";
 import image from "../images/error.png";
 import "../style/css/error.css";
-
+import Footer from '../components/Footer'
 function Error() {
   return (
     <>
@@ -19,7 +19,7 @@ function Error() {
         </div>
       </div>
       <Featur />
-    </div>  </>
+    </div> <Footer/> </>
   );
 }
 

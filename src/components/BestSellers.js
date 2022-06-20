@@ -74,7 +74,7 @@ function BestSellers() {
     <div className="best__seller">
       <div className="best__seller__head__row ">
         <h5>Best Sellers</h5>
-        {/* <button onClick={()=> console.log(filterData)}>CLICK ME</button> */}
+         
         <Link
           to="/bestSeller"
           style={{ textDecoration: "none", color: "inherit" }}
@@ -190,24 +190,4 @@ function BestSellers() {
 
 export default BestSellers;
 
-//  {/* <<<<<<<< CART ADDED ALERT >>>>>>>>>> */}
-//  {show ? (
-//   <Alert variant="success" id="alert">
-//     <CheckCircleIcon id="alert__success__icon" />
-
-//     <div className="alert__success__text">
-//       <p>Product added to your cart</p>
-//       <Link to="/cart" style={{ textDecoration: "none" }}>
-//         <h6>CHECKOUT NOW</h6>
-//       </Link>
-//     </div>
-
-//     <CloseIcon
-//       type="button"
-//       onClick={() => setShow(false)}
-//       id="alert__close__icon"
-//     />
-//   </Alert>
-// ) : (
-//   ""
-// )}
+ 

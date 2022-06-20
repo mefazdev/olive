@@ -9,40 +9,41 @@ import "../style/css/searchResult.css";
 import { useState } from "react";
 import FilterSearch from "../components/FilterSearch";
 import Header from "../components/Header";
-
+import Footer from "../components/Footer";
 function NoSearchResult() {
-  const [openFilter, setOpenFilter] = useState(false);
+  
   return (
     <>
-    <Header/>
-    
-    <div className="no__result container">
-      <Row>
-        {/* <<<<<<<<<<<<<<< FILTER SEARCH >>>>>>>>>>>>>>>>>>> */}
-        <FilterSearch />
-        <Col md="7">
-          <div className="no__result__content">
-            <div className="search__head__row">
-              <h5>
-                Search result for "
-                <span style={{ color: "#46CE04" }}>Rising Like a Storm</span>"
-              </h5>
-            </div>
-            <div className="no__result__image">
-              <div className="no__result__image__head">
-                <h2>NO BOOKS FOUND</h2>
-                <h6>Please try another keyword</h6>
+      <Header />
+      <div className="no__result container">
+        <Row>
+          {/* <<<<<<<<<<<<<<< FILTER SEARCH >>>>>>>>>>>>>>>>>>> */}
+          <FilterSearch />
+          <Col md="7">
+            <div className="no__result__content">
+              <div className="search__head__row">
+                <h5>
+                  Search result for "
+                  <span style={{ color: "#46CE04" }}>Rising Like a Storm</span>"
+                </h5>
               </div>
-              <div className="no__result__image__cover">
-                <img className="col-12" src={image} />
+              <div className="no__result__image">
+                <div className="no__result__image__head">
+                  <h2>NO BOOKS FOUND</h2>
+                  <h6>Please try another keyword</h6>
+                </div>
+                <div className="no__result__image__cover">
+                  <img className="col-12" src={image} />
+                </div>
               </div>
             </div>
-          </div>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
 
-      <Featur />
-    </div></>
+        <Featur />
+      </div>{" "}
+      <Footer />{" "}
+    </>
   );
 }
 

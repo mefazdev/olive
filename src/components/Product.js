@@ -5,28 +5,15 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import { Link } from "react-router-dom";
 import { useStateValue } from "../stateProvider";
 import { onAuthStateChanged } from "firebase/auth";
-import { db, storage } from "../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where,
-  getDoc,
-} from "@firebase/firestore";
+import { db } from "../firebase";
+import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { auth } from "../firebase";
-import { Button, Col, Row, Toast } from "react-bootstrap";
+
 function Product({ id, image, name, author, price, cutPrice }) {
   const [user, setUser] = useState({});
   const [quantity, setQuantity] = useState(false);
   const [{ basket }, dispatch] = useStateValue();
-  const [show, setShow] = useState(false);
+
   const addToCart = async () => {
     setQuantity(true);
     if (!quantity) {
@@ -42,14 +29,13 @@ function Product({ id, image, name, author, price, cutPrice }) {
       });
       openToast();
     }
-    
   };
-  const openToast = ()=>{
+  const openToast = () => {
     dispatch({
-      type: 'SHOW__TOAST',
-      toast: true
-    })
-  }
+      type: "SHOW__TOAST",
+      toast: true,
+    });
+  };
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
@@ -64,9 +50,16 @@ function Product({ id, image, name, author, price, cutPrice }) {
       {/* <img src={image} /> */}
       <Link
         to={`/book/${id}`}
-        style={{ textDecoration: "none", color: "inherit",display:'flex',flexDirection:'column',justifyContent:'center' }}
-      ><Image
-        //  style={{margin:'auto'}}
+        style={{
+          textDecoration: "none",
+          color: "inherit",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Image
+          //  style={{margin:'auto'}}
           src={image}
           alt="Picture of the author"
           width={100}
@@ -93,26 +86,6 @@ function Product({ id, image, name, author, price, cutPrice }) {
           }
         />
       </div>
- 
-        {/* <Toast onClose={() => setShow(false)} show={true} delay={3000} autohide>
-          <Toast.Header>
-            <img
-              src={image}
-              className="rounded me-2"
-              alt=""
-            />  
-            <strong className="me-auto">Bootstrap</strong>
-            <small>11 mins ago</small>
-          </Toast.Header>
-          <Toast.Body>
-          <img
-              src={image}
-              className="rounded me-2"
-              alt=""
-            />
-            Woohoo, you're reading this text in a Toast!</Toast.Body>
-        </Toast> */}
-     
     </div>
   );
 }

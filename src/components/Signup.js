@@ -11,7 +11,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState({});
-const history = useHistory()
+  const history = useHistory();
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
@@ -36,8 +36,8 @@ const history = useHistory()
     try {
       const user = await createUserWithEmailAndPassword(auth, email, password);
       // console.log("user >>>>>", user);
-      history.push('/dashboard')
-      addUser()
+      history.push("/dashboard");
+      addUser();
     } catch (error) {
       // console.log("error >>>>>", error);
     }
@@ -47,7 +47,7 @@ const history = useHistory()
   const addUser = () => {
     dispatch({
       type: "SET_USER",
-      user: user? user.id : '',
+      user: user ? user.id : "",
     });
     // console.log(user);
   };

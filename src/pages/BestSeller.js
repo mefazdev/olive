@@ -15,35 +15,19 @@ import { Link } from "react-router-dom";
 
 import FilterSearch from "../components/FilterSearch";
 import { db, storage } from "../firebase";
-import {
-  addDoc,
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  getDocs,
-  doc,
-  serverTimestamp,
-  deleteDoc,
-  updateDoc,
-  where,
-} from "@firebase/firestore";
+import { collection, orderBy, query, getDocs } from "@firebase/firestore";
 import Product from "../components/Product";
-import {
-  ContactsOutlined,
-  FilterDrama,
-  RepeatOutlined,
-} from "@material-ui/icons";
-import Header from "../components/Header";
 
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 function BestSeller() {
   const [show, setShow] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const [products, setProducts] = useState([]);
   var [filteredData] = useState([]);
   const [finalDocs, setFinalDocs] = useState([]);
-  const [startIndex, setStartIndex] = useState(-1)
-  const [endIndex, setEndIndex] = useState(49)
+  const [startIndex, setStartIndex] = useState(-1);
+  const [endIndex, setEndIndex] = useState(49);
 
   const fetchData = async () => {
     const q = await query(
@@ -76,59 +60,60 @@ function BestSeller() {
     filterData();
   }, [products]);
 
-
-  const nextPage = ()=>{
-    setStartIndex( startIndex + 49)
-    setEndIndex(endIndex + 49)
-  }
-  const prevPage = ()=>{
-    if(startIndex >= 48){
-      setStartIndex( startIndex - 49)
-      setEndIndex(endIndex - 49)
+  const nextPage = () => {
+    setStartIndex(startIndex + 49);
+    setEndIndex(endIndex + 49);
+  };
+  const prevPage = () => {
+    if (startIndex >= 48) {
+      setStartIndex(startIndex - 49);
+      setEndIndex(endIndex - 49);
     }
-     
-  }
+  };
   return (
     <>
-    <Header/>
-    <div className="categories container">
-      <div className="path ">
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <p>Home </p>
-        </Link>
+      <Header />
+      <div className="categories container">
+        <div className="path ">
+          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+            <p>Home </p>
+          </Link>
 
-        <ArrowForwardIosIcon id="path__icon" />
-        <Link
-          to="/bestSeller"
-          style={{ textDecoration: "none", color: "inherit" }}
-        >
-          <p>Best seller</p>
-          
-          {/* <button onClick={()=>console.log(docn)} >CLICKMEj</button> */}
-        </Link>
-      </div>
+          <ArrowForwardIosIcon id="path__icon" />
+          <Link
+            to="/bestSeller"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <p>Best seller</p>
 
-      <div className="categories__content">
-        <Row>
-          {/* <<<<<<<<<<<<<<<  FILTER SEARCH SECTION >>>>>>>>>>>>>> */}
-          <FilterSearch />
+            {/* <button onClick={()=>console.log(docn)} >CLICKMEj</button> */}
+          </Link>
+        </div>
 
-          {/* Categries right Column */}
-          <Col md="10">
-            <div className="categories__right">
-              <img id="categories__right__img" className="col-12" src={book} />
+        <div className="categories__content">
+          <Row>
+            {/* <<<<<<<<<<<<<<<  FILTER SEARCH SECTION >>>>>>>>>>>>>> */}
+            <FilterSearch />
 
-              <div className="categories__head__row ">
-                <h5>Best Seller</h5>
-                <p>{finalDocs.length} Books</p>
-              </div>
+            {/* Categries right Column */}
+            <Col md="10">
+              <div className="categories__right">
+                <img
+                  id="categories__right__img"
+                  className="col-12"
+                  src={book}
+                />
 
-              <Row>
-                {finalDocs.map((data, index) => {
-                  if (index > startIndex && index < endIndex ){
-                    return (
-                      <Col id={index} xs="6" sm="4" md="2">
-                        
+                <div className="categories__head__row ">
+                  <h5>Best Seller</h5>
+                  <p>{finalDocs.length} Books</p>
+                </div>
+
+                <Row>
+                  {finalDocs.map((data, index) => {
+                    if (index > startIndex && index < endIndex) {
+                      return (
+                        <Col id={index} xs="6" sm="4" md="2">
                           <Product
                             key={index}
                             name={data.data().name}
@@ -136,31 +121,30 @@ function BestSeller() {
                             image={data.data().thumbnail}
                             price={data.data().price}
                             cutPrice={data.data().cutPrice}
-                            id = {data.id}
+                            id={data.id}
                           />
-                     
-                      </Col>
-                    );
-                  }
-                  
-                })}
-                {/* <div className="pagination__div">
+                        </Col>
+                      );
+                    }
+                  })}
+                  {/* <div className="pagination__div">
                   <UsePagination />
                 </div> */}
-                <div className="pagination__div">
-                 
-                  <button onClick={prevPage}>PREV</button>
-                  <button onClick={nextPage}> NEXT</button>
-                </div>
-              </Row>
-            </div>
-          </Col>
-        </Row>
-      </div>
-      <PopularList />
+                  <div className="pagination__div">
+                    <button onClick={prevPage}>PREV</button>
+                    <button onClick={nextPage}> NEXT</button>
+                  </div>
+                </Row>
+              </div>
+            </Col>
+          </Row>
+        </div>
+        <PopularList />
 
-      <Featur />
-    </div></>
+        <Featur />
+      </div>{" "}
+      <Footer />{" "}
+    </>
   );
 }
 
