@@ -78,6 +78,7 @@ function Blog() {
         name: name,
         author: author,
         price: price,
+        offerZone :false,
         timestamp: serverTimestamp(),
       });
       openToast();

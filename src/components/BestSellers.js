@@ -121,9 +121,10 @@ function BestSellers() {
                           price={data.data().price}
                           cutPrice={data.data().cutPrice}
                           id={data.id}
+                          offerZone = {false}
                         />
                   
-                    );
+                    ); 
                   }
                 })}
               </Carousel>
@@ -174,6 +175,7 @@ function BestSellers() {
                           price={data.data().price}
                           cutPrice={data.data().cutPrice}
                           id={data.id}
+                          offerZone = {false}
                         />
                       
                     );

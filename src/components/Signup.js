@@ -4,8 +4,9 @@ import {
 } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { useStateValue } from "../stateProvider";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { useHistory } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
 function Signup() {
   const [{ signupModal }, dispatch] = useStateValue();
   const [email, setEmail] = useState("");
@@ -41,9 +42,20 @@ function Signup() {
     } catch (error) {
       // console.log("error >>>>>", error);
     }
+   
     closeSignUp();
-  };
-
+    
+ 
+  }; 
+ const setOffer = async ()=>{
+  if(user?.uid){
+    await addDoc(collection(db,'offerCount'),{
+      userId:user.uid,
+      
+    })
+  }
+  
+  }
   const addUser = () => {
     dispatch({
       type: "SET_USER",
@@ -53,6 +65,7 @@ function Signup() {
   };
   useEffect(() => {
     addUser();
+    setOffer()
   }, [user]);
   return (
     <div className="body">

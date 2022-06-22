@@ -187,3 +187,12 @@
     text-align: center;
   }
 }
+
+
+
+#code__success__toast{
+  border: solid rgba(0, 128, 0, 0.438);
+  /* background-color: rgb(72, 193, 31); */
+  margin: auto;
+  margin-top: 50px;
+}

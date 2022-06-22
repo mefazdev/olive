@@ -151,6 +151,7 @@ function BookSingle() {
       bookId: id.id,
       title: reviewTitle,
       date: new Date(),
+      offerZone :false,
       timestamp: serverTimestamp(),
     });
     setCommentBox(false);

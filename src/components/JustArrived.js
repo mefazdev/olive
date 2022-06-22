@@ -85,6 +85,7 @@ function JustArrived() {
                   cutPrice={data.data().cutPrice}
                   offer={data.data().discount}
                   id={data.id}
+                  offerZone = {false}
                 />
               );
             }

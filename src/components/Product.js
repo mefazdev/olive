@@ -9,7 +9,7 @@ import { db } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { auth } from "../firebase";
 
-function Product({ id, image, name, author, price, cutPrice }) {
+function Product({ id, image, name, author, price, cutPrice,offerZone }) {
   const [user, setUser] = useState({});
   const [quantity, setQuantity] = useState(false);
   const [{ basket }, dispatch] = useStateValue();
@@ -17,6 +17,7 @@ function Product({ id, image, name, author, price, cutPrice }) {
   const addToCart = async () => {
     setQuantity(true);
     if (!quantity) {
+      openToast();
       await addDoc(collection(db, "cart"), {
         quantity: 1,
         userId: user.uid,
@@ -25,9 +26,10 @@ function Product({ id, image, name, author, price, cutPrice }) {
         name: name,
         author: author,
         price: price,
+        offerZone:offerZone,
         timestamp: serverTimestamp(),
       });
-      openToast();
+   
     }
   };
   const openToast = () => {

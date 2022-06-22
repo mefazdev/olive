@@ -16,15 +16,21 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import FilterSearch from "../components/FilterSearch";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import { collection, query, getDocs, where } from "@firebase/firestore";
 import Product from "../components/Product";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { onAuthStateChanged } from "firebase/auth";
 // import Product from "./Product";
 function OfferZone() {
   const [offerZone, setOfferZone] = useState([]);
+  const [user, setUser] = useState({});
+  const [offerCount,setOfferCount] = useState([])
 
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
   const fetchData = async () => {
     const q = await query(
       collection(db, "products"),
@@ -34,10 +40,21 @@ function OfferZone() {
     const data = await getDocs(q);
     setOfferZone(data.docs.map((doc) => doc));
   };
+  const fetchOfferCount = async()=>{
+    const q = await query(
+      collection(db, "offerCount"),
+      where("userId", "==", user?.uid)
+    );
+    const docSnap = await getDocs(q);
+    setOfferCount(docSnap.docs.map((doc) => doc));
+  }
 
   useEffect(() => {
     fetchData();
   }, []);
+  useEffect(()=>{
+    fetchOfferCount()
+  },[user])
   return (
     <>
       <Header />
@@ -54,26 +71,25 @@ function OfferZone() {
             <p>Offerszone</p>
           </Link>
         </div>
-
+{/* <button onClick={()=>console.log(offerCount[0].data().count)} >Check</button> */}
         <div className="categories__content">
           <Row>
             <FilterSearch />
 
             {/* Categries right Column */}
-            <Col md="10">
+            <Col>
               <div className="categories__right">
                 <div className="offer__image__div">
                   <img className="col-12 col-md-10" src={offer} />
 
                   <p>
-                    You are <span>3</span> books away from this offer{" "}
-                  </p>
 
-                  {/*  if not logd in */}
-                  {/* <p>Please login to view your parchase histor</p> */}
-                  {/* if eligaible for offer */}
-                  {/* <p>Congrates you are elgiable for this offer</p> */}
-                </div>
+                    {user && offerCount[0]?.data().sentCode == true ? 'Congrates you are elgiable for this offer' : user && offerCount[0]?.data().sentCode == false ?  `You are   ${ 5 - offerCount[0].data().count}         books away from this offer`:
+                   'Please login to view your parchase history'
+                   }
+                                     </p>
+
+                      </div>
 
                 <div className="offerzone__head__row ">
                   <h5>Offerzone</h5>
@@ -85,7 +101,7 @@ function OfferZone() {
               <Row>
                 {offerZone.map((data) => {
                   return (
-                    <Col xs="6" sm="4" md="2">
+                    <Col xs="6" sm="4" md="2">  
                       <Product
                         name={data.data().name}
                         author={data.data().author}
@@ -93,6 +109,7 @@ function OfferZone() {
                         price={data.data().price}
                         cutPrice={data.data().cutPrice}
                         id={data.id}
+                        offerZone = {true}
                       />
                     </Col>
                   );

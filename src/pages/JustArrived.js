@@ -87,6 +87,7 @@ function JustArrived() {
                             price={data.data().price}
                             cutPrice={data.data().cutPrice}
                             offer={data.data().offer}
+                            offerZone = {false}
                           />
                         </Link>
                       </Col>

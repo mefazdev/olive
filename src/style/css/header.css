@@ -538,8 +538,11 @@ margin-left: 4px;
    background-color: rgb(255, 255, 255);
    padding-top: 20px;
    padding-bottom: 20px ;
+   max-height: 600px;
+   overflow-y: scroll;
   }
   .header__search__item{
+   /* width: 100%; */
   min-width: 300px;
    padding: 3px;
    padding-left: 20px;

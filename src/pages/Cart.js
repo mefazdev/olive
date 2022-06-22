@@ -13,33 +13,37 @@ import { db, storage } from "../firebase";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {
   collection,
+  getDocs,
   onSnapshot,
   query,
   doc,
   deleteDoc,
-  where,
+  where,updateDoc
 } from "@firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import Footer from "../components/Footer";
 import { auth } from "../firebase";
 import Header from "../components/Header";
+import { Toast  } from "react-bootstrap";
 function Cart() {
   const [{ basket }, dispatch] = useStateValue();
-
+   const [code,setCode] = useState()
   const [promoCode, setPromocode] = useState(false);
   const [cart, setCart] = useState([]);
   var [products] = useState([]);
   const [total, setTotal] = useState(0);
-
+ const [done,setDone] = useState('APPLY')
   const [user, setUser] = useState({});
-
+  const [toast1,setTaost1] = useState(false)
+  const [toast2,setTaost2] = useState(false)
+const [offerCount,setOfferCount] = useState([])
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
 
   const fetchData = async () => {
     const userId = (await user) ? user.uid : null;
-    if (userId) {
+    if (userId) { 
       const q = await query(
         collection(db, "cart"),
         where("userId", "==", userId)
@@ -63,6 +67,7 @@ function Cart() {
 
   useEffect(() => {
     fetchData();
+    fetchOfferCount()
   }, [user]);
 
   useEffect(() => {
@@ -73,10 +78,101 @@ function Cart() {
     await deleteDoc(doc(db, "cart", id));
   };
 
+  const applyCode = async  ()=>{
+   if(code == offerCount[0].data().promoCode){
+    
+    setDone ('DONE')
+     
+    if (offerCount[0].data().sentCode === true){
+
+      if(cart[0].data().offerZone === true && cart.length <= 1){
+        const docRef = doc(db, 'cart',cart[0].id);
+        await  updateDoc(docRef, {
+           price:0
+        })
+        const offerRef = doc(db, 'offerCount',offerCount[0].id);
+        await  updateDoc(offerRef, {
+           sentCode:false
+        })
+      }else{
+      setTaost1(true)
+        // alert('Please select only one book from offerzone ')
+      }
+    }else{
+    //  alert('You havnt offer')
+    setTaost2(true) 
+    }
+   
+     
+
+   }else{
+   setDone('Not available')
+   }
+  }
+
+
+  const fetchOfferCount = async()=>{
+    const q = await query(
+      collection(db, "offerCount"),
+      where("userId", "==", user?.uid)
+    );
+    const docSnap = await getDocs(q);
+    setOfferCount(docSnap.docs.map((doc) => doc));
+  }
+  const controlChange = (e)=>{
+    setCode(e)
+    setDone('APPLY')
+  }
+
+  const openToast1 =()=> setTaost1(true)
+  const openToast2 = ()=> setTaost2(false  )
   return (
     <>
       <Header />
+      <Toast
+      //  onClose={()=>setTaost1(false)}
+       show={toast1}
+       delay={3000}
+       autohide  
+       id='toast1' 
+      
+        >
+          {/* <Toast.Header>
+            
+            <strong className="me-auto">Olive Books</strong>
+            <small>Just now</small>
+          </Toast.Header> */}
+          <Toast.Body>
+          Please select only one book from offerzone
+          <Button
+          id='toast1__btn'
+          onClick={()=>setTaost1(false)}
+          style={{ marginLeft: "10px", }}>OK</Button>
+          </Toast.Body>
+        </Toast>
+        <Toast
+      //  onClose={()=>setTaost1(false)}
+       show={toast2}
+       delay={3000}
+       autohide  
+       id='toast1' 
+      
+        >
+          {/* <Toast.Header>
+            
+            <strong className="me-auto">Olive Books</strong>
+            <small>Just now</small>
+          </Toast.Header> */}
+          <Toast.Body>
+         You have'nt the offer!
+          <Button
+          id='toast1__btn'
+          onClick={()=>setTaost2(false)}
+          style={{ marginLeft: "10px", }}>OK</Button>
+          </Toast.Body>
+        </Toast>
       <div className="cart container">
+        
         <div className="path ">
           <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
             <p>Home </p>
@@ -85,6 +181,8 @@ function Cart() {
           <Link to="/cart" style={{ textDecoration: "none", color: "inherit" }}>
             <p>Cart </p>
           </Link>
+
+          {/* <button onClick={()=>console.log(offerCount[0]?.data().userId)}>CHECK</button> */}
         </div>
         <div className="cart__content">
           <div className="cart__header">
@@ -191,8 +289,14 @@ function Cart() {
                           </p>
                           {promoCode ? (
                             <div className="promo__child">
-                              <input placeholder="ENTER CODE" />
-                              <Button id="promo__apply__button">APPLY</Button>
+                              <input
+                              value={code}
+                              onChange={(e)=>controlChange(e.target.value)}
+                              placeholder="ENTER CODE" />
+                              <Button id="promo__apply__button" onClick={applyCode}>
+                                {/* {done ? 'DONE' : 'APPLY'} */}
+                                {done}
+                           </Button>
                             </div>
                           ) : (
                             ""
@@ -227,6 +331,9 @@ function Cart() {
         <Featur />
       </div>{" "}
       <Footer />{" "}
+      
+
+      
     </>
   );
 }

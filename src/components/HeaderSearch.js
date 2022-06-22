@@ -38,7 +38,7 @@ function HeaderSearch() {
           placeholder="Search for books by key word"
           onChange={(e) => controlSearch(e.target.value)}
         />
-        <div className="header__search__div">
+        {searchTerm ? <div className="header__search__div">
           {products
             .filter((data) => {
               if (searchTerm == "") {
@@ -68,7 +68,8 @@ function HeaderSearch() {
                 );
               }
             })}
-        </div>
+        </div> : ''}
+        
       </div>
 
       {/* <Link to="/search"> */}

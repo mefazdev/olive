@@ -9,21 +9,30 @@ import Col from "react-bootstrap/esm/Col";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import Header from "../components/Header";
 import { auth, db  } from "../firebase";
-import { collection, orderBy, query, getDocs } from "@firebase/firestore";
+import { collection, orderBy,updateDoc,doc, query, getDocs,where } from "@firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import Footer from "../components/Footer";
+import voucherCode from 'voucher-code-generator'
+import { Button, Toast, ToastContainer } from "react-bootstrap";
+
 function OrderConfirm() {
   const [bestSeller, setBestSeller] = useState([]);
 
-   
+   const [offerCount, setOfferCount] = useState([])
   const [user, setUser] = useState({});
   var [filteredData] = useState([]);
 
   const [finalDocs, setFinalDocs] = useState([]);
-  onAuthStateChanged(auth, (currentUser) => {
+  const [toast,setTaost] = useState(false)
+  onAuthStateChanged(auth, (currentUser) => {  
     setUser(currentUser);
   });
 
+   
+  let f = voucherCode.generate({
+    length: 5,
+    count: 1
+});
   const fetchData = async () => {
     const q = await query(
       collection(db, "products"),
@@ -52,12 +61,75 @@ function OrderConfirm() {
   useEffect(() => {
     filterData();
   }, [bestSeller]);
+  useEffect(()=>{
+    fetchOfferCount()
+  },[user])
+
+  const fetchOfferCount = async()=>{
+    const q = await query(
+      collection(db, "offerCount"),
+      where("userId", "==", user?.uid)
+    );
+    const docSnap = await getDocs(q);
+    setOfferCount(docSnap.docs.map((doc) => doc));
+  }
+
+  const sendPromoCode = async () =>{
+    if(  offerCount[0]?.data().count >= 5 ){
+      openToast()
+      
+      const docRef = doc(db, 'offerCount',offerCount[0].id);
+      updateDoc(docRef, {
+        count : 0,
+        sentCode: true,
+        promoCode: f[0]
+      })
+    }
+  }
+
+
+  const openToast = ()=> setTaost(true)
+  useEffect(()=>{
+    sendPromoCode()
+  },[offerCount])
   return (
     <>
       <Header />
+
+      {/* <ToastContainer
+       onClose={''}
+       show={true}
+       delay={3000}
+       autohide
+       position='top-center'> */}
+      <Toast
+       onClose={()=>setTaost(false)}
+       show={toast}
+       delay={3000}
+       autohide  
+       id='code__success__toast' 
+      
+        >
+          <Toast.Header>
+            <img
+              src="holder.js/20x20?text=%20"
+              className="rounded me-2"
+              alt=""
+            />
+            <strong className="me-auto">Olive Books</strong>
+            <small>Just now</small>
+          </Toast.Header>
+          <Toast.Body>
+           You have an offer!, We sent a promo code to your email
+            
+          </Toast.Body>
+        </Toast>
+        {/* </ToastContainer> */}
       <div className="container">
         <div className="body">
           <div className="container9 container">
+
+            {/* <button onClick={openToast}> click</button> */}
             <div className="confirm-container">
               <img
                 className="confirm-img col-12"
@@ -115,8 +187,13 @@ function OrderConfirm() {
           </div>
         </div>
         <Featur />
-      </div>{" "}
-      <Footer />{" "}
+      </div>
+      
+      <Footer />
+
+
+      
+
     </>
   );
 }

@@ -27,17 +27,17 @@ import { stringify } from "@firebase/util";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 function Orders() {
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   const [modalControl, setModalControl] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  // const [name, setName] = useState("");
+  // const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [bookMonths, setBookMonths] = useState([]);
+  // const [bookMonths, setBookMonths] = useState([]);
   const [orders, setOrders] = useState([]); 
   const [address, setAddress] = useState([]);
  
-  const history = useHistory()
+  
   const cookies = new Cookies();
 
   const admin =cookies.get('admin') 
@@ -71,24 +71,7 @@ function Orders() {
       });
     }
   };
-  //  const handleUpload = async ()=>{
-  //     setUploading(true)
-
-  //     const docRef = await addDoc(collection(db, "bookMonth"), {
-  //        name:name,
-  //        description:description,
-  //        timestamp: serverTimestamp(),
-  //     })
-  //     const thumbRef = ref(storage, `bookMonth/${docRef.id}/image`);
-  //     await uploadString(thumbRef, image, "data_url").then(async (snapshot) => {
-  //       const downloadURL = await getDownloadURL(thumbRef);
-  //     await updateDoc(doc(db, "bookMonth", docRef.id), {
-  //       image: downloadURL,
-  //       });
-  //    });
-  //    setUploading(false)
-  //    setModalControl(false)
-  // }
+  
 
   useEffect(() => {
     fetchData();

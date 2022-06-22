@@ -17,6 +17,7 @@ function Product({ id, image, offer, name, author, price, cutPrice }) {
   const addToCart = async () => {
     setQuantity(true);
     if (!quantity) {
+      openToast();
       await addDoc(collection(db, "cart"), {
         quantity: 1,
         userId: user.uid,
@@ -27,7 +28,7 @@ function Product({ id, image, offer, name, author, price, cutPrice }) {
         price: price,
         timestamp: serverTimestamp(),
       });
-      openToast();
+      
     }
   };
 

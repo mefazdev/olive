@@ -1,8 +1,9 @@
 import { Alert } from "bootstrap";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { useStateValue } from "../stateProvider";
 
 function Login() {
@@ -35,6 +36,7 @@ function Login() {
       const user = await signInWithEmailAndPassword(auth, email, password);
       // console.log("user >>>>>", user);
       closeLogin();
+     
       if (user) {
         addUser();
       }
@@ -44,6 +46,8 @@ function Login() {
       Alert(error);
     }
   };
+
+
   const addUser = () => {
     dispatch({
       type: "SET_USER",
@@ -53,11 +57,13 @@ function Login() {
   };
   useEffect(() => {
     addUser();
+   
   }, [user]);
   return (
     <div className="body">
       <div className="container2">
         <div className="left">
+          
           <img
             className="signup-img"
             src={process.env.PUBLIC_URL + "/images/signup.png"}

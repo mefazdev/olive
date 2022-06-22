@@ -16,6 +16,8 @@ import {
   serverTimestamp,
   deleteDoc,
   where,
+  getDocs,
+  getDoc, updateDoc
 } from "@firebase/firestore";
 
 import moment from "moment";
@@ -47,6 +49,10 @@ function Confirm() {
  
   const [payment, setPayment] = useState("cod");
   const [order, setOrder] = useState([]);
+  const [offerCount, setOfferCount] = useState([])
+  const [totalBook, setTotalBook ] = useState()
+
+  let f = offerCount[0]
 
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -82,6 +88,14 @@ function Confirm() {
       });
     }
   };
+  const fetchOfferCount = async()=>{
+    const q = await query(
+      collection(db, "offerCount"),
+      where("userId", "==", user?.uid)
+    );
+    const docSnap = await getDocs(q);
+    setOfferCount(docSnap.docs.map((doc) => doc));
+  }
 
   const subTotal = async () => {
     let sum = 0;
@@ -93,13 +107,24 @@ function Confirm() {
     setTotal(sum);
   };
 
+  const findTotalBook = async () => {
+    let book = 0;
+
+    cart.forEach((element) => {
+      let books = parseInt(element.data().quantity);
+      book += books;
+    });
+    setTotalBook(book);
+  };
   useEffect(() => {
     fetchData();
     fetchAddress();
+    fetchOfferCount()
   }, [user]);
   useEffect(() => {
     subTotal();
     addOrder();
+    findTotalBook();
   }, [cart]);
 
   function onChangeValue(event) {
@@ -135,9 +160,18 @@ function Confirm() {
       // data:data
     });
     deletCart();
+    editOfferCount()
     history.push("/orderConfirm");
   };
 
+  const editOfferCount = async ()=>{
+    
+    const docRef = doc(db, 'offerCount',offerCount[0].id);
+    updateDoc(docRef, {
+      count : offerCount[0].data().count + totalBook
+    })
+    
+  }
   async function displayRazorpay() {
     //  await getRazorpayData()
     const res = await loadScript(
@@ -184,7 +218,7 @@ function Confirm() {
       <Header />
       <div className="container">
         <div className="fullbody">
-          {/* <button onClick={()=>console.log(order)}>onclick</button> */}
+          {/* <button onClick={()=>console.log(totalBook)}>onclick</button> */}
           <div className="total-container container">
             <div className="review-container">
               <div className="review-list">

@@ -122,6 +122,7 @@ function BestSeller() {
                             price={data.data().price}
                             cutPrice={data.data().cutPrice}
                             id={data.id}
+                            offerZone = {false}
                           />
                         </Col>
                       );
