@@ -30,7 +30,7 @@ import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import shortid from 'shortid';
-function AddBook() {
+function PreBook() {
 //  const [admin,setAdmin] =useState ({})
     const [modalControl,setModalControl] = useState(false)
     const [uploading,setUploading] = useState (false)
@@ -58,12 +58,9 @@ function AddBook() {
     const [image2,setImage2] = useState('')
     const [image3, setImage3] = useState('')
     const [stock,setStock] = useState('')
-    const [offer,setOffer] = useState('')
+   
    const  [fethedCategory, setFethedCategory] = useState([])
-   const [all, setAll] = useState(true) 
-   const [popMlm, setPopMlm] = useState(false)
-   const [justArvd, setJustArvd] = useState(false)
- const [bSeller, setBSeler] = useState(false)
+ 
   const [authors,setAuthors] = useState([])
 
   const cookies = new Cookies();
@@ -73,15 +70,12 @@ const [searchTerm,setSearchTerm] = useState('')
 const [searchBy, setSearchBy] = useState()
 
    const fetchData = async () => {
-    const q = await query(collection(db, "products"), orderBy("timestamp", "desc"));
+    const q = await query(collection(db, "prebook"), orderBy("timestamp", "desc"));
     onSnapshot(q, (snapshot) => {
       setProducts(snapshot.docs.map((doc) => doc));
       // console.log(snapshot.docs.map((doc) => doc.data))
     });
-    setBSeler(false)
-    setAll(true)
-    setPopMlm(false)
-      setJustArvd(false)
+    
   }
 
   const fetchAuthors = async () => {
@@ -103,7 +97,7 @@ const handleUpload = async ()=>{
   setUploading(true)
   const productId = shortid.generate();
 
-  const docRef = await addDoc(collection(db, "products"), {
+  const docRef = await addDoc(collection(db, "prebook"), {
    name:name,
    author:author,
    publisher:publisher,
@@ -132,7 +126,7 @@ const handleUpload = async ()=>{
  const thumbRef = ref(storage, `upload/${docRef.id}/thumbnail`);
  await uploadString(thumbRef, thumbnail, "data_url").then(async (snapshot) => {
    const downloadURL1 = await getDownloadURL(thumbRef);
- await updateDoc(doc(db, "products", docRef.id), {
+ await updateDoc(doc(db, "prebook", docRef.id), {
      thumbnail: downloadURL1,
    });
 });
@@ -142,7 +136,7 @@ const image2Ref = ref(storage, `upload/${docRef.id}/image2`);
 await uploadString(image2Ref, image2, "data_url").then(async (snapshot) => {
   const downloadURL = await getDownloadURL(image2Ref);
 
-  await updateDoc(doc(db, "products", docRef.id), {
+  await updateDoc(doc(db, "prebook", docRef.id), {
     image2: downloadURL,
   });
 });
@@ -151,7 +145,7 @@ const image3Ref = ref(storage, `upload/${docRef.id}/image3`);
     await uploadString(image3Ref, image3, "data_url").then(async (snapshot) => {
       const downloadURL = await getDownloadURL(image3Ref);
 
-      await updateDoc(doc(db, "products", docRef.id), {
+      await updateDoc(doc(db, "prebook", docRef.id), {
         image3: downloadURL,
       
       });
@@ -207,73 +201,18 @@ const handleImageThree = (e)=>{
 
 
 const deletItem = async (id) => {
-  await deleteDoc(doc(db, "products", id));
+  await deleteDoc(doc(db, "prebook", id));
   const imageRef = ref(storage, `upload/${id}/image`);
-  deleteObject(imageRef).then(console.log("image deleted"));
+  deleteObject(imageRef)
+//   .then(console.log("image deleted"));
 };
+ 
 
-
-const controlBestSeller = ()=>{
-  fetchBestSeller()
-
-  setBSeler(true)
-  setAll(false)
-  setPopMlm(false)
-  setJustArvd(false)
-  // fetchJustArrived()
-}
-const controlJustArrived = async ()=>{
-  setBSeler(false)
-  setAll(false)
-  setPopMlm(false)
-  setJustArvd(true)
-  fetchJustArrived()
-}
-const controlPopularMalayalam = ()=>{
-  setBSeler(false)
-  setAll(false)
-  setPopMlm(true)
-  setJustArvd(false)
-  fetchPopMalayalam()
-  
-}
-const fetchBestSeller = async () => {
-  const q = await query(
-   collection(db, "products"),
-    where("bestSeller", "==", true)
-  );
-      const data =   await getDocs(q)
-        setProducts(data.docs.map((doc) => doc));
-};
-
-const fetchJustArrived = async () => {
-  const q = await query(
-   collection(db, "products"),
-    where("justArrived", "==", true)
-  );
-      const data =   await getDocs(q)
-        setProducts(data.docs.map((doc) => doc));
-};
-
-const fetchPopMalayalam = async () => {
-  const q = await query(
-   collection(db, "products"),
-    where("popMalayalam", "==", true)
-  );
-      const data =   await getDocs(q)
-        setProducts(data.docs.map((doc) => doc));
-};
-const fetchClassic = async () => {
-  const q = await query(
-   collection(db, "products"),
-    where("classic", "==", true)
-  );
-      const data =   await getDocs(q)
-        setProducts(data.docs.map((doc) => doc));
-};
+ 
+ 
 
 const editStock = async (id)=>{
-  const docRef = doc(db, "products", id);
+  const docRef = doc(db, "prebook", id);
   const updateRef = await updateDoc(docRef, {
    stock:stock  
      
@@ -291,7 +230,7 @@ fetchData()
       <Sidebar/> 
        <div className='ad__cat'>
     <div className='ad__act__head'>
-    <h4  >Products</h4>
+    <h4  >Pre-order Books</h4>
    <button onClick={()=>setModalControl(true)} >Add</button>
     </div>  
  
@@ -300,17 +239,17 @@ fetchData()
           {/* <div className=' upload__content__head__left'> */}
             <p>
               
-          {
+          {/* {
              all ? 'All' : justArvd ? 'Just Arrived' : bSeller ? 'Best Seller' : popMlm ? 'Popular Malayalam': '' 
-          }
+          } */}
         </p>
-        <div className='flex upload__content__head__btn__div'>  
+        {/* <div className='flex upload__content__head__btn__div'>  
             <button onClick={fetchData}>All</button>
             <button onClick={fetchClassic}>Classic</button>
             <button onClick={controlJustArrived}>Just Arrived</button>
             <button onClick={controlBestSeller}>Best Seller</button>
             <button onClick={controlPopularMalayalam}>Popular Malayalam</button>
-        </div>
+        </div> */}
         {/* </div> */}
         <div className='upload__content__head__right'>
           <input type='search' 
@@ -393,7 +332,7 @@ fetchData()
             <td><button value={data.id} id='ad__cat__table__button'
               onClick={(e) => deletItem(e.target.value)}
               >Delete</button></td>
-               <td><Link to={`/admin/bookView/${data.id}`}>View</Link></td>
+               <td><Link to={`/admin/prebookview/${data.id}`}>View</Link></td>
           </tr> 
 
     )
@@ -635,47 +574,7 @@ fetchData()
               placeholder='Description'
               rows='5' />
             </div>
-            <Row>
-              <Col>  <div className='add__book__modal__radio'>
-              <label>Just Arrived ?</label>
-               <input
-               type='checkbox'
-              //  value={justArrived}
-               onChange={((e)=>setJustArrived(!justArrived))}
-               />
-
-             </div></Col>
-              <Col><div className='add__book__modal__radio'>
-              <label>Best Seller ?</label>
-              <input
-              type='checkbox'
-              //  placeholder='Publishing Date'
-               value={bestSeller}
-               onChange={((e)=>setBestSeller (!bestSeller))}
-               />
-                            </div></Col>
-            </Row>
-            
-            <Row>
-              <Col>  <div className='add__book__modal__radio'>
-              <label>Popular Malayalam ?</label>
-               <input
-               type='checkbox'
-              //  value={multimedia}
-               onChange={((e)=>setPopMalayalam(!popMalayalam))}
-               />
-
-             </div></Col>
-              <Col><div className='add__book__modal__radio'>
-              <label>Classic ?</label>
-              <input
-              type='checkbox'
              
-               
-               onChange={((e)=>setClassic (!classic))}
-               />
-                            </div></Col>
-            </Row>
             
              
              
@@ -695,4 +594,4 @@ fetchData()
   )
 }
 
-export default AddBook
+export default PreBook

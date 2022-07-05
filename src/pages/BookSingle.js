@@ -107,14 +107,16 @@ function BookSingle() {
   const addToCart = async () => {
     // setQuantity(true);
     // if (!quantity) {
+ 
     await addDoc(collection(db, "cart"), {
       quantity: quantity,
       userId: user.uid,
-      bookId: id,
+      bookId: id.id,
       thumbnail: product.thumbnail,
       name: product.name,
       author: product.author,
       price: product.price,
+      sale:product.sale,
       timestamp: serverTimestamp(),
       // data:data
     });
@@ -200,26 +202,27 @@ function BookSingle() {
         <p>Home </p>
         <ArrowForwardIosIcon id="path__icon" />
         <p>Categories </p>
-
+ 
         <ArrowForwardIosIcon id="path__icon" />
         <p>{product.name}</p>
       </div>
-      {/* <button onClick={()=>console.log(reviewDoc)}>CLICK</button> */}
+      {/* <button onClick={()=>console.log(id.id)}>CLICK</button> */}
       <div className="book__single__content">
         <Row>
           <Col id="book__single__img__col" md="3">
             <Carousel
-              fade
+              // fade
               controls={true}
-              indicators={true}
+              indicators={false}
+              interval={2000}
               id="book__single__carousel"
             >
              
               <Carousel.Item>
-                <img className="col-12" src={product.image2} />
+                <img   src={product.image2} />
               </Carousel.Item>
               <Carousel.Item>
-                <img className="col-12" src={product.image3} />
+                <img  src={product.image3} />
               </Carousel.Item>
             </Carousel>
           </Col>
@@ -336,7 +339,7 @@ function BookSingle() {
                   <Col>
                     <div className="book__detailes__content col-md-10">
                       <div className="book__detailes__row">
-                        <h6>Authors</h6>
+                        <h6>AUTHOR</h6>
                         <div className="book__detailes__row__right ">
                           <p>{product.author}</p>
                         </div>
@@ -525,7 +528,7 @@ function BookSingle() {
                             );
 
                             return (
-                              <div>
+                              <div key={index}>
                                 <div className="review__content__head">
                                   <h6>{data.title}</h6>
                                   <div className="review__stars__div">
@@ -583,7 +586,7 @@ function BookSingle() {
             {bestSeller.map((data, index) => {
               if (index < 7) {
                 return (
-                  <Col id={index} xs="6" sm="4" md="2">
+                  <Col key={index} xs="6" sm="4" md="2">
                     <Product
                      style={{ textDecoration: "none", color: "inherit" }} 
               name={data.data().name}

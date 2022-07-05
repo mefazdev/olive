@@ -10,6 +10,7 @@
    /* width: 100%; */
   
    /* position: fixed; */
+   
 }
 .header__logo{
    max-width: 150px;
@@ -383,6 +384,8 @@ margin-top: 10px;
   
  padding-top: 10px;
  padding-bottom: 10px;
+ position: absolute;
+ width: 100%;
  }
  .navbar__collpase h6{
    font: normal normal normal 11px/15px DM Sans;

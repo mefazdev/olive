@@ -24,6 +24,7 @@ import { Table } from 'react-bootstrap';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { FlashOnTwoTone } from '@material-ui/icons';
 import Cookies from 'universal-cookie';
+import Sidebar from './Sidebar';
 function BookTalk() {
     // const [modalControl, setModalControl] = useState(false)
  const [name, setName] = useState('')
@@ -150,6 +151,7 @@ const fetchBookNames = async () => {
     return (
     <div>
       {admin == 'true' ? <><NavBar/>
+      <Sidebar/>
         <div className='ad__cat'>
     <div className='ad__act__head'>
     <h4>Book Talk</h4>
@@ -180,7 +182,7 @@ const fetchBookNames = async () => {
       <td>{data.data().title}</td>  
       <td> {data.data().book}</td>
       
-      <td><button value={data.id}
+      <td><button value={data.id} id='ad__cat__table__button'
         onClick={(e) => deletItem(e.target.value)}>Delete</button></td>
     </tr>
           )

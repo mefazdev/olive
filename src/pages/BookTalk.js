@@ -51,7 +51,7 @@ function Blog() {
       where("name", "==", "Rising Like a Storm")
     );
     const docSnap = await getDocs(docRef);
-    console.log("jjjjj>>>", docSnap);
+   
     setBook(docSnap.docs.map((doc) => doc));
   };
 
@@ -67,7 +67,7 @@ function Blog() {
     setIsReadMore(!isReadMore);
   };
 
-  const addToCart = async (price, bookId, image, name, author) => {
+  const addToCart = async (price, bookId, image, name, author,sale) => {
     setQuantity(true);
     if (!quantity) {
       await addDoc(collection(db, "cart"), {
@@ -79,6 +79,7 @@ function Blog() {
         author: author,
         price: price,
         offerZone :false,
+        sale:sale,
         timestamp: serverTimestamp(),
       });
       openToast();
@@ -135,6 +136,7 @@ function Blog() {
                   const author = data.data().author;
                   const image = data.data().thumbnail;
                   const bookId = data.id;
+                  const sale = data.sale
                   return (
                     <div className="buynow ">
                       <Row>
@@ -148,7 +150,7 @@ function Blog() {
                             />
                             <button
                               onClick={() =>
-                                addToCart(price, bookId, image, name, author)
+                                addToCart(price, bookId, image, name, author,sale)
                               }
                               className="buy-btn"
                             >

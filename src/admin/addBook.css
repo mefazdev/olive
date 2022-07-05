@@ -4,17 +4,23 @@
     position: relative;
 }
 .upload__content__head{
-    max-width: 80%;
+    /* max-width: 80%; */
     display: flex;
     justify-content: space-between;
     width: 100%;
+    /* border: solid red; */
 }
 .upload__content__head button{
  margin-left: 10px;
- padding: 3px;   
+ padding: 3px;  
+ border: none; 
+ border-radius: 4px;
+ padding: 3px;
+ background-color: gray;
+ color: #fff;
 }
 .ad__book__box{
-  max-width: 600px;
+  /* max-width: 600px; */
     padding: 20px;
 }
 .add__book__modal__row__item{
@@ -73,6 +79,8 @@
  }
  .ad__book__box__modal{
      position: absolute;
+     /* position: fixed; */
+     float: inline-end;
      /* border: solid red; */
      padding-bottom: 100px;
      top: 0;
@@ -83,3 +91,122 @@
    display: flex;
    justify-content: center;
  }
+
+
+
+#bookView__edit__btn{
+    margin: auto;
+    color: #fff;
+    background-color: rgb(0, 81, 255);
+    margin-top: 10px;
+    width: 250px;
+    height: 50px;
+}
+.bookView__edit__div{
+    /* border: saddlebrown solid; */
+    display: flex;
+    padding-bottom: 100px;
+}
+
+.ad__book__box__modal img{
+    max-height: 150px;
+}
+
+
+
+.file-input label {
+    display: block;
+    position: relative;
+    /* width: 1 00px; */
+    max-width: 150px;
+    /* height: 40px; */
+    padding: 3px;
+    border-radius: 5px;
+    background-color: rgb(0, 132, 255);
+    /* background: linear-gradient(40deg, #ff6ec4, #7873f5); */
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    /* font-weight: bold; */
+    cursor: pointer;
+    transition: transform .2s ease-out;
+  }
+  .file-input input {
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+  }
+
+  #edit__icon{
+    margin-left: 10px;
+    color: gray;
+  }
+  #edit__icon:hover{
+   color: black;
+  }
+  .edit__stock__div{
+    margin-top: 10px;
+  }
+  .edit__stock__div input{
+max-width: 100px;
+border-radius: 3px;
+padding-left: 7px;
+border: 1px solid rgba(128, 128, 128, 0.438);
+  }
+  .edit__stock__div button{
+    border: none;
+    font-size: 12px;
+    margin-left: 10px;
+    background-color: blue;
+    padding: 2px;
+    color: #fff;
+    border-radius: 3px;
+
+  }
+
+  .upload__content__head__left{
+    border: saddlebrown solid;
+    width: 100%;
+    align-items: center;
+  }
+  .upload__content__head__left p{
+    /* border: solid red; */
+    /* max-width: 100px; */
+  }
+  .upload__content__head__btn__div{
+    /* border: solid green; */
+    /* max-width: 400px; */
+  }
+  .upload__content__head__right input{
+    /* border: solid green; */
+    outline: none;
+    padding-left: 5px;
+    border: solid 1px gray;
+
+  }
+  .upload__content__head__right select{
+    margin-left: 5px;
+    padding: 3px;
+    outline: none;
+    font-size: 14px;
+    background-color: gray;
+    color: #fff;
+     
+  }
+  .upload__content__head__right select > option{
+    padding: 10px;
+    margin-top: 10px;
+    outline: none;
+    /* background-color: green; */
+     
+  }
+
+  .ad__act__head__left{
+    display: flex;
+  }
+  .ad__act__head__left h4{
+   margin-right: 20px;
+  }

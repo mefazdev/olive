@@ -75,9 +75,10 @@ function JustArrived() {
           itemClass="popular__ani"
         >
           {arrived.map((data, index) => {
-            if (index < 20) {
+            if (index < 20 && data.data().stock > 0) {
               return (
                 <Product
+                key={index}
                   name={data.data().name}
                   author={data.data().author}
                   image={data.data().thumbnail}
@@ -85,7 +86,9 @@ function JustArrived() {
                   cutPrice={data.data().cutPrice}
                   offer={data.data().discount}
                   id={data.id}
+                  productId={data.data().productId}
                   offerZone = {false}
+                  sale={data.data().sale}
                 />
               );
             }

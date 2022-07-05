@@ -54,7 +54,7 @@ function Categories() {
             <Row>
               {category.map((data, index) => {
                 return (
-                  <Col xs="6" sm="4" md="2">
+                  <Col key={index} xs="6" sm="4" md="2">
                     <div className="book__item">
                       <Link
                         to={`/books/${data.id}`}
@@ -72,9 +72,9 @@ function Categories() {
                         style={{ textDecoration: "none", color: "inherit" }}
                       >
                         <div className="book__item__name">
-                          <h6>{data.data().title}</h6>
+                          <h6 > {data.data().title}</h6>
                         </div>
-                      </Link>
+                      </Link>   
                     </div>
                   </Col>
                 );

@@ -1,17 +1,22 @@
 .ad__nav{
     background-color: #001E43; 
-    height: 100px;
+    /* height: 50px; */
     width: 100%;
-    padding-top: 40px;
-
+    /* padding-top: 40px; */
+    position: sticky;
+    /* width: 100%; */
+    top: 0;
+    z-index: 100;
+    padding-top: 20px;
+    padding-bottom: 15px;
 }
 
 .ad__nav__content{
     /* background-color: #fff; */
-    width: 90%;
-    height: 40px;
+    width: 100%;
+    /* height: 40px; */
     margin-top: 10px;
-    max-width: 90%;
+    max-width: 95%;
     margin: auto;
     display: flex;
     justify-content: space-between;
@@ -27,10 +32,83 @@
 
 #ad__nav__logOut{
     border: none;
-    padding: 5px; 
+    padding: 3px; 
     border-radius: 3px; 
-    width: 150px;
+    width: 100px;
     cursor: pointer;
     background-color: red;
     color: #fff;  
+}
+.ad__nav__content img{
+    max-width: 100px;
+}
+
+
+.ad__nav__content__right{
+    display: flex;
+    /* border: solid red; */
+}
+.ad__nav__content__right span{
+    min-height: 22px;
+    min-width: 22px;
+    border-radius: 100%;
+    background-color: red;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    top: 0  ;
+    margin-top: -12px;
+    margin-left: 12px;
+    font-size: 13px;
+    cursor: pointer;
+}
+.ad__nav__content__noti__div{
+    /* border: solid green; */
+    max-width: 40px;
+    position: relative;
+    margin-right: 40px;
+}
+#admin__noti__icon{
+color: #fff;
+
+}
+.admin__not__view{
+    /* border: solid green; */
+    min-height: 100px;
+    max-height: 60vh;
+    overflow-y: scroll;
+    width: 230px;
+    position: absolute;
+    right: 0;
+    /* right: 10; */
+    margin-right: 80px;
+    margin-top: 40px;
+    /* background-color: rgba(255, 255, 255, 0.966); */
+    background-color: #313131; 
+/* border: 2px solid rgb(13, 19, 24); */
+border-radius: 6px;
+box-shadow: rgb(50, 50, 50) 0px 5px 15px;
+}
+.admin__not__view__row{
+    border-bottom: 1px solid gray;
+    /* min-height: 70px; */
+    padding: 10px;
+    padding-top: 8px;
+    padding-bottom: 20px;
+    color: #fff;
+    position: relative;
+    cursor: pointer;
+    
+}
+.admin__not__view__row h6{
+    font-size: 13px;
+}
+.admin__not__view__row p{
+    font-size: 12px;
+    /* padding: none; */
+    /* position: absolute; */
+
+  float: right;
 }

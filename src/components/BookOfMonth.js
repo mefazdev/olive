@@ -41,8 +41,8 @@ function BoolOfMonth() {
                 {book.map((data, index) => {
                   if (index < 1) {
                     return (
-                      <>
-                        <Col md="4" id="month__book__col">
+                      <Row key={index}>
+                        <Col key={index} md="4" id="month__book__col">
                           <img className="col-8 col-md-11" src={data.image} />
                         </Col>
 
@@ -68,7 +68,7 @@ function BoolOfMonth() {
                             </p>{" "}
                           </p>
                         </Col>
-                      </>
+                      </Row>
                     );
                   }
                 })}
@@ -84,7 +84,7 @@ function BoolOfMonth() {
                   {author.map((data, index) => {
                     if (index < 1) {
                       return (
-                        <>
+                        <Row key={index}>
                           <Col md="4" id="month__book__col">
                             <img
                               className="col-8 col-md-11"
@@ -111,7 +111,7 @@ function BoolOfMonth() {
                               </span>
                             </p>
                           </Col>
-                        </>
+                        </Row>
                       );
                     }
                   })}

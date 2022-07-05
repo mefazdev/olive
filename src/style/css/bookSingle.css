@@ -16,7 +16,9 @@
 }
 #book__single__img__col{
     display: flex;
+    /* width: inherit; */
     /* border: blue solid; */
+    min-height: 300px;
     /* justify-content: center; */
 }
 #book__single__img__col img{
@@ -420,6 +422,12 @@ padding-bottom: 10px;
 
 
 @media screen and (max-width: 800px) {
+  #book__single__img__col{
+    
+    /* border: blue solid; */
+    min-height: 200px;
+    /* justify-content: center; */
+}
     #book__single__img__col img{
         max-height: 250px;
         max-width: 150px;

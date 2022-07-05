@@ -12,7 +12,7 @@ import Col from "react-bootstrap/Col";
 
 import { Link } from "react-router-dom";
 import { db } from "../firebase";
-import { collection, orderBy, query, getDocs } from "@firebase/firestore";
+import { collection, orderBy, query, getDocs,where } from "@firebase/firestore";
 
 import Product from "./Product";
 
@@ -35,6 +35,8 @@ function BestSellers() {
   const [bestSeller, setBestSeller] = useState([]);
   const [show, setShow] = useState(false);
   var [filteredData] = useState([]);
+  const [banner,setBanner] = useState([])
+  const [bannerTwo,setBannerTwo] = useState([])
  
   const [finalDocs, setFinalDocs] = useState([]);
 
@@ -64,12 +66,37 @@ function BestSellers() {
     });
   };
 
+
+  const fetchBanner = async () => {
+    const q = await query(
+      collection(db, "banners"),
+      
+      where('position', '==', 'Best seller row 1')
+      
+    );
+    const data = await getDocs(q);
+    setBanner(data.docs.map((doc) => doc.data()));
+  };
+  const fetchBannerTwo = async () => {
+    const q = await query(
+      collection(db, "banners"),
+      
+      where('position', '==', 'Best seller row 2')
+      
+    );
+    const data = await getDocs(q);
+    setBannerTwo(data.docs.map((doc) => doc.data()));
+  };
   useEffect(() => {
     fetchData();
+    fetchBanner()  
+    fetchBannerTwo()
+  
   }, []);
   useEffect(() => {
     filterData();
   }, [bestSeller]);
+
   return (
     <div className="best__seller">
       <div className="best__seller__head__row ">
@@ -86,9 +113,16 @@ function BestSellers() {
       <div className="best__seller__first__row">
         <Row>
           <Col>
-            <div className="best__seller__banner">
-              <img className="col-12" src={banner2} />
-            </div>
+          {banner.map((data,index)=>{
+            if(index < 1){
+              return(
+                <div key={index} className="best__seller__banner">
+                <img className="col-12" src={data.image} />
+              </div>
+              )
+            }
+          })}
+           
           </Col>
           <Col lg="8">
             <div className="best__seller__first__row__right">
@@ -111,10 +145,11 @@ function BestSellers() {
                 itemClass="popular__ani"
               >
                 {finalDocs.map((data, index) => {
-                  if (index < 20) {
+                  if (index < 20 && data.data().stock > 0) {
                     return (
                       
                         <Product
+                        key={index}
                           name={data.data().name}
                           author={data.data().author}
                           image={data.data().thumbnail}
@@ -122,6 +157,7 @@ function BestSellers() {
                           cutPrice={data.data().cutPrice}
                           id={data.id}
                           offerZone = {false}
+                          sale = {data.data().salse}
                         />
                   
                     ); 
@@ -137,9 +173,18 @@ function BestSellers() {
       <div className="best__seller__first__row">
         <Row>
           <Col>
-            <div className="best__seller__banner">
+          {bannerTwo.map((data,index)=>{
+            if(index < 1){
+              return(
+                <div key={index} className="best__seller__banner">
+                <img className="col-12" src={data.image} />
+              </div>
+              )
+            }
+          })}
+            {/* <div className="best__seller__banner">
               <img className="col-12" src={banner1} />
-            </div>
+            </div> */}
           </Col>
           <Col lg="8">
             <div className="best__seller__first__row__right">
@@ -162,13 +207,14 @@ function BestSellers() {
                 itemClass="popular__ani"
               >
                 {finalDocs.map((data, index) => {
-                  if (index >= 20   ) {
+                  if (index >= 20 && data.data().stock > 0   ) {
                     return (
                       // <Link
                       //   to={`/book/${data.id}`}
                       //   style={{ textDecoration: "none", color: "inherit" }}
                       // >
                         <Product
+                        key={index}
                           name={data.data().name}
                           author={data.data().author}
                           image={data.data().thumbnail}

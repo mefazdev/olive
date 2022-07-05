@@ -9,7 +9,7 @@ import { db } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { auth } from "../firebase";
 
-function Product({ id, image, name, author, price, cutPrice,offerZone }) {
+function Product({ id, image, name, author, price, cutPrice,offerZone,sale }) {
   const [user, setUser] = useState({});
   const [quantity, setQuantity] = useState(false);
   const [{ basket }, dispatch] = useStateValue();
@@ -27,6 +27,7 @@ function Product({ id, image, name, author, price, cutPrice,offerZone }) {
         author: author,
         price: price,
         offerZone:offerZone,
+        sale:sale,
         timestamp: serverTimestamp(),
       });
    

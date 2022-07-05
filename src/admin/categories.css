@@ -23,7 +23,7 @@
 }
 .ad__cat__box{
     /* border: solid red; */
-    height: 300px;
+    min-height: 300px;
     position: relative;
     padding: 10px;
 }
@@ -53,7 +53,7 @@
 #ad__cat__table{
     margin-top: 20px;
 }
-#ad__cat__table button{
+#ad__cat__table__button{
     color: #fff;
     background-color: red;
     border: none;
@@ -62,4 +62,50 @@
 }
 #ad__cat__table img{
     height: 60px;
+}
+
+.edit__category{
+    border: solid red;
+    height: 400px;
+    width: 300px;
+}
+
+#ad__cat__change__btn{
+    background-color: blue;
+    color: #fff;
+    border: none;
+    margin-left: 5px;
+    padding: 4px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 100px;
+    border-radius: 4px;
+ }
+ #cat__edit__select{
+    width: 100%;
+    max-width: 150px;
+    padding: 4px;
+    border: solid 1px gray;
+    outline: none;
+    border-radius: 5px;
+ }
+
+ .admin__cat__edit__div{
+    /* border: solid red; */
+    width: 100%;
+    max-width: 100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+ }
+ #cat__edi__icon{
+    /* border: solid green; */
+ }
+.ad__cat__box img{
+    max-width: 100px;
+
+}
+
+.ad__cat__search{
+margin-top: 10px;
 }

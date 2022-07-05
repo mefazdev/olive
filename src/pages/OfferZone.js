@@ -23,11 +23,20 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { onAuthStateChanged } from "firebase/auth";
 // import Product from "./Product";
+import SearchIcon from "@material-ui/icons/Search";
+import FilterListIcon from "@material-ui/icons/FilterList";
+
 function OfferZone() {
   const [offerZone, setOfferZone] = useState([]);
   const [user, setUser] = useState({});
   const [offerCount,setOfferCount] = useState([])
-
+  const [openFilter, setOpenFilter] = useState(false);
+  const [searchKey,setSearchkey] = useState('')
+  const [searchTerm,setSearchTerm] = useState('')
+  function onChangeValue(e ) {
+    setSearchkey(e);
+    
+  }
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
@@ -74,7 +83,75 @@ function OfferZone() {
 {/* <button onClick={()=>console.log(offerCount[0].data().count)} >Check</button> */}
         <div className="categories__content">
           <Row>
-            <FilterSearch />
+          <Col  xs="12" lg="2">
+           <div
+            // className="book__search__row"
+           className= {openFilter ? "search__items__open" : "search__items"}
+           >
+                  <div className="book__search__input__row">
+
+                  <input id='book__search__input'
+                  onChange={((e)=>setSearchTerm(e.target.value))}
+                  type='text'
+                 placeholder="Search by Key word" 
+                  />
+                  <div className="book__search__icon__div"><SearchIcon id='book__search__icon'/></div>
+                  
+                  </div>
+                  <div className="book__search__options">
+                    By Name
+                    <input type='radio'
+                    name="searchKey"
+                    value='name'
+                    onChange={((e)=>onChangeValue(e.target.value))}
+                    />
+                  </div>
+                  <div className="book__search__options">
+                     By Author 
+                     <input
+                      value='author'
+                      onChange={((e)=>onChangeValue(e.target.value))}
+      
+                     type='radio' name="searchKey"/>
+                  </div>
+                  <div className="book__search__options">
+                    By Category <input 
+                     value='category'
+                     onChange={((e)=>onChangeValue(e.target.value))}
+     
+                    type='radio' name="searchKey"/>
+                  </div>
+                  <div className="book__search__options">
+                    By Publisher <input
+                     value='publisher'
+                     onChange={((e)=>onChangeValue(e.target.value))}
+     
+                    type='radio' name="searchKey"/>
+                  </div>
+                  <div className="book__search__options">
+                    By Language <input 
+                     value='language'
+                     onChange={((e)=>onChangeValue(e.target.value))}
+     
+                    type='radio' name="searchKey"/>
+                  </div>
+                  <div className="book__search__options">
+                     By ID <input
+                      value='id'
+                      onChange={((e)=>onChangeValue(e.target.value))}
+      
+                     type='radio' name="searchKey"/>
+                  </div>
+                  
+                </div>
+                <div className="filter__icon__div">
+                  <FilterListIcon
+          id="filter__icon"
+          onClick={() => setOpenFilter(!openFilter)}
+          type="button"
+        />
+      </div>
+           </Col>
 
             {/* Categries right Column */}
             <Col>
@@ -99,21 +176,42 @@ function OfferZone() {
               </div>
 
               <Row>
-                {offerZone.map((data) => {
-                  return (
-                    <Col xs="6" sm="4" md="2">  
-                      <Product
-                        name={data.data().name}
-                        author={data.data().author}
-                        image={data.data().thumbnail}
-                        price={data.data().price}
-                        cutPrice={data.data().cutPrice}
-                        id={data.id}
-                        offerZone = {true}
-                      />
-                    </Col>
-                  );
-                })}
+              {offerZone.filter((val)=>{
+                  if(searchTerm == ""){
+                    return val
+                  }else if(
+                    searchKey == 'category' ? val.data().category.toLowerCase().includes(searchTerm.toLowerCase()) :
+                    searchKey == 'name' ? val.data().name.toLowerCase().includes(searchTerm.toLowerCase()) :
+                   
+                    searchKey == 'author' ? val.data().author.toLowerCase().includes(searchTerm.toLowerCase())
+                     :
+                     searchKey == 'publisher' ? val.data().publisher.toLowerCase().includes(searchTerm.toLowerCase()):
+                     searchKey == 'language' ? val.data().language.toLowerCase().includes(searchTerm.toLowerCase()):
+                     searchKey == 'id' ? val.data().productId.toLowerCase().includes(searchTerm.toLowerCase()):
+                      val.data().name.toLowerCase().includes(searchTerm.toLowerCase())      
+                     
+                     ){
+                      return val
+                     }
+                 }).map((data,index)=>{
+                  if ( data.data().stock > 0) {
+                    return (
+                      <Col key={index} xs="6" sm="4" md="2">
+                        <Product
+                          key={index}
+                          name={data.data().name}
+                          author={data.data().author}
+                          image={data.data().thumbnail}
+                          price={data.data().price}
+                          cutPrice={data.data().cutPrice}
+                          id={data.id}
+                          offerZone = {false}
+                          sale = {data.data().salse}
+                        />
+                      </Col>
+                    );
+                  }
+                 })}
               </Row>
             </Col>
           </Row>

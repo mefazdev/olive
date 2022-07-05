@@ -22,6 +22,7 @@ import { Table } from 'react-bootstrap';
 
 import CancelIcon from '@material-ui/icons/Cancel';
 import Cookies from 'universal-cookie';
+import Sidebar from './Sidebar';
 function BookOfMonth() {
     const [modalControl, setModalControl] = useState(false)
  const [name, setName] = useState('')
@@ -87,6 +88,7 @@ const fetchData = async () => {
     return (
     <div>
       {admin == 'true' ?  <> <NavBar/>
+      <Sidebar/>
         <div className='ad__cat'>
     <div className='ad__act__head'>
     <h4>Book of the month</h4>
@@ -159,7 +161,7 @@ const fetchData = async () => {
       <td>{data.data().name}</td>  
       <td><img src={data.data().image} /></td>
       <td>{data.data().description}</td>
-      <td><button value={data.id}
+      <td><button value={data.id} id='ad__cat__table__button'
         onClick={(e) => deletItem(e.target.value)}>Delete</button></td>
     </tr>
           )

@@ -124,8 +124,7 @@ const [offerCount,setOfferCount] = useState([])
     setDone('APPLY')
   }
 
-  const openToast1 =()=> setTaost1(true)
-  const openToast2 = ()=> setTaost2(false  )
+ 
   return (
     <>
       <Header />
@@ -194,6 +193,7 @@ const [offerCount,setOfferCount] = useState([])
             <>
               <div className="cart__table">
                 <table>
+                  <thead>
                   <tr className="table__row">
                     <th id="product__th">Product</th>
                     <th id="price__th">Price</th>
@@ -201,9 +201,11 @@ const [offerCount,setOfferCount] = useState([])
                     <th id="total__th">Total</th>
                     <th id="total__th">Action</th>
                   </tr>
-
+                  </thead>
+                  <tbody>
                   {cart.map((data, index) => {
                     return (
+                     
                       <tr key={index}>
                         <td id="cart__td">
                           <div className="cart__item">
@@ -235,7 +237,9 @@ const [offerCount,setOfferCount] = useState([])
                         </td>
                       </tr>
                     );
+                    
                   })}
+                  </tbody>
                 </table>
               </div>
 

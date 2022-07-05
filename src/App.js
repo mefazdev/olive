@@ -42,6 +42,15 @@ import AdminAuthors from './admin/Authors';
 import BookTalk from './admin/bookTalk';
 import OfferZoneAdmin from './admin/offerZone'
 import Login from './admin/Login';
+import CategoryItems from './admin/CategoryItems' 
+import BookView from './admin/ViewBook';
+import Banners from './admin/Banners';
+import AuthorView from './admin/AuthorView';
+import ViewOrder from './admin/ViewOrder';
+import OfferzoneView from './admin/OfferzoneView';
+import ProductDash from './admin/ProductDash';
+import PreBook from './admin/Prebook';
+import PreBookView from './admin/PreBookView';
 function App() {
   return (
     <div className="App">
@@ -51,14 +60,41 @@ function App() {
     <ScrollToTop/>
     {/* <Header/> */}
     <Switch>
-    <Route path='/admin/bookofmonth'>
+    <Route path='/admin/offerzoneview/:id'>
+      <OfferzoneView/>
+      </Route>
+      <Route path='/admin/prebookview/:id'>
+      <PreBookView/>
+      </Route>
+      <Route path='/admin/prebook'>
+      <PreBook/>
+      </Route>
+      <Route path='/admin/productdash'>
+      <ProductDash/>
+      </Route>
+      <Route path='/admin/bookofmonth'>
       <BookOfMonth/>
+      </Route>
+      <Route path='/admin/vieworder/:id'>
+      <ViewOrder/>
+      </Route>
+      <Route path='/admin/author/:id'>
+      <AuthorView/>
+      </Route>
+      <Route path='/admin/banners'>
+      <Banners/>
       </Route>
       <Route path='/admin@olive'>
       <Login/>
       </Route>
       <Route path='/admin/offerzone'>
       <OfferZoneAdmin/>
+      </Route>
+      <Route path='/admin/bookView/:id'>
+      <BookView/>
+      </Route>
+      <Route path='/admin/categoryItems/:id'>
+      <CategoryItems/>
       </Route>
       <Route path='/admin/authors'>
       <AdminAuthors/>

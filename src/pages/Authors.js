@@ -8,8 +8,7 @@ import {
   orderBy,
   query,
   getDocs,
-  startAt,
-  endAt,
+  where
 } from "@firebase/firestore";
 
 import Button from "@material-ui/core/Button";
@@ -31,13 +30,11 @@ function Authors() {
     const data = await getDocs(q);
     setAuthors(data.docs.map((doc) => doc));
   };
-  const filterData = async () => {
+  const filterData = async (e) => {
     const q = await query(
       collection(db, "authors"),
-      orderBy("name"),
-      startAt("p"),
-      endAt("o")
-      //  orderBy('timestamp', "desc")
+      where('firstChar', '==' , e)
+       
     );
     const data = await getDocs(q);
     setAuthors(data.docs.map((doc) => doc));
@@ -74,7 +71,7 @@ function Authors() {
                 <p onClick={fetchData} style={{ textDecoration: "underline" }}>
                   ALL
                 </p>
-                <p onClick={() => setCharector("A")}>A</p>
+                <p onClick={() => filterData("A")}>A</p>
 
                 <p onClick={() => filterData("B")}>B</p>
                 <p onClick={() => filterData("C")}>C</p>
@@ -111,9 +108,9 @@ function Authors() {
 
           <div className="authors__row">
             <Row>
-              {authors.map((data) => {
+              {authors.map((data,index) => {
                 return (
-                  <Col>
+                  <Col key={index}>
                     <Link
                       to={`/author/${data.id}`}
                       style={{ textDecoration: "none", color: "inherit" }}

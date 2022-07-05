@@ -1,6 +1,6 @@
 import ".././style/css/home.css";
 import Carousel from "react-bootstrap/Carousel";
-import banner1 from "../images/banner/banner-1.png";
+// import banner1 from "../images/banner/banner-1.png";
 import school from "../images/banner/schools.png";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -20,7 +20,51 @@ import BookOfMonth from "../components/BookOfMonth";
 import BookTalks from "../components/BookTalks";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { db, storage } from "../firebase";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  doc,
+  serverTimestamp,
+  deleteDoc,
+  getDocs,
+  updateDoc,
+  getDoc,
+  where,
+} from "@firebase/firestore";
+import { useEffect, useState } from "react";
+import { useForkRef } from "@material-ui/core";
 function Home() {
+  const [mainBanner, setMainBanner] = useState([]);
+
+  const [smallBanner, setSmallBanner] = useState([]);
+  const fetchMainBanner = async () => {
+    const q = await query(
+      collection(db, "banners"),
+      // orderBy("timestamp",'desc'),
+      where("position", "==", "Top main banner")
+      //  orderBy('timestamp', "desc")
+    );
+    const data = await getDocs(q);
+    setMainBanner(data.docs.map((doc) => doc.data()));
+  };
+  const fetchSmallBanner = async () => {
+    const q = await query(
+      collection(db, "banners"),
+      // orderBy("timestamp",'desc'),
+      where("position", "==", "Top small banner")
+      //  orderBy('timestamp', "desc")
+    );
+    const data = await getDocs(q);
+    setSmallBanner(data.docs.map((doc) => doc.data()));
+  };
+  useEffect(() => {
+    fetchMainBanner();
+    fetchSmallBanner();
+  }, []);
   return (
     <>
       <Header />
@@ -30,22 +74,37 @@ function Home() {
           <Row>
             <Col>
               <Carousel fade controls={false} indicators={false}>
-                <Carousel.Item>
+                {mainBanner.map((data, index) => {
+                  return (
+                    <Carousel.Item key={index}>
+                      <img className="col-12" src={data.image} />
+                    </Carousel.Item>
+                  );
+                })}
+
+                {/* <Carousel.Item>
                   <img className="col-12" src={banner1} />
                 </Carousel.Item>
                 <Carousel.Item>
                   <img className="col-12" src={banner1} />
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img className="col-12" src={banner1} />
-                </Carousel.Item>
+                </Carousel.Item> */}
               </Carousel>
             </Col>
 
             <Col sm="12" md="12" lg="3">
-              <div>
-                <img className="col-12" src={school} id="home__banner__right" />
-              </div>
+              {smallBanner.map((data, index) => {
+                if (index < 1) {
+                  return (
+                    <div key={index}>
+                      <img
+                        className="col-12"
+                        src={data.image}
+                        id="home__banner__right"
+                      />
+                    </div>
+                  );
+                }
+              })}
             </Col>
           </Row>
         </div>

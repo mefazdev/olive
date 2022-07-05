@@ -73,9 +73,10 @@ function PopularList() {
             dotListClass="custom-dot-list-style"
             itemClass="popular__ani"
           >
-            {list.map((data) => {
+            {list.map((data,index) => {
               return (
                 <Link
+                key={index}
                   to={`/books/${data.id}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >

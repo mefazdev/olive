@@ -537,3 +537,56 @@ max-width: 250px;
 .home__talks__div img{
   max-height: 300px;
 }
+
+#book__search__input{
+ padding: 10px;
+ box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;  border: none;
+outline: none;
+/* margin-bottom: 10px; */
+/* border-radius: 7px; */
+height: 100%;
+width: 100%;
+/* background-color: #001E43;  */
+/* color: #fff; */
+/* background-color: #001e43a4;  */
+}
+
+.book__search__options{
+  /* height: 40px; */
+  padding: 5px;
+  padding-left: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.book__search__options {
+  color: rgb(45, 44, 44);
+  font: normal normal normal 13px/29px DM Sans;
+  font-family: 'DM Sans', sans-serif;
+
+}
+.book__search__input__row{
+  display: flex;
+  width: 100%;
+  height: 35px;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  /* border: saddlebrown solid; */
+}
+.book__search__icon__div{
+  background-color: #46CE04;
+  color: #fff;
+  height: 100%;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media screen and (min-width: 801px) {
+  .book__search__icon__div{
+    display: none;
+  }
+}

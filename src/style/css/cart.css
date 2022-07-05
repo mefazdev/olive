@@ -462,19 +462,35 @@ margin-top: 10px;
 #toast1__btn{
     /* background-color: blue; */
     float: right;
-    margin-top: 10px;
+    margin-top: 20px;
     color: #fff;
     background-color: #46CE04;
+    /* margin-bottom: 20px; */
 
 }
 #toast1{
-    position: absolute;
+    /* position: absolute; */
     background-color: #001E43; 
     color: #fff;
-    left: 40%;
+    /* left: 40%; */
+    margin: auto;
     z-index: 100;
     /* margin: auto; */
     margin-top: 150px;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
     padding-top: 20px;
 }
+@media screen and (max-width: 800px) {
+    
+    #toast1{
+        position:relative;
+        background-color: #001E43; 
+        color: #fff;
+        left:0%;
+        margin: auto;
+        z-index: 100;
+        /* margin: auto; */
+        margin-top: 100px;
+        padding-bottom: 10px;
+        padding-top: 20px;
+    }}

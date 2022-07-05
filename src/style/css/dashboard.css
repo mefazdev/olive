@@ -3,6 +3,8 @@
    
     margin: auto;
     margin-top: 5px;
+    min-height: 60vh;
+    /* border: solid red; */
 }
 
 .dashboard-title{

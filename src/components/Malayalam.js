@@ -71,18 +71,22 @@ function Malayalam() {
           itemClass="popular__ani"
         >
           {product.map((data) => {
-            return (
-              <Product
-                style={{ textDecoration: "none", color: "inherit" }}
-                name={data.data().name}
-                author={data.data().author}
-                image={data.data().thumbnail}
-                price={data.data().price}
-                cutPrice={data.data().cutPrice}
-                id={data.id}
-                offerZone = {false}
-              />
-            );
+            if( data.data().stock > 0){
+              return (
+                <Product
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  name={data.data().name}
+                  author={data.data().author}
+                  image={data.data().thumbnail}
+                  price={data.data().price}
+                  cutPrice={data.data().cutPrice}
+                  id={data.id}
+                  offerZone = {false}
+                  sale = {data.data().salse}
+                />
+              );
+            }
+            
           })}
         </Carousel>
       </div>

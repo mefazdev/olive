@@ -1,571 +1,624 @@
-import "../style/css/preOrder.css";
 import "../style/css/bookSingle.css";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import Carousel from "react-bootstrap/Carousel";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
+ 
 import StarIcon from "@material-ui/icons/Star";
-
-import { Button  } from "@material-ui/core";
+ 
+import { Button } from "@material-ui/core";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import ShareOutlinedIcon from "@material-ui/icons/ShareOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import ReactStars from "react-rating-stars-component";
-import best1 from "../images/author/best1.png";
-import best2 from "../images/author/best2.png";
-import best3 from "../images/author/best3.png";
-import best4 from "../images/author/best4.png";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import Moment from "moment";
+ 
 import Featur from "../components/Featur";
 import PopularList from "../components/PopularList";
-import prebook from "../images/prebook.png";
-import Alert from "react-bootstrap/Alert";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import CloseIcon from "@material-ui/icons/Close";
-import { Link } from "react-router-dom";
  
+import { db } from "../firebase";
+import { auth } from "../firebase";
+import Footer from '../components/Footer'
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+ 
+  query,
+  getDocs,
+  doc,
+  serverTimestamp,
+ 
+  where,
+  getDoc,orderBy
+} from "@firebase/firestore";
+import { useStateValue } from "../stateProvider";
+import { onAuthStateChanged } from "firebase/auth";
+import { useParams } from "react-router-dom";
+import Product from "../components/Product";
 import Header from "../components/Header";
-import Footer from "../components/Footer";
 function PreOrder() {
+  const id = useParams();
   const [quantity, setQuantity] = useState(1);
-  const [show, setShow] = useState(false);
   const [bookMark, setBookMark] = useState(false);
   const [details, setDetails] = useState(true);
   const [review, setReview] = useState(false);
+  const [show, setShow] = useState(false);
   const [isReadMore, setIsReadMore] = useState(true);
+  const [product, setProduct] = useState({});
+  const [bestSeller, setBestSeller] = useState([]);
+ 
+  const [user, setUser] = useState({});
+  const [rate, setRate] = useState("");
+  const [comment, setComment] = useState("");
+  const [commentBox, setCommentBox] = useState(false);
+  const [reviewDoc, setReviewDoc] = useState([]);
+  const [reviewTitle, setReviewTitle] = useState("");
+  const [reviewLimit, setReviewLimit] = useState(6);
+  const [totalRate, setTotalRate] = useState();
+  const [oneStar,setOneStar] = useState()
+  const [twoStar,setTwoStar] = useState()
+  const [threeStar,setThreeStar] = useState()
+  const [fourStar,setFourStar] = useState()
+  const [fiveStar,setFiveStar] = useState()
+ const [products,setProducts] = useState([])
 
+  const fetchData = async () => {
+    const q = await query(
+      collection(db, "prebook"),
+     orderBy('timestamp', 'desc')
+    );
+    const data = await getDocs(q);
+  setProduct(data.docs.map((doc) => doc));
+  // setProduct(products[0]?.data())
+  };
+
+  useEffect (()=>{
+    // setProduct(products[0]?.data())
+  },[products])
+  const fetchBestSeller = async () => {
+    const q = await query(
+      collection(db, "products"),
+      where("bestSeller", "==", true)
+    );
+    const data = await getDocs(q);
+    setBestSeller(data.docs.map((doc) => doc));
+  }; 
+
+  const fetchReview = async () => {
+    const bookId = product[0]?.id;     
+    const q = await query(
+      collection(db, "review"),
+      where("bookId", "==", bookId)
+    );
+    onSnapshot(q, (snapshot) => {
+      setReviewDoc(snapshot.docs.map((doc) => doc.data()));
+    });
+    
+  };
+  
+  useEffect(() => {
+    fetchData();
+    fetchBestSeller();
+    calTotalRate();
+  }, [id]);
+  useEffect(() => {
+    calTotalRate();
+  }, [reviewDoc]);
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  const addToCart = async () => {
+    // setQuantity(true);
+    // if (!quantity) {
+ 
+    await addDoc(collection(db, "cart"), {
+      quantity: quantity,
+      userId: user.uid,
+      bookId: id.id,
+      thumbnail: product.thumbnail,
+      name: product.name,
+      author: product.author,
+      price: product.price,
+      sale:product.sale,
+      timestamp: serverTimestamp(),
+      // data:data
+    });
+    // }
+  };
+  const addToBookMark = async () => {
+    setBookMark(!bookMark);
+    // setQuantity(true);
+    // if (!quantity) {
+    await addDoc(collection(db, "bookMark"), {
+      thumbnail: product.thumbnail,
+      name: product.name,
+      author: product.author,
+      price: product.price,
+      cutPrice: product.cutPrice,
+      userId: user.uid,
+      // bookId: id,
+      timestamp: serverTimestamp(),
+      // data:data
+    });
+    // }
+  };
   const toggleReadMore = () => {
     setIsReadMore(!isReadMore);
   };
-  const [data] = useState([
-    {
-      tittle: "Great Story! You Love it",
-      text: "Nice book... It should be read by the one who want to learn something to be better in life..... But in this book(think and.....) they have given only their own successful peopl example..Due to which a common man may think about them only except our own successful person....",
-      stars: 4,
-      date: "2021 April 7 | Alex M",
-    },
-    {
-      tittle: "Amazing offer on amazing books",
-      text: `'Ours have the world's greatest epic Shrimad Bhagwad Geeta this book alone can change the life of the man who read this...... It seems like I m exaggerating but trust me whoever read this epic no one could tell that it's not a perfect book..... Even other religious people read and admire this book.....'`,
-      stars: 3,
-      date: "2021 April 7 | Alex M",
-    },
-    {
-      tittle: "Box was damaged, and crumpled",
-      text: "The shipping was ok, but it could be the fault of the handling process. The box had dents and the books as well",
-      stars: 2,
-      date: "2021 April 7 | Alex M",
-    },
-    {
-      tittle:
-        "Waste of time for investors who wants to learn more about investing",
-      text: "Nice book... It should be read by the one who want to learn something to be better in life..... But in this book(think and.....) they have given only their own successful peopl example..Due to which a common man may think about them only except our own successful person....",
-      stars: 3,
-      date: "2021 April 7 | Alex M",
-    },
-  ]);
+ 
+   
 
-  const [item] = useState([
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma  ",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-  ]);
+  const postReview = async () => {
+    await addDoc(collection(db, "review"), {
+      comment: comment,
+      rate: rate,
+      user: user.email.slice(0, 5),
+      bookId: product[0]?.id,
+      title: reviewTitle,
+      date: new Date(),
+      offerZone :false,
+      timestamp: serverTimestamp(),
+    });
+    setCommentBox(false);
+    setReviewTitle(null);
+    setComment(null);
+    setRate(null);
+  };
 
-  const text = `  In the concluding installment to the Wrath of Ambar duology
-  from masterful author Tanaz Bhathena, Gul and Cavas must
-  unite their magical forces―and hold onto their growing
-  romance―to save their kingdom from tyranny. 
-  In the concluding installment to the Wrath of Ambar duology
-  from masterful author Tanaz Bhathena, Gul and Cavas must
-  unite their magical forces―and hold onto their growing
-  romance―to save their kingdom from tyranny. 
+  const calTotalRate = async () => {
+    let total = 0;
+    let oneStar = 0;
+    reviewDoc.forEach((element) => {
+    let star = parseInt(element.rate);
+    total += star;
 
-  With King Lohar dead and a usurper queen in power, Gul and
-  Cavas face a new tyrannical government that is bent on
-  killing them both. Their roles in King Lohar's death have
-  not gone unnoticed, and the new queen is out for blood. 
-`;
+    if(star == 1){
+      let oneS = star
+      setOneStar(oneS)
+    }else if(star == 2){
+      let twoS = star
+      setTwoStar(twoS)
+    }else if(star == 3) {
+     let threeS = star
+     setThreeStar(threeS)
+    }else if (star == 4){
+      let fourS = star
+      setFourStar(fourS)
+    }else if(star == 5){
+      let fiveS = star
+      setFiveStar(fiveS)
+    }
+    });
+    setTotalRate(total);
+  };
+  
+  useEffect(() => {
+    fetchReview();
+  }, [product]);
+  const description = product[0]?.data().description ? product[0]?.data().description : ""
   return (
     <>
-      <Header />
-      <div className="preOrder container">
-        <div className="path ">
-          <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-            <p>Home </p>
-          </Link>
-          <ArrowForwardIosIcon id="path__icon" />
-          <Link
-            to="/preorder"
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <p>Pre-order </p>
-          </Link>
-        </div>
-
-        <div className="book__single__content">
-          {/* <Container> */}
-          <Row>
-            <Col id="book__single__img__col" xm="12" md="3">
-              <Carousel
-                fade
-                controls={true}
-                indicators={true}
-                id="book__single__carousel"
-              >
-                <Carousel.Item>
-                  <img className="col-12 " src={prebook} />
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img className="col-12 " src={prebook} />
-                </Carousel.Item>
-                <Carousel.Item>
-                  <img className="col-12 " src={prebook} />
-                </Carousel.Item>
-              </Carousel>
-            </Col>
-            <Col md="7" className="book__description__col">
-              <div className="book__description">
-                <h2>DARK LANDS</h2>
-                <div className="book__description__star__row">
-                  <div className="book__description__star__left">
-                    <StarIcon id="book__star" />
-                    <StarIcon id="book__star" />
-                    <StarIcon id="book__star" />
-                    <StarIcon id="book__star" />
-                    <StarIcon id="book__star" />
-                    <p>(274)</p>
-                  </div>
-                  <div className="book__description__star__right">
-                    <p>By</p>
-                    <h6>Tanaz Bhathena</h6>
-                  </div>
+    <Header/>
+    
+    <div className="book__single container">
+      <div className="path ">
+        <p>Home </p>
+        <ArrowForwardIosIcon id="path__icon" />
+        <p>Categories </p>
+ 
+        <ArrowForwardIosIcon id="path__icon" />
+        <p>{product.name}</p>
+      </div>
+      {/* <button onClick={()=>console.log(reviewDoc)}>CLICK</button> */}
+      <div className="book__single__content">
+        <Row>
+          <Col id="book__single__img__col" md="3">
+            <Carousel
+              // fade
+              controls={true}
+              indicators={false}
+              interval={2000}
+              id="book__single__carousel"
+            >
+             
+              <Carousel.Item>
+                <img   src={product[0]?.data().image2} />
+              </Carousel.Item>
+              <Carousel.Item>
+                <img  src={product[0]?.data().image3} />
+              </Carousel.Item>
+            </Carousel>
+          </Col>
+          <Col md="7" className="book__description__col">
+            <div className="book__description">
+              <h2>{product[0]?.data().name}</h2>
+              <div className="book__description__star__row">
+                <div className="book__description__star__left">
+                  <StarIcon id="book__star" />
+                  <StarIcon id="book__star" />
+                  <StarIcon id="book__star" />
+                  <StarIcon id="book__star" />
+                  <StarIcon id="book__star" />
+                  <p>({totalRate})</p>
                 </div>
-
-                <div className="book__description__price">
-                  <h5>₹450</h5>
-                  <p>
-                    Book Format:
-                    <span style={{ paddingLeft: "5px" }}>Paperback</span>
-                  </p>
-                </div>
-                <div className="book__description__text">
-                  <p>
-                    {isReadMore ? text.slice(0, 550) : text}
-                    <span
-                      onClick={toggleReadMore}
-                      style={{ color: "#46CE04", cursor: "pointer" }}
-                    >
-                      {isReadMore ? "...read more" : " show less"}
-                    </span>
-                  </p>
-                </div>
-
-                <div className="book__description__button__row">
-                  <div className="book__description_increment">
-                    <Button
-                      onClick={() =>
-                        setQuantity(quantity > 0 ? quantity - 1 : 0)
-                      }
-                      id="add__button"
-                    >
-                      -
-                    </Button>
-                    <p>{quantity}</p>
-                    <Button
-                      onClick={() => setQuantity(quantity + 1)}
-                      id="add__button"
-                    >
-                      +
-                    </Button>
-                  </div>
-                  <Button
-                    onClick={""}
-                    type="button"
-                    id="book__add__button"
-                    style={{ background: "#46CE04" }}
-                  >
-                    PREORDER
-                  </Button>
-                </div>
-
-                <div className="book__share__row">
-                  <div
-                    className="book__book__mark"
-                    onClick={() => setBookMark(!bookMark)}
-                  >
-                    <BookmarkBorderIcon
-                      id="book__bookmark__icon"
-                      className={bookMark ? "bookMark" : "book__bookmark__icon"}
-                    />
-                    <p>ADD TO BOOKMARK</p>
-                  </div>
-                  <div className="book__share">
-                    <ShareOutlinedIcon id="book__share__icon" />
-                    <p>SHARE</p>
-                  </div>
+                <div className="book__description__star__right">
+                  <p>By</p>
+                  <h6>{product[0]?.data().author}</h6>
                 </div>
               </div>
-            </Col>
-          </Row>
 
-          <Row>
-            <Col>
-              <div className="book__detailes">
-                <div className="book__detailes__head">
-                  <div className="book__detailes__head__content">
-                    <h6
-                      onClick={() => setDetails(true)}
-                      className={
-                        details
-                          ? "book__detailes__active"
-                          : "book__detailes__head__h6"
-                      }
-                    >
-                      Product Details
-                    </h6>
-                    <h6
-                      onClick={() => setDetails(false)}
-                      className={
-                        !details
-                          ? "book__detailes__active"
-                          : "book__detailes__head__h6"
-                      }
-                    >
-                      Reviews (12)
-                    </h6>
-                  </div>
+              <div className="book__description__price">
+                <h5>₹{product[0]?.data().price}</h5>
+                <p>
+                  Book Format:
+                  <span style={{ paddingLeft: "5px" }}>
+                    {product[0]?.data().bookFormat}
+                  </span>
+                </p>
+              </div>
+              <div className="book__description__text">
+                <p>
+                  {isReadMore ? description.slice(0, 200) : description}
+                  <span
+                    onClick={toggleReadMore}
+                    style={{ color: "#46CE04", cursor: "pointer" }}
+                  >
+                    {isReadMore ? "...read more" : " show less"}
+                  </span>
+                </p>
+              </div>
+
+              <div className="book__description__button__row">
+                <div className="book__description_increment">
+                  <Button
+                    onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
+                    id="add__button"
+                  >
+                    -
+                  </Button>
+                  <p>{quantity}</p>
+                  <Button
+                  
+                    onClick={() => setQuantity(quantity + 1)}
+                    id="add__button"
+                  >
+                    +
+                  </Button>
                 </div>
-                {details ? (
-                  <Row>
-                    <Col>
-                      <div className="book__detailes__content col-md-10">
-                        <div className="book__detailes__row">
-                          <h6>AUTHOR</h6>
-                          <div className="book__detailes__row__right ">
-                            <p>Tanaz Bhathena</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>CATEGORY</h6>
-                          <div className="book__detailes__row__right ">
-                            <p>Novel</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>PUBLISHING DATE</h6>
-                          <div className="book__detailes__row__right ">
-                            {" "}
-                            <p>2019, March</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>EDITION</h6>
-                          <div className="book__detailes__row__right ">
-                            {" "}
-                            <p>1</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>BINDING</h6>
-                          <div className="book__detailes__row__right ">
-                            {" "}
-                            <p>Normal</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>NUMBER OF PAGES</h6>
-                          <div className="book__detailes__row__right ">
-                            {" "}
-                            <p>386</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>PUBLISHER</h6>
-                          <div className="book__detailes__row__right ">
-                            {" "}
-                            <p>DC BOOKS</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>MULTIMEDIA</h6>
-                          <div className="book__detailes__row__right ">
-                            <p>Not Available</p>
-                          </div>
-                        </div>
-                        <div className="book__detailes__row">
-                          <h6>LANGAGE</h6>
-                          <div className="book__detailes__row__right ">
-                            <p>ENGLISH</p>
-                          </div>
+                <Button
+                 style={{ backgroundColor:'#46CE04'}}
+                  onClick={addToCart}
+                  type="button"
+                  id="book__add__button"
+                >
+                  Add to cart
+                </Button>
+              </div>
+
+              <div className="book__share__row">
+                <div className="book__book__mark" onClick={addToBookMark}>
+                  <BookmarkBorderIcon
+                    id="book__bookmark__icon"
+                    className={bookMark ? "bookMark" : "book__bookmark__icon"}
+                  />
+                  <p>ADD TO BOOKMARK</p>
+                </div>
+                <div className="book__share">
+                  <ShareOutlinedIcon id="book__share__icon" />
+                  <p>SHARE</p>
+                </div>
+              </div>
+            </div>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <div className="book__detailes">
+              <div className="book__detailes__head">
+                <div className="book__detailes__head__content">
+                  <h6
+                    onClick={() => setDetails(true)}
+                    className={
+                      details
+                        ? "book__detailes__active"
+                        : "book__detailes__head__h6"
+                    }
+                  >
+                    Product Details
+                  </h6>
+                  <h6
+                    onClick={() => setDetails(false)}
+                    className={
+                      !details
+                        ? "book__detailes__active"
+                        : "book__detailes__head__h6"
+                    }
+                  >
+                    Reviews ({reviewDoc.length})
+                  </h6>
+                </div>
+              </div>
+              {details ? (
+                <Row>
+                  <Col>
+                    <div className="book__detailes__content col-md-10">
+                      <div className="book__detailes__row">
+                        <h6>AUTHOR</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().author}</p>
                         </div>
                       </div>
-                    </Col>
-                  </Row>
-                ) : (
-                  <div className="book__review">
-                    <div className="book__review__first__row">
-                      <Row>
-                        <Col md="3">
-                          <div className="book__review__first__row__left">
-                            <h4>Customer Reviews</h4>
-                            <div className="book__review__rating">
-                              <h1>4.7</h1>
-                              <div className="book__review__rating__right">
-                                <p>285 Reviews</p>
-                                <div className="book__review__rating__star">
-                                  <StarIcon id="book__star" />
-                                  <StarIcon id="book__star" />
-                                  <StarIcon id="book__star" />
-                                  <StarIcon id="book__star" />
-                                  <StarIcon id="book__star" />
-                                </div>
+                      <div className="book__detailes__row">
+                        <h6>CATEGORY</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().category}</p>
+                        </div>
+                      </div>
+                      <div className="book__detailes__row">
+                        <h6>PUBLISHING DATE</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().pubDate}</p>
+                        </div>
+                      </div>
+                      <div className="book__detailes__row">
+                        <h6>EDITION</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().edition}</p>
+                        </div>
+                      </div>
+                      <div className="book__detailes__row">
+                        <h6>BINDING</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().binding}</p>
+                        </div>
+                      </div>
+                      <div className="book__detailes__row">
+                        <h6>NUMBER OF PAGES</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().pages}</p>
+                        </div>
+                      </div>
+                      <div className="book__detailes__row">
+                        <h6>PUBLISHER</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>DC BOOKS</p>
+                        </div>
+                      </div>
+                      <div className="book__detailes__row">
+                        <h6>MULTIMEDIA</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().multimedia}</p>
+                        </div>
+                      </div>
+                      <div className="book__detailes__row">
+                        <h6>LANGUAGE</h6>
+                        <div className="book__detailes__row__right ">
+                          <p>{product[0]?.data().language}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </Col>
+                </Row>
+              ) : (
+                <div className="book__review">
+                  <div className="book__review__first__row">
+                    <Row>
+                      <Col md="3">
+                        <div className="book__review__first__row__left">
+                          <h4>Customer Reviews</h4>
+                          <div className="book__review__rating">
+                            <h1>4.7</h1>
+                            <div className="book__review__rating__right">
+                              <p>{reviewDoc.length} Reviews</p>
+                              <div className="book__review__rating__star">
+                                <StarIcon id="book__star" />
+                                <StarIcon id="book__star" />
+                                <StarIcon id="book__star" />
+                                <StarIcon id="book__star" />
+                                <StarIcon id="book__star" />
                               </div>
                             </div>
-
-                            <button id="review__button">Write a Review</button>
                           </div>
+
+                          <button
+                            onClick={() => setCommentBox(true)}
+                            id="review__button"
+                          >
+                            Write a Review
+                          </button>
+                        </div>
+                      </Col>
+                      <Col id="progress__col">
+                        <div className="book__progress__div">
+                          <div className="book__progress">
+                            <p>5 Star</p>
+
+                            <ProgressBar
+                              className="progress__bar"
+                              variant="warning"
+                              now={fiveStar}
+                            />
+
+                            <p>{fiveStar}</p>
+                          </div>
+                          <div className="book__progress">
+                            <p>4 Star</p>
+
+                            <ProgressBar
+                              className="progress__bar"
+                              variant="warning"
+                              now={fourStar} 
+                            />
+
+                            <p>{fourStar}</p>
+                          </div>
+                          
+                          <div className="book__progress">
+                            <p>3 Star</p>
+
+                            <ProgressBar
+                              className="progress__bar"
+                              variant="warning"
+                              now={threeStar}
+                            />
+
+                            <p>{threeStar}</p>
+                          </div>
+                          <div className="book__progress">
+                            <p>2 Star</p>
+
+                            <ProgressBar
+                              className="progress__bar"
+                              variant="warning"
+                              now={twoStar}
+                            />
+
+                            <p>{twoStar}</p>
+                          </div>
+                          <div className="book__progress">
+                            <p>1 Star</p>
+
+                            <ProgressBar
+                              className="progress__bar"
+                              variant="warning"
+                              now={oneStar}
+                            />
+
+                            <p>{oneStar}</p>
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+                  </div>
+                  {commentBox ? (
+                    <div className="reciew__input">
+                      <input
+                        placeholder="Title"
+                        onChange={(e) => setReviewTitle(e.target.value)}
+                      />
+                      <textarea
+                        placeholder="Comment"
+                        onChange={(e) => setComment(e.target.value)}
+                        rows={3}
+                      />
+                      <Row>
+                        <Col>
+                          <p>Rate this book</p>
+                          <ReactStars
+                            classNames="add__rate"
+                            // id="review__stars"
+                            count={5}
+                            onChange={setRate}
+                            size={34}
+                            activeColor="#ffd700"
+                          />
                         </Col>
-                        <Col id="progress__col">
-                          <div className="book__progress__div">
-                            <div className="book__progress">
-                              <p>5 Star</p>
-
-                              <ProgressBar
-                                className="progress__bar"
-                                variant="warning"
-                                now={80}
-                              />
-
-                              <p>200</p>
-                            </div>
-                            <div className="book__progress">
-                              <p>4 Star</p>
-
-                              <ProgressBar
-                                className="progress__bar"
-                                variant="warning"
-                                now={60}
-                              />
-
-                              <p>50</p>
-                            </div>
-                            <div className="book__progress">
-                              <p>5 Star</p>
-
-                              <ProgressBar
-                                className="progress__bar"
-                                variant="warning"
-                                now={40}
-                              />
-
-                              <p>200</p>
-                            </div>
-                            <div className="book__progress">
-                              <p>3 Star</p>
-
-                              <ProgressBar
-                                className="progress__bar"
-                                variant="warning"
-                                now={30}
-                              />
-
-                              <p>14</p>
-                            </div>
-                            <div className="book__progress">
-                              <p>2 Star</p>
-
-                              <ProgressBar
-                                className="progress__bar"
-                                variant="warning"
-                                now={15}
-                              />
-
-                              <p>20</p>
-                            </div>
-                            <div className="book__progress">
-                              <p>1 Star</p>
-
-                              <ProgressBar
-                                className="progress__bar"
-                                variant="warning"
-                                now={10}
-                              />
-
-                              <p>8</p>
-                            </div>
-                          </div>
+                        <Col>
+                          <button onClick={postReview}>Post</button>
                         </Col>
                       </Row>
                     </div>
+                  ) : (
+                    ""
+                  )}
 
-                    <div className="book__review__content">
-                      <Row>
-                        <Col xs="12" md="8">
-                          {data.map((data) => {
+                  <div className="book__review__content">
+                    <Row>
+                      <Col xs="12" md="8">
+                        {reviewDoc.map((data, index) => {
+                          if (index < reviewLimit) {
+                            const date = Moment(data.time).format(
+                              "MMM DD YYYY"
+                            );
+
                             return (
-                              <div>
+                              <div key={index}>
                                 <div className="review__content__head">
-                                  <h6>{data.tittle}</h6>
+                                  <h6>{data.title}</h6>
                                   <div className="review__stars__div">
                                     <ReactStars
                                       id="review__stars"
                                       count={5}
-                                      // onChange={4}
-                                      value={data.stars}
+                                      value={data.rate}
                                       size={24}
                                       activeColor="#ffd700"
                                     />
                                   </div>
                                 </div>
                                 <div className="review__text">
-                                  <p>{data.text}</p>
+                                  <p>{data.comment}</p>
                                   <div className="review__date">
-                                    <h6>{data.date}</h6>
+                                    <h6>
+                                      {date} {data.user}
+                                    </h6>
                                   </div>
                                 </div>
                               </div>
                             );
-                          })}
-
+                          }
+                        })}
+                        {reviewDoc.length != 0 ? (
                           <div className="review__more">
-                            <h5 type="text">View All Reviews</h5>
+                            <h5 type="text" onClick={() => setReviewLimit(200)}>
+                              View All Reviews
+                            </h5>
                           </div>
-                        </Col>
-                      </Row>
-                    </div>
+                        ) : (
+                          ""
+                        )}
+                      </Col>
+                    </Row>
                   </div>
-                )}
-              </div>
-            </Col>
-          </Row>
-
-          {/* <<<<<<<<<<< ALSO BROUGHT BOOKS */}
-
-          <div className="also__brought">
-            <div className="also__brought__head">
-              <h6>
-                Customers Who Bought{" "}
-                <span style={{ color: "#46CE04" }}>Rising Like a Storm</span>{" "}
-                also brought
-              </h6>
-            </div>
-
-            {/* <<<<<<<< CART ADDED ALERT >>>>>>>>>> */}
-            {show ? (
-              <Alert variant="success" id="alert">
-                <CheckCircleIcon id="alert__success__icon" />
-
-                <div className="alert__success__text">
-                  <p>Product added to your cart</p>
-                  <Link to="/cart" style={{ textDecoration: "none" }}>
-                    <h6>CHECKOUT NOW</h6>
-                  </Link>
                 </div>
+              )}
+            </div>
+          </Col>
+        </Row>
 
-                <CloseIcon
-                  type="button"
-                  onClick={() => setShow(false)}
-                  id="alert__close__icon"
-                />
-              </Alert>
-            ) : (
-              ""
-            )}
+        {/* <<<<<<<<<<< ALSO BROUGHT BOOKS */}
 
-            <Row>
-              {item.map((data) => {
+        <div className="also__brought">
+          <div className="also__brought__head">
+            <h6>
+              Customers Who Bought
+              <span style={{ color: "#46CE04" }}> {product.name}</span> also
+              brought
+            </h6>
+          </div>
+
+          <Row>
+            {bestSeller.map((data, index) => {
+              if (index < 7) {
                 return (
-                  <Col xs="6" sm="4" md="2">
-                    <div className="book__item">
-                      <Link
-                        to="/bookSingle"
-                        style={{
-                          textDecoration: "none",
-                          color: "inherit",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <img src={data.image} />
-                      </Link>
-                      <Link
-                        to="/bookSingle"
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
-                        <div className="book__item__name">
-                          <h6>{data.name}</h6>
-                          <p>{data.author}</p>
-                        </div>
-                      </Link>
-                      <div className="book__item__price__div">
-                        <div className="book__item__price__left">
-                          <p className="book__item__cut__price">
-                            ₹{data.cutPrice}
-                          </p>
-                          <p className="book__item__price">₹{data.price}</p>
-                        </div>
-
-                        <AddShoppingCartIcon
-                          type="button"
-                          onClick={() => setShow(true)}
-                          id="book__item___cart__icon"
-                        />
-                      </div>
-                    </div>
+                  <Col key={index} xs="6" sm="4" md="2">
+                    <Product
+                     style={{ textDecoration: "none", color: "inherit" }} 
+              name={data.data().name}
+              author={data.data().author}
+              image={data.data().thumbnail}
+              price={data.data().price}
+              cutPrice={data.data().cutPrice}
+              id = {data.id}
+              />
+                   
                   </Col>
                 );
-              })}
-            </Row>
-          </div>
-          <div></div>
+              }
+            })}
+          </Row>
         </div>
+        <div></div>
+      </div>
 
-        <PopularList />
+      <PopularList />
 
-        <Featur />
-      </div>{" "}
-      <Footer />{" "}
+      <Featur />
+    </div>
+    <Footer/>
     </>
   );
 }

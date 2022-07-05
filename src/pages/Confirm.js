@@ -127,9 +127,9 @@ function Confirm() {
     findTotalBook();
   }, [cart]);
 
-  function onChangeValue(event) {
-    setPayment(event.target.value);
-    // console.log(event.target.value);
+  function onChangeValue(e ) {
+    setPayment(e);
+    console.log(e);
   }
   const deletAddress = async (id) => {
     await deleteDoc(doc(db, "address", id));
@@ -154,16 +154,59 @@ function Confirm() {
       status: "Not Shipped",
       total: total + 50,
       orderId: orderId,
+      viewed:false,
       recivedDate: moment(new Date()).unix(),
       timestamp: serverTimestamp(),
 
       // data:data
-    });
+    }
+     
+    );
+   
+   await updateStock()
+   await  setSalesQ()
     deletCart();
     editOfferCount()
-    history.push("/orderConfirm");
-  };
 
+    history.push("/orderConfirm");
+
+  };
+  
+  const setSalesQ = async ()=>{
+    
+    order.map((data,index)=>{
+      const docRef = doc(db, "products", data.bookId);
+     let prevSale = data.sale
+     let quantity = data.quantity
+     return(
+
+      updateDoc(docRef, {
+        sale : prevSale + quantity
+        
+     })
+    // console.log(data.sale)
+     ) 
+    })
+  }
+
+  const updateStock = async () => {
+ 
+   
+    cart.forEach( async(element) => {
+      let q = parseInt(element.data().quantity);
+      
+      const docsRef = doc(db, "products", element.data().bookId);
+      const docSnap = await getDoc(docsRef);
+       let stock = docSnap.data().stock
+       
+      const docRef = doc(db, "products", element.data().bookId);
+      const updateRef = await updateDoc(docRef, {
+       stock: stock - q 
+         
+      });
+    });
+     
+  };
   const editOfferCount = async ()=>{
     
     const docRef = doc(db, 'offerCount',offerCount[0].id);
@@ -218,7 +261,7 @@ function Confirm() {
       <Header />
       <div className="container">
         <div className="fullbody">
-          {/* <button onClick={()=>console.log(totalBook)}>onclick</button> */}
+          {/* <button onClick={setSalesQ}>onclick</button> */}
           <div className="total-container container">
             <div className="review-container">
               <div className="review-list">
@@ -228,16 +271,19 @@ function Confirm() {
                   alt="list_icon"
                 />
                 <p className="review-title">Review Products</p>
+                
               </div>
               <div className="cart__table">
                 <table>
+                  <thead>
                   <tr className="table__row">
                     <th id="product__th">Product</th>
                     <th id="price__th">Price</th>
                     <th id="qty__th">Qty</th>
                     <th id="total__th">Total</th>
                   </tr>
-
+                  </thead>
+                  <tbody>
                   {cart.map((data, index) => {
                     let p = parseInt(data.data().price);
                     let q = parseInt(data.data().quantity);
@@ -276,6 +322,7 @@ function Confirm() {
                       // </Link>
                     );
                   })}
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -403,25 +450,30 @@ function Confirm() {
                 />
                 <p className="review-title">Payment Mode</p>
               </div>
-              <div onChange={onChangeValue} className="radio-container">
+              <div 
+              // onChange={onChangeValue}
+               className="radio-container">
                 <input
-                  checked={payment === "cod"}
+                  // checked={payment === "cod"}
+                  defaultChecked
+                  onChange={((e)=>onChangeValue(e.target.value))}
                   type="radio"
                   value="cod"
                   name="mode"
                   id="cod"
                 ></input>
-                <label for="cod">Cash On delivery</label>
+                <label htmlFor="cod">Cash On delivery</label>
                 <br></br>
 
                 <input
-                  checked={payment === "online"}
+                onChange={((e)=>onChangeValue(e.target.value))}
+                  // checked={payment === "online"}
                   type="radio"
                   name="mode"
                   value="online"
                   id="online"
                 ></input>
-                <label for="online">Online</label>
+                <label htmlFor="online">Online</label>
               </div>
             </div>
 

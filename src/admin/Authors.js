@@ -23,6 +23,8 @@ import { Table } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Cookies from 'universal-cookie';
+import Sidebar from './Sidebar';
+import { Link } from 'react-router-dom';
 
 function Authors() {
   // const [cookies, setCookie] = useCookies(['admin']);
@@ -40,6 +42,7 @@ const [nationality,setNationality] = useState('')
 const [work,setWork] = useState('')
 const [firstBook,setFirstBook] = useState('')
 const [latestWork,setLatestWork] = useState('')
+const [searchTerm,setSearchTerm] = useState('')
 const cookies = new Cookies();
 
 const admin = cookies.get('admin')
@@ -51,12 +54,12 @@ const fetchData = async () => {
     });
   };
 
-  const fetchAdmin = async () => {
-    const docRef = doc(db, "admin","VCpm3OTuga0YidDTEIe4");
-    const docSnap = await getDoc(docRef);
+  // const fetchAdmins = async () => {
+  //   const docRef = doc(db, "admin","VCpm3OTuga0YidDTEIe4");
+  //   const docSnap = await getDoc(docRef);
 
-    // setAdmin(docSnap.data());
-  };
+     
+  // };
  const handleUpload = async ()=>{
     setUploading(true)
   
@@ -71,6 +74,7 @@ const fetchData = async () => {
        firstBook:firstBook,
        latestWork:latestWork,
        image:image,
+       firstChar: name.charAt(0),
        timestamp: serverTimestamp(),
     }) 
     const thumbRef = ref(storage,`authors/${docRef.id}/image`);
@@ -103,7 +107,7 @@ const fetchData = async () => {
   };
   useEffect(()=>{
       fetchData() 
-      fetchAdmin()
+      // fetchAdmin()
   },[])
 
   // if( cookies.Admin  == 'false'){
@@ -112,6 +116,7 @@ const fetchData = async () => {
         {admin == "true" ?
         
         <><NavBar/>
+        <Sidebar/>
           <div className='ad__cat'>
       <div className='ad__act__head'>
       <h4>Authors</h4>
@@ -119,10 +124,81 @@ const fetchData = async () => {
       </div>  
    
       <div className='upload__content'>  
-      
+      <input id='ad__author__search__input'
+      placeholder='Search author'
+      value={searchTerm}
+      onChange={((e)=>setSearchTerm(e.target.value))}
+      />
       </div>
       
-      {modalControl ? <div className='ad__book__box__modal'>
+      
+  <Table striped bordered hover id='ad__cat__table'>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Image</th>
+  <th>Nationality</th>
+  <th>Language</th>
+  <th>Genre</th>
+        <th>Action</th>
+        <th>Edit</th>
+      </tr> 
+    </thead>
+    <tbody>
+
+      {authors.filter((val)=>{
+        if(searchTerm == ''){
+          return val
+        }else if(val.data().name.toLowerCase().includes(searchTerm.toLowerCase())){
+          return val
+        }
+      }).map((data,index)=>{
+        const no = authors.length - index
+        return(
+<tr key={index}>
+    <td>{no}</td>
+    <td>{data.data().name}</td>  
+    <td><img src={data.data().image} /></td>
+    <td>{data.data().nationality}</td>
+    <td>{data.data().language}</td>
+    <td>{data.data().genre}</td>
+    <td><button value={data.id} id='ad__cat__table__button'
+      onClick={(e) => deletItem(e.target.value)}>Delete</button></td>
+ <td><Link to={`/admin/author/${data.id}`}>View</Link></td>
+  </tr>
+        )
+      })
+      
+      }
+        {/* {authors.map((data,index)=>{
+            const no = authors.length - index
+            return(
+  <tr key={index}>
+        <td>{no}</td>
+        <td>{data.data().name}</td>  
+        <td><img src={data.data().image} /></td>
+        <td>{data.data().nationality}</td>
+        <td>{data.data().language}</td>
+        <td>{data.data().genre}</td>
+        <td><button value={data.id} id='ad__cat__table__button'
+          onClick={(e) => deletItem(e.target.value)}>Delete</button></td>
+     <td><Link to={`/admin/author/${data.id}`}>View</Link></td>
+      </tr>
+            )
+        })
+        
+        } */}
+      
+     
+     
+    </tbody>
+  </Table>
+
+ 
+      </div></> 
+      :''}
+          {modalControl ? <div className='ad__book__box__modal'>
             <div className='ad__book__box'>
                 <CancelIcon id='book__month__close'
                 onClick={()=>setModalControl(false)}
@@ -230,42 +306,6 @@ const fetchData = async () => {
                 </div>
                 </div>
       :''}
-  <Table striped bordered hover id='ad__cat__table'>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th>Image</th>
-  <th>Nationality</th>
-  <th>Language</th>
-  <th>Genre</th>
-        <th>Action</th>
-      </tr> 
-    </thead>
-    <tbody>
-        {authors.map((data,index)=>{
-            const no = authors.length - index
-            return(
-  <tr key={index}>
-        <td>{no}</td>
-        <td>{data.data().name}</td>  
-        <td><img src={data.data().image} /></td>
-        <td>{data.data().nationality}</td>
-        <td>{data.data().language}</td>
-        <td>{data.data().genre}</td>
-        <td><button value={data.id}
-          onClick={(e) => deletItem(e.target.value)}>Delete</button></td>
-      </tr>
-            )
-        })}
-      
-     
-     
-    </tbody>
-  </Table>
-      </div></> 
-      :''}
-          
       </div>
     )
   // }

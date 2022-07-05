@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Featur from "../components/Featur";
 import "../style/css/dashboard.css";
 import { Link } from "react-router-dom";
@@ -7,28 +7,71 @@ import Col from "react-bootstrap/esm/Col";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { onAuthStateChanged } from "firebase/auth";
+ 
+import { auth } from "../firebase";
+ 
+import { Button, Toast  } from "react-bootstrap";
+import userEvent from "@testing-library/user-event";
+ 
+
 function MyOrder() {
+const [user,setUser] = useState({})
+const [toast, setToast] = useState(false)
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+
+ const openToast = ()=>{
+  if(!user){
+    setToast(true)
+  }
+ }
+ useEffect(()=>{
+  openToast()
+ },[user])
   return (
     <>
       <Header />
-      <div className="container">
+      <Toast
+      //  onClose={()=>setTaost1(false)}
+       show={toast}
+       delay={3000}
+       autohide  
+       id='toast1' 
+      
+        >
+           
+          <Toast.Body>
+          Please login to view your dashboard
+          <Button
+          id='toast1__btn'
+          onClick={()=>setToast(false)}
+          style={{ marginLeft: "10px", }}>OK</Button>
+          </Toast.Body>
+        </Toast>
+
+        <div className="container">
         <div className="body">
           <div className="dashboard-container ">
+            
+            {user ? <>
             <div className="path ">
-              <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-                <p>Home </p>
-              </Link>
-              <ArrowForwardIosIcon id="path__icon" />
-              <Link
-                to="dashboard"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <p>Dashboard</p>
-              </Link>
-            </div>
-            <div className="dashboard-title">
-              <p>DASHBOARD</p>
-            </div>
+            <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              <p>Home </p>
+            </Link>
+            <ArrowForwardIosIcon id="path__icon" />
+            <Link
+              to="dashboard"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <p>Dashboard</p>
+            </Link>
+          </div>
+          <div className="dashboard-title">
+            <p>DASHBOARD</p>
+          </div>
             <div className="box-container">
               <div className="row">
                 <Row>
@@ -157,12 +200,13 @@ function MyOrder() {
                   </Col>
                 </Row>
               </div>
-            </div>
+            </div> </> : ''}
+            
           </div>
         </div>
         <Featur />
-      </div>{" "}
-      <Footer />{" "}
+      </div> 
+      <Footer /> 
     </>
   );
 }

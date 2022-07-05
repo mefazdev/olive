@@ -23,6 +23,9 @@ import {
 import { deleteObject, getDownloadURL, ref, uploadString } from 'firebase/storage';
 import { Table } from 'react-bootstrap';
 import Cookies from 'universal-cookie';
+import Sidebar from './Sidebar';
+import { Link } from 'react-router-dom';
+import shortid from 'shortid';
 
 function OfferZone() {
 
@@ -58,6 +61,7 @@ function OfferZone() {
    const [justArvd, setJustArvd] = useState(false)
  const [bSeller, setBSeler] = useState(false)
   const [authors,setAuthors] = useState([])
+  const [stock,setStock]=useState('')
   const cookies = new Cookies();
 
   const admin = cookies.get('admin')
@@ -97,7 +101,7 @@ function OfferZone() {
   },[])
 const handleUpload = async ()=>{
   setUploading(true)
-
+  const productId = shortid.generate();
   const docRef = await addDoc(collection(db, "products"), {
    name:name,
    author:author,
@@ -115,7 +119,7 @@ const handleUpload = async ()=>{
    description:description,
    pubDate:pubDate,
    offerZone:true,
-  
+   productId:productId,
   timestamp: serverTimestamp(),     
  });
 
@@ -216,7 +220,8 @@ fetchAdmin()
 },[])
     return (
       <>   
-      {admin == 'true' ? <><Navbar/>  
+      {admin == 'true' ? <><Navbar/> 
+      <Sidebar/> 
        <div className='ad__cat'>
     <div className='ad__act__head'>
     <h4  >Offer zone books</h4>
@@ -230,12 +235,14 @@ fetchAdmin()
   <thead>
     <tr>
       <th>#</th>
+      <th>Id</th>
       <th>Name</th>
       <th>Author</th>
       <th>Price</th>
       <th>Category</th>
-      <th></th>
-      <th></th>
+      <th>Thumbnail</th>
+      <th>Action</th>
+      <th>Edit</th>
     </tr>
   </thead>
   <tbody>
@@ -244,14 +251,16 @@ fetchAdmin()
           return(
 <tr key={index}>
       <td>{no}</td>
+      <td>{data.data().productId}</td>
       <td>{data.data().name}</td>  
       <td>{data.data().author} </td>
       <td>{data.data().price}</td>
       <td>{data.data().category}</td>
       <td><img src={data.data().thumbnail}/></td>
-      <td><button value={data.id}
+      <td><button value={data.id} id='ad__cat__table__button'
         onClick={(e) => deletItem(e.target.value)}
         >Delete</button></td>
+        <td><Link to={`/admin/offerzoneview/${data.id}`}>View</Link></td>
     </tr>
           )
       })}
@@ -471,7 +480,11 @@ fetchAdmin()
 
              </div></Col>
               <Col><div className='add__book__modal__row__item'>
-              
+              <label>Stock</label>
+              <input placeholder='Stock' type='number'
+              value={stock}
+              onChange={((e)=>setStock(e.target.value))}
+              />
                             </div></Col>
             </Row>
             <div className='ad__book__desc'>

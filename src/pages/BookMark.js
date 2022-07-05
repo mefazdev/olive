@@ -113,6 +113,7 @@ function BookMark() {
           <Container>
             <Row>
               {bookMark.map((data) => {
+                if( data.data().stock > 0){
                 return (
                   <Col xs="6" sm="3" md="2">
                     <Product
@@ -123,9 +124,10 @@ function BookMark() {
                       cutPrice={data.data().cutPrice}
                       id={data.id}
                       offerZone = {false}
+                      sale = {data.data().salse}
                     />
                   </Col>
-                );
+                );}
               })}
             </Row>
           </Container>

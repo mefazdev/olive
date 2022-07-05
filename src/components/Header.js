@@ -27,7 +27,7 @@ function Header() {
   // const [{basket,signupModal}] = useStateValue();
   const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
-
+ 
   const [cart, setCart] = useState([]);
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
@@ -63,6 +63,15 @@ function Header() {
   const logOut = async () => {
     await signOut(auth);
   };
+
+  const hideNavBar = () => {
+    if (window.scrollY >= 10) {
+      setOpen(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", hideNavBar);
+  });
 
   const openLogin = () => {
     dispatch({
@@ -201,7 +210,7 @@ function Header() {
             >
               <h5>Categories</h5>
             </NavLink>
-            <NavLink to="/ " activeClassName="nav__active" id="navLink">
+            <NavLink to="/preOrder" activeClassName="nav__active" id="navLink">
               <h5>Pre-order</h5>
             </NavLink>
             <NavLink to="/error" activeClassName="nav__active" id="navLink">

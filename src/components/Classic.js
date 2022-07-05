@@ -32,7 +32,7 @@ function Classic() {
       <div className="home__discover__content">
         <Row>
           {classic.map((data, index) => {
-            if (index < 5) {
+            if (index < 5 && data.data().stock > 0) {
               return (
                 <Link
                   to={`/book/${data.id}`}

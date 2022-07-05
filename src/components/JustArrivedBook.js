@@ -9,7 +9,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { db } from "../firebase";
 import { addDoc, collection, serverTimestamp } from "@firebase/firestore";
 import { auth } from "../firebase";
-function Product({ id, image, offer, name, author, price, cutPrice }) {
+function Product({ id, image, offer, name, author, price, cutPrice,productId,sale }) {
   const [{ basket }, dispatch] = useStateValue();
   const [user, setUser] = useState({});
   const [quantity, setQuantity] = useState(false);
@@ -26,6 +26,8 @@ function Product({ id, image, offer, name, author, price, cutPrice }) {
         name: name,
         author: author,
         price: price,
+        productId:productId,
+        sale:sale,
         timestamp: serverTimestamp(),
       });
       
