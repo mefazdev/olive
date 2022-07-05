@@ -46,7 +46,7 @@ function ProductDash() {
       const fetchOutOfStock = async () => {
         const q = await query(
          collection(db, "products"),
-          where("stock", "<=", '10')
+          where("stock", "<", '1')
         );
             const data =   await getDocs(q)
               setProducts(data.docs.map((doc) => doc));
@@ -54,7 +54,7 @@ function ProductDash() {
       const showOutOfStock = async () => {
         const q = await query(
          collection(db, "products"),
-          where("stock", "<=", '10')
+          where("stock", "<", '1')
         );
             const data =   await getDocs(q)
               setOutOfStock(data.docs.map((doc) => doc));
@@ -172,7 +172,7 @@ function ProductDash() {
             return(
                 <Col key={index} xs="6" sm="4" md="2">
             <div className="book__item"
-            id= {data.data().stock < 10 ? 'dash__book__div' : ''}
+            id= {data.data().stock < 1 ? 'dash__book__div' : ''}
             >
               
                 <img src={data.data().thumbnail} />

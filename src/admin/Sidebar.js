@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Sidebar.css'
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+// import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+// import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import MenuSharpIcon from "@material-ui/icons/MenuSharp";
 import CancelIcon from '@material-ui/icons/Cancel';
 function Sidebar() {

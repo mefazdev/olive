@@ -3,10 +3,6 @@ import "../style/css/categories.css";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import best1 from "../images/author/best1.png";
-import best2 from "../images/author/best2.png";
-import best3 from "../images/author/best3.png";
-import best4 from "../images/author/best4.png";
 import { useState } from "react";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import PopularList from "../components/PopularList";
@@ -21,92 +17,7 @@ import Header from "../components/Header";
 function SearchResult() {
   const [show, setShow] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
-  const [item] = useState([
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma  ",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-    {
-      image: best1,
-      name: "My family",
-      author: "Mahadevi Varma",
-      cutPrice: "654",
-      price: "456",
-    },
-    {
-      image: best2,
-      name: "That night",
-      author: "Nidhi Updhyay",
-      cutPrice: "123",
-      price: "321",
-    },
-    {
-      image: best3,
-      name: "The family firm",
-      author: "Emily Oster",
-      cutPrice: "777",
-      price: "765",
-    },
-    {
-      image: best4,
-      name: "The best couple ever",
-      author: "The best couple ever",
-      cutPrice: "321",
-      price: "321",
-    },
-  ]);
+  const [item] = useState([]);
   return (
     <>
     <Header/>

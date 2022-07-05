@@ -1,3 +1,33 @@
-.preOrder{
-    /* margin-top: ; */
+.pre__order__no__book{
+/* border: solid red; */
+}
+
+
+.error__content h1{
+    text-align: center;
+    font: normal normal bold 35px/30px DM Sans;
+    font-family: 'DM Sans', sans-serif; 
+    color: #343434;
+}
+
+
+.pre__order__no__book h4{
+    text-align: center;
+    font: normal normal normal 25px/50px DM Sans;
+        font-family: 'DM Sans', sans-serif; 
+        color: #343434;
+}
+.error__img{
+    display: flex;
+    justify-content: center;
+}
+.pre__order__no__book img{
+    max-width: 400px;
+    margin: auto;
+}
+.pre__order__no__img__div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+   
 }

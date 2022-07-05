@@ -1,4 +1,5 @@
 import "../style/css/bookSingle.css";
+import '../style/css/preOrder.css'
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import Carousel from "react-bootstrap/Carousel";
 import Row from "react-bootstrap/Row";
@@ -38,6 +39,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useParams } from "react-router-dom";
 import Product from "../components/Product";
 import Header from "../components/Header";
+import image from "../images/no-result.png";
+
 function PreOrder() {
   const id = useParams();
   const [quantity, setQuantity] = useState(1);
@@ -207,13 +210,12 @@ function PreOrder() {
       <div className="path ">
         <p>Home </p>
         <ArrowForwardIosIcon id="path__icon" />
-        <p>Categories </p>
+        <p>Pre-order </p>
  
         <ArrowForwardIosIcon id="path__icon" />
         <p>{product.name}</p>
       </div>
-      {/* <button onClick={()=>console.log(reviewDoc)}>CLICK</button> */}
-      <div className="book__single__content">
+      {product == !null ?   <div className="book__single__content">
         <Row>
           <Col id="book__single__img__col" md="3">
             <Carousel
@@ -612,7 +614,21 @@ function PreOrder() {
           </Row>
         </div>
         <div></div>
+      </div> : 
+      <div className="pre__order__no__book">
+       <h4>There is no books for pre-order now!</h4>
+            <div className="pre__order__no__img__div">
+            <img 
+      
+      src={image} />
+
+
+            </div>
+               
+
       </div>
+      }
+  
 
       <PopularList />
 
